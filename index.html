@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Blog — Your Journey to Mental Wellness</title>
+  <meta name="description" content="A calm, modern mental wellness blog for stories, reflection, wellbeing and inner peace.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="site-shell">
+
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <a class="brand" href="#">Aura Blog</a>
+
+      <!-- Navbar uses DM Sans instead of the decorative/serif styling used elsewhere -->
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="active" href="#home">Home</a>
+        <a href="#latest">Explore</a>
+        <a href="#latest">Stories</a>
+        <a href="#wellness">Wellness</a>
+        <a href="#community">Community</a>
+        <a href="#resources">Resources</a>
+      </nav>
+
+      <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
+        <span class="sun">☀</span><span class="moon">◐</span>
+      </button>
+      <a class="join-btn" href="#community">Join Community</a>
+    </header>
+
+    <!-- HERO -->
+    <main id="home">
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">A SPACE TO BREATHE</p>
+          <h1>Embrace Inner<br>Peace: Your Journey<br>to Mental Wellness</h1>
+          <p class="hero-subtitle">Find solace, stories, and strength in every post.</p>
+          <a class="primary-btn" href="#latest">Start Exploring</a>
+        </div>
+
+        <div class="hero-image-wrap">
+          <img
+            src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85"
+            alt="Peaceful landscape beside a lake"
+            class="hero-image"
+          >
+          <div class="image-wash"></div>
+        </div>
+
+        <a class="scroll-cue" href="#latest">
+          <span>Scroll Down</span>
+          <strong>⌄</strong>
+        </a>
+      </section>
+
+      <!-- BLOG AREA -->
+      <section class="blog-layout" id="latest">
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+          <div class="side-card">
+            <p class="side-label">EXPLORE</p>
+            <h2>Categories</h2>
+            <div class="category-list">
+              <a href="#">Mindfulness <span>12</span></a>
+              <a href="#">Mental Wellness <span>18</span></a>
+              <a href="#">Self Growth <span>15</span></a>
+              <a href="#">Relationships <span>9</span></a>
+              <a href="#">Healthy Living <span>14</span></a>
+              <a href="#">Inner Peace <span>11</span></a>
+            </div>
+          </div>
+
+          <div class="newsletter-card">
+            <span class="newsletter-icon">✦</span>
+            <h3>A little peace,<br>in your inbox.</h3>
+            <p>Gentle ideas for a calmer, clearer life.</p>
+            <form class="subscribe-form">
+              <input type="email" placeholder="Your email address" aria-label="Email address">
+              <button type="submit">Subscribe</button>
+            </form>
+          </div>
+        </aside>
+
+        <!-- POSTS -->
+        <div class="posts-area">
+          <section class="post-section" id="wellness">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">FRESH FROM AURA</p>
+                <h2>Latest Posts</h2>
+              </div>
+              <a href="#">View all <span>→</span></a>
+            </div>
+
+            <div class="post-grid">
+              <article class="post-card">
+                <a href="#" class="post-thumb">
+                  <img src="https://images.unsplash.com/photo-1499209974431-9dddcece7f88?auto=format&fit=crop&w=900&q=85" alt="Person relaxing in nature">
+                  <span class="tag">Mindfulness</span>
+                </a>
+                <div class="post-body">
+                  <p class="post-meta">5 MIN READ · AUG 16</p>
+                  <h3><a href="#">The Quiet Power of Doing Nothing</a></h3>
+                  <p>Sometimes the most restorative thing we can do is stop, breathe, and give ourselves permission to simply be.</p>
+                </div>
+              </article>
+
+              <article class="post-card">
+                <a href="#" class="post-thumb">
+                  <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=900&q=85" alt="Journal and coffee">
+                  <span class="tag">Self Growth</span>
+                </a>
+                <div class="post-body">
+                  <p class="post-meta">7 MIN READ · AUG 14</p>
+                  <h3><a href="#">A Softer Way to Talk to Yourself</a></h3>
+                  <p>Your inner voice shapes your days. Here is how to replace harsh self-judgement with honest compassion.</p>
+                </div>
+              </article>
+
+              <article class="post-card">
+                <a href="#" class="post-thumb">
+                  <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=85" alt="Person meditating">
+                  <span class="tag">Inner Peace</span>
+                </a>
+                <div class="post-body">
+                  <p class="post-meta">6 MIN READ · AUG 12</p>
+                  <h3><a href="#">When Your Mind Needs a Little Space</a></h3>
+                  <p>A practical reflection on creating mental room when life feels loud, busy, or emotionally overwhelming.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="post-section" id="popular">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">LOVED BY OUR READERS</p>
+                <h2>Popular Posts</h2>
+              </div>
+              <a href="#">View all <span>→</span></a>
+            </div>
+
+            <div class="post-grid">
+              <article class="post-card">
+                <a href="#" class="post-thumb">
+                  <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=85" alt="Sunlight through trees">
+                  <span class="tag">Mental Wellness</span>
+                </a>
+                <div class="post-body">
+                  <p class="post-meta">8 MIN READ · AUG 09</p>
+                  <h3><a href="#">You Don't Have to Have It All Figured Out</a></h3>
+                  <p>Uncertainty is not failure. Learn to move forward while leaving room for life to unfold naturally.</p>
+                </div>
+              </article>
+
+              <article class="post-card">
+                <a href="#" class="post-thumb">
+                  <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85" alt="Woman in a peaceful setting">
+                  <span class="tag">Healthy Living</span>
+                </a>
+                <div class="post-body">
+                  <p class="post-meta">5 MIN READ · AUG 06</p>
+                  <h3><a href="#">Small Rituals That Make Life Feel Better</a></h3>
+                  <p>Discover a few simple daily rituals that can turn ordinary moments into anchors of calm.</p>
+                </div>
+              </article>
+
+              <article class="post-card">
+                <a href="#" class="post-thumb">
+                  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=85" alt="Friends talking together">
+                  <span class="tag">Relationships</span>
+                </a>
+                <div class="post-body">
+                  <p class="post-meta">9 MIN READ · AUG 03</p>
+                  <h3><a href="#">The People Who Help Us Feel Like Ourselves</a></h3>
+                  <p>Why meaningful connection matters, and how to build relationships that feel safe, warm and real.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer id="community">
+      <div>
+        <a class="brand footer-brand" href="#">Aura Blog</a>
+        <p>A quiet corner for a more meaningful life.</p>
+      </div>
+      <div class="footer-links" id="resources">
+        <a href="#">About</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy</a>
+        <a href="#">Instagram</a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
