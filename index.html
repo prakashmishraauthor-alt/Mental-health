@@ -17,7 +17,6 @@
     <header class="navbar">
       <a class="brand" href="#">Aura Blog</a>
 
-      <!-- Navbar uses DM Sans instead of the decorative/serif styling used elsewhere -->
       <nav class="nav-links" aria-label="Main navigation">
         <a class="active" href="#home">Home</a>
         <a href="#latest">Explore</a>
@@ -33,230 +32,192 @@
       <a class="join-btn" href="#community">Join Community</a>
     </header>
 
-    <!-- HERO -->
-    <main id="home">
-      <section class="hero">
-        <div class="hero-copy">
-          <p class="eyebrow">A SPACE TO BREATHE</p>
-          <h1>Embrace Inner<br>Peace: Your Journey<br>to Mental Wellness</h1>
-          <p class="hero-subtitle">Find solace, stories, and strength in every post.</p>
-          <a class="primary-btn" href="#latest">Start Exploring</a>
-        </div>
-
-        <div class="hero-image-wrap">
-          <img
-            src="aura-hero.png"
-            alt="Peaceful landscape beside a lake"
-            class="hero-image"
-          >
-          <div class="image-wash"></div>
-        </div>
-
-        <a class="scroll-cue" href="#latest">
-          <span>Scroll Down</span>
-          <strong>⌄</strong>
-        </a>
-      </section>
-
-      <!-- BLOG AREA -->
-     <div class="site-shell">
-  <div class="blog-layout">
-
-    <!-- 1. SIDEBAR (LEFT COLUMN) -->
-    <aside class="sidebar">
-
-      <!-- Existing Categories Card -->
-      <div class="side-card">
-        <div class="side-label">EXPLORE</div>
-        <h2>Categories</h2>
-        <div class="category-list">
-          <a href="#">Mindfulness <span>12</span></a>
-          <a href="#">Mental Wellness <span>18</span></a>
-          <a href="#">Self Growth <span>15</span></a>
-          <a href="#">Relationships <span>9</span></a>
-          <a href="#">Healthy Living <span>14</span></a>
-          <a href="#">Inner Peace <span>11</span></a>
-        </div>
+    <!-- HERO SECTION -->
+    <section class="hero" id="home">
+      <div class="hero-copy">
+        <p class="eyebrow">A SPACE TO BREATHE</p>
+        <h1>Embrace Inner<br>Peace: Your Journey<br>to Mental Wellness</h1>
+        <p class="hero-subtitle">Find solace, stories, and strength in every post.</p>
+        <a class="primary-btn" href="#latest">Start Exploring</a>
       </div>
 
-      <!-- ADD THE POPULAR POSTS HTML HERE -->
-      <div class="side-card">
-        <div class="side-label">TRENDING</div>
-        <h2>Popular Posts</h2>
-        <div class="popular-posts-list">
-          
-          <article class="popular-post-card">
-            <a href="#" class="popular-thumb">
-              <img src="your-image-1.jpg" alt="Mindfulness" />
-            </a>
-            <div class="popular-details">
-              <span class="popular-meta">5 MIN READ</span>
-              <h4><a href="#">The Surprising Public Health Science Behind Belonging</a></h4>
-            </div>
-          </article>
-
-          <article class="popular-post-card">
-            <a href="#" class="popular-thumb">
-              <img src="your-image-2.jpg" alt="Mental Health" />
-            </a>
-            <div class="popular-details">
-              <span class="popular-meta">9 MIN READ</span>
-              <h4><a href="#">370,000 Untapped Lifelines: Faith Spaces as Vital Infrastructure</a></h4>
-            </div>
-          </article>
-
-        </div>
+      <div class="hero-image-wrap">
+        <img
+          src="aura-hero.png"
+          alt="Peaceful landscape beside a lake"
+          class="hero-image"
+        >
+        <div class="image-wash"></div>
       </div>
 
-    </aside>
+      <a class="scroll-cue" href="#latest">
+        <span>Scroll Down</span>
+        <strong>⌄</strong>
+      </a>
+    </section>
 
-    <!-- 2. MAIN CONTENT AREA (RIGHT COLUMN) -->
-    <main class="main-content">
-      <section class="post-section">
-        <div class="section-heading">
-          <h2>Latest Posts</h2>
+    <!-- MAIN CONTENT LAYOUT -->
+    <div class="blog-layout">
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <!-- Categories Card -->
+        <div class="side-card">
+          <div class="side-label">EXPLORE</div>
+          <h2>Categories</h2>
+          <div class="category-list">
+            <a href="#">Mindfulness <span>12</span></a>
+            <a href="#">Mental Wellness <span>18</span></a>
+            <a href="#">Self Growth <span>15</span></a>
+            <a href="#">Relationships <span>9</span></a>
+            <a href="#">Healthy Living <span>14</span></a>
+            <a href="#">Inner Peace <span>11</span></a>
+          </div>
         </div>
-        <div class="post-grid">
-          <!-- Standard full-width post cards go here -->
-        </div>
-      </section>
-    </main>
 
-  </div>
-</div>
-        <!-- POSTS -->
-        <div class="post-grid">
-
-  <!-- POST 1 -->
-  <article class="post-card">
-    <a href="the-surprising-public-health-science-behind-belonging.html" class="post-thumb">
-      <img
-        src="science-of-belonging.jpg"
-        alt="People gathered together in a peaceful outdoor setting"
-      >
-      <span class="tag">Mindfulness</span>
-    </a>
-
-    <div class="post-body">
-      <p class="post-meta">5 MIN READ · AUG 16</p>
-
-      <h3>
-        <a href="the-surprising-public-health-science-behind-belonging.html">
-          The Surprising Public Health Science Behind Belonging: Why Medicine Alone Can’t Cure the Mental Health Crisis
-        </a>
-      </h3>
-
-      <p>
-        New research reveals how belonging, community, and shared purpose may play a powerful role in addressing the global mental health crisis.
-      </p>
-    </div>
-  </article>
-
-
-  <!-- POST 2 -->
-  <article class="post-card">
-    <a href="untapped-lifeliness.html" class="post-thumb">
-      <img
-        src="untapped_lifelines_infrastructure.jpg"
-        alt="Faith community spaces connected through a network"
-      >
-      <span class="tag">Mental Health</span>
-    </a>
-
-    <div class="post-body">
-      <p class="post-meta">9 MIN READ · AUG 14</p>
-
-      <h3>
-        <a href="untapped-lifeliness.html">
-          370,000 Untapped Lifelines: Faith Spaces as Vital Public Health Infrastructure
-        </a>
-      </h3>
-
-      <p>
-        The global mental health crisis is accelerating at an unprecedented rate, currently affecting more than 1 billion people worldwide.
-      </p>
-    </div>
-  </article>
-
-
-  <!-- POST 3 -->
-  <article class="post-card">
-    <a href="#" class="post-thumb">
-      <img
-        src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=85"
-        alt="Person meditating"
-      >
-      <span class="tag">Inner Peace</span>
-    </a>
-
-    <div class="post-body">
-      <p class="post-meta">6 MIN READ · AUG 12</p>
-
-      <h3>
-        <a href="#">
-          When Your Mind Needs a Little Space
-        </a>
-      </h3>
-
-      <p>
-        A practical reflection on creating mental room when life feels loud, busy, or emotionally overwhelming.
-      </p>
-    </div>
-  </article>
-
-</div>
-
-          <section class="post-section" id="popular">
-            <div class="section-heading">
-              <div>
-                <p class="section-kicker">LOVED BY OUR READERS</p>
-                <h2>Popular Posts</h2>
+        <!-- Sidebar Popular Posts (Compact Widget) -->
+        <div class="side-card">
+          <div class="side-label">TRENDING</div>
+          <h2>Popular Posts</h2>
+          <div class="popular-posts-list">
+            
+            <article class="popular-post-card">
+              <a href="the-surprising-public-health-science-behind-belonging.html" class="popular-thumb">
+                <img src="science-of-belonging.jpg" alt="Mindfulness" />
+              </a>
+              <div class="popular-details">
+                <span class="popular-meta">5 MIN READ</span>
+                <h4><a href="the-surprising-public-health-science-behind-belonging.html">The Surprising Public Health Science Behind Belonging</a></h4>
               </div>
-              <a href="#">View all <span>→</span></a>
-            </div>
+            </article>
 
-            <div class="post-grid">
-              <article class="post-card">
-                <a href="#" class="post-thumb">
-                  <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=85" alt="Sunlight through trees">
-                  <span class="tag">Mental Wellness</span>
-                </a>
-                <div class="post-body">
-                  <p class="post-meta">8 MIN READ · AUG 09</p>
-                  <h3><a href="#">You Don't Have to Have It All Figured Out</a></h3>
-                  <p>Uncertainty is not failure. Learn to move forward while leaving room for life to unfold naturally.</p>
-                </div>
-              </article>
+            <article class="popular-post-card">
+              <a href="untapped-lifeliness.html" class="popular-thumb">
+                <img src="untapped_lifelines_infrastructure.jpg" alt="Mental Health" />
+              </a>
+              <div class="popular-details">
+                <span class="popular-meta">9 MIN READ</span>
+                <h4><a href="untapped-lifeliness.html">370,000 Untapped Lifelines: Faith Spaces as Infrastructure</a></h4>
+              </div>
+            </article>
 
-              <article class="post-card">
-                <a href="#" class="post-thumb">
-                  <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85" alt="Woman in a peaceful setting">
-                  <span class="tag">Healthy Living</span>
-                </a>
-                <div class="post-body">
-                  <p class="post-meta">5 MIN READ · AUG 06</p>
-                  <h3><a href="#">Small Rituals That Make Life Feel Better</a></h3>
-                  <p>Discover a few simple daily rituals that can turn ordinary moments into anchors of calm.</p>
-                </div>
-              </article>
-
-              <article class="post-card">
-                <a href="#" class="post-thumb">
-                  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=85" alt="Friends talking together">
-                  <span class="tag">Relationships</span>
-                </a>
-                <div class="post-body">
-                  <p class="post-meta">9 MIN READ · AUG 03</p>
-                  <h3><a href="#">The People Who Help Us Feel Like Ourselves</a></h3>
-                  <p>Why meaningful connection matters, and how to build relationships that feel safe, warm and real.</p>
-                </div>
-              </article>
-            </div>
-          </section>
+          </div>
         </div>
-      </section>
-    </main>
 
+      </aside>
+
+      <!-- MAIN ARTICLES COLUMN -->
+      <main class="main-content">
+
+        <!-- Latest Posts Section -->
+        <section class="post-section" id="latest">
+          <div class="section-heading">
+            <h2>Latest Posts</h2>
+          </div>
+
+          <div class="post-grid">
+
+            <article class="post-card">
+              <a href="the-surprising-public-health-science-behind-belonging.html" class="post-thumb">
+                <img src="science-of-belonging.jpg" alt="People gathered together in a peaceful outdoor setting">
+                <span class="tag">Mindfulness</span>
+              </a>
+              <div class="post-body">
+                <p class="post-meta">5 MIN READ · AUG 16</p>
+                <h3>
+                  <a href="the-surprising-public-health-science-behind-belonging.html">
+                    The Surprising Public Health Science Behind Belonging: Why Medicine Alone Can’t Cure the Mental Health Crisis
+                  </a>
+                </h3>
+                <p>New research reveals how belonging, community, and shared purpose may play a powerful role in addressing the global mental health crisis.</p>
+              </div>
+            </article>
+
+            <article class="post-card">
+              <a href="untapped-lifeliness.html" class="post-thumb">
+                <img src="untapped_lifelines_infrastructure.jpg" alt="Faith community spaces connected through a network">
+                <span class="tag">Mental Health</span>
+              </a>
+              <div class="post-body">
+                <p class="post-meta">9 MIN READ · AUG 14</p>
+                <h3>
+                  <a href="untapped-lifeliness.html">
+                    370,000 Untapped Lifelines: Faith Spaces as Vital Public Health Infrastructure
+                  </a>
+                </h3>
+                <p>The global mental health crisis is accelerating at an unprecedented rate, currently affecting more than 1 billion people worldwide.</p>
+              </div>
+            </article>
+
+            <article class="post-card">
+              <a href="#" class="post-thumb">
+                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=85" alt="Person meditating">
+                <span class="tag">Inner Peace</span>
+              </a>
+              <div class="post-body">
+                <p class="post-meta">6 MIN READ · AUG 12</p>
+                <h3><a href="#">When Your Mind Needs a Little Space</a></h3>
+                <p>A practical reflection on creating mental room when life feels loud, busy, or emotionally overwhelming.</p>
+              </div>
+            </article>
+
+          </div>
+        </section>
+
+        <!-- Readers Choice Section -->
+        <section class="post-section" id="popular">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker">LOVED BY OUR READERS</p>
+              <h2>Popular Stories</h2>
+            </div>
+            <a href="#">View all <span>→</span></a>
+          </div>
+
+          <div class="post-grid">
+            <article class="post-card">
+              <a href="#" class="post-thumb">
+                <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=85" alt="Sunlight through trees">
+                <span class="tag">Mental Wellness</span>
+              </a>
+              <div class="post-body">
+                <p class="post-meta">8 MIN READ · AUG 09</p>
+                <h3><a href="#">You Don't Have to Have It All Figured Out</a></h3>
+                <p>Uncertainty is not failure. Learn to move forward while leaving room for life to unfold naturally.</p>
+              </div>
+            </article>
+
+            <article class="post-card">
+              <a href="#" class="post-thumb">
+                <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85" alt="Woman in a peaceful setting">
+                <span class="tag">Healthy Living</span>
+              </a>
+              <div class="post-body">
+                <p class="post-meta">5 MIN READ · AUG 06</p>
+                <h3><a href="#">Small Rituals That Make Life Feel Better</a></h3>
+                <p>Discover a few simple daily rituals that can turn ordinary moments into anchors of calm.</p>
+              </div>
+            </article>
+
+            <article class="post-card">
+              <a href="#" class="post-thumb">
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=85" alt="Friends talking together">
+                <span class="tag">Relationships</span>
+              </a>
+              <div class="post-body">
+                <p class="post-meta">9 MIN READ · AUG 03</p>
+                <h3><a href="#">The People Who Help Us Feel Like Ourselves</a></h3>
+                <p>Why meaningful connection matters, and how to build relationships that feel safe, warm and real.</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- FOOTER -->
     <footer id="community">
       <div>
         <a class="brand footer-brand" href="#">Aura Blog</a>
@@ -269,6 +230,7 @@
         <a href="#">Instagram</a>
       </div>
     </footer>
+
   </div>
 
   <script src="script.js"></script>
