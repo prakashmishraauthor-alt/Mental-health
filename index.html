@@ -59,33 +59,71 @@
       </section>
 
       <!-- BLOG AREA -->
-      <section class="blog-layout" id="latest">
-        <!-- SIDEBAR -->
-        <aside class="sidebar">
-          <div class="side-card">
-            <p class="side-label">EXPLORE</p>
-            <h2>Categories</h2>
-            <div class="category-list">
-              <a href="#">Mindfulness <span>12</span></a>
-              <a href="#">Mental Wellness <span>18</span></a>
-              <a href="#">Self Growth <span>15</span></a>
-              <a href="#">Relationships <span>9</span></a>
-              <a href="#">Healthy Living <span>14</span></a>
-              <a href="#">Inner Peace <span>11</span></a>
+     <div class="site-shell">
+  <div class="blog-layout">
+
+    <!-- 1. SIDEBAR (LEFT COLUMN) -->
+    <aside class="sidebar">
+
+      <!-- Existing Categories Card -->
+      <div class="side-card">
+        <div class="side-label">EXPLORE</div>
+        <h2>Categories</h2>
+        <div class="category-list">
+          <a href="#">Mindfulness <span>12</span></a>
+          <a href="#">Mental Wellness <span>18</span></a>
+          <a href="#">Self Growth <span>15</span></a>
+          <a href="#">Relationships <span>9</span></a>
+          <a href="#">Healthy Living <span>14</span></a>
+          <a href="#">Inner Peace <span>11</span></a>
+        </div>
+      </div>
+
+      <!-- ADD THE POPULAR POSTS HTML HERE -->
+      <div class="side-card">
+        <div class="side-label">TRENDING</div>
+        <h2>Popular Posts</h2>
+        <div class="popular-posts-list">
+          
+          <article class="popular-post-card">
+            <a href="#" class="popular-thumb">
+              <img src="your-image-1.jpg" alt="Mindfulness" />
+            </a>
+            <div class="popular-details">
+              <span class="popular-meta">5 MIN READ</span>
+              <h4><a href="#">The Surprising Public Health Science Behind Belonging</a></h4>
             </div>
-          </div>
+          </article>
 
-          <div class="newsletter-card">
-            <span class="newsletter-icon">✦</span>
-            <h3>A little peace,<br>in your inbox.</h3>
-            <p>Gentle ideas for a calmer, clearer life.</p>
-            <form class="subscribe-form">
-              <input type="email" placeholder="Your email address" aria-label="Email address">
-              <button type="submit">Subscribe</button>
-            </form>
-          </div>
-        </aside>
+          <article class="popular-post-card">
+            <a href="#" class="popular-thumb">
+              <img src="your-image-2.jpg" alt="Mental Health" />
+            </a>
+            <div class="popular-details">
+              <span class="popular-meta">9 MIN READ</span>
+              <h4><a href="#">370,000 Untapped Lifelines: Faith Spaces as Vital Infrastructure</a></h4>
+            </div>
+          </article>
 
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- 2. MAIN CONTENT AREA (RIGHT COLUMN) -->
+    <main class="main-content">
+      <section class="post-section">
+        <div class="section-heading">
+          <h2>Latest Posts</h2>
+        </div>
+        <div class="post-grid">
+          <!-- Standard full-width post cards go here -->
+        </div>
+      </section>
+    </main>
+
+  </div>
+</div>
         <!-- POSTS -->
         <div class="post-grid">
 
