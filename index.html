@@ -3,9 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mirror//Illusion — Stories That Matter</title>
 <meta name="description" content="Mirror//Illusion — thoughtful stories, perspectives and useful resources.">
-<style>:root{
+<meta name="theme-color" content="#070706">
+<title>Mirror//Illusion — Stories That Matter</title>
+
+<style>
+:root{
   --bg:#070706;
   --panel:#0d0d0b;
   --panel2:#11110f;
@@ -22,48 +25,309 @@
 html{scroll-behavior:smooth}
 body{
   margin:0;background:var(--bg);color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;-webkit-font-smoothing:antialiased;
+  font-family:Arial,Helvetica,sans-serif;
+  -webkit-font-smoothing:antialiased;
 }
-a{color:inherit;text-decoration:none} img{max-width:100%;display:block} button{font:inherit}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font:inherit}
 .topline{height:3px;background:var(--orange)}
 .site{width:min(calc(100% - 64px),var(--max));margin-inline:auto}
-header{border-bottom:1px solid var(--line);position:sticky;top:0;z-index:50;background:rgba(7,7,6,.97);backdrop-filter:blur(16px)}
+header{
+  border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:50;
+  background:rgba(7,7,6,.97);
+  backdrop-filter:blur(16px)
+}
 .nav{min-height:74px;display:flex;align-items:center;gap:32px}
-.brand{font-size:21px;font-weight:900;letter-spacing:-1.4px;white-space:nowrap}.brand span{color:var(--orange)}.brand b{color:var(--text)}
-.menu{margin-left:auto;display:flex;gap:28px;align-items:center;font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#aaa69d}.menu a:hover,.menu a.active{color:var(--orange)}
-.search,.mobile-menu{width:38px;height:38px;border:1px solid var(--line2);background:transparent;color:var(--text);border-radius:7px;cursor:pointer}.mobile-menu{display:none}
-.kicker,.eyebrow{color:var(--orange);font-size:9px;font-weight:900;letter-spacing:.18em;text-transform:uppercase}
+.brand{font-size:21px;font-weight:900;letter-spacing:-1.4px;white-space:nowrap}
+.brand span{color:var(--orange)}
+.brand b{color:var(--text)}
+.menu{
+  margin-left:auto;display:flex;gap:28px;align-items:center;
+  font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#aaa69d
+}
+.menu a:hover,.menu a.active{color:var(--orange)}
+.search,.mobile-menu{
+  width:38px;height:38px;border:1px solid var(--line2);
+  background:transparent;color:var(--text);border-radius:7px;cursor:pointer
+}
+.mobile-menu{display:none}
+.kicker,.eyebrow{
+  color:var(--orange);font-size:9px;font-weight:900;
+  letter-spacing:.18em;text-transform:uppercase
+}
+
 /* HERO */
-.hero{padding:72px 0 58px;display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:90px;align-items:end;border-bottom:1px solid var(--line)}
-.hero h1{margin:18px 0 0;max-width:980px;font-size:clamp(64px,7.4vw,112px);line-height:.84;letter-spacing:-.075em;font-weight:900}
+.hero{
+  padding:72px 0 58px;
+  display:grid;grid-template-columns:minmax(0,1fr) 360px;
+  gap:90px;align-items:end;border-bottom:1px solid var(--line)
+}
+.hero h1{
+  margin:18px 0 0;max-width:980px;
+  font-size:clamp(64px,7.4vw,112px);
+  line-height:.84;letter-spacing:-.075em;font-weight:900
+}
 .hero h1 em{font-style:normal;color:var(--orange)}
-.hero-note{border-left:2px solid var(--orange);padding:3px 0 3px 20px;color:var(--muted);font-size:13px;line-height:1.7;max-width:360px}.hero-note strong{color:var(--text);font-size:10px;letter-spacing:.1em}
+.hero-note{
+  border-left:2px solid var(--orange);
+  padding:3px 0 3px 20px;color:var(--muted);
+  font-size:13px;line-height:1.7;max-width:360px
+}
+.hero-note strong{color:var(--text);font-size:10px;letter-spacing:.1em}
+
 /* MAGAZINE */
-.magazine{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:34px;padding-top:30px}.main-column{min-width:0}.sidebar{min-width:0}
-.section-head{display:flex;justify-content:space-between;align-items:center;min-height:48px;border-bottom:1px solid var(--line)}.section-head h2{margin:0;font-size:15px;font-weight:900;letter-spacing:-.01em}.section-head span{color:var(--orange);font-size:8px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
-/* FEATURE */
-.featured-wrap{padding-bottom:34px}.feature{margin-top:18px;border:1px solid var(--line2);background:var(--panel);display:grid;grid-template-columns:1.08fr .92fr;min-height:500px;overflow:hidden}.feature-media{min-height:500px;background:#161b29;overflow:hidden}.feature-media img{width:100%;height:100%;object-fit:cover}.feature-copy{padding:44px 40px;display:flex;flex-direction:column;justify-content:center}.feature-copy h3{margin:14px 0 18px;font-family:Georgia,"Times New Roman",serif;font-size:clamp(38px,3.4vw,58px);line-height:.92;letter-spacing:-.045em}.feature-copy p{margin:0;color:var(--muted);font-size:12px;line-height:1.7;max-width:470px}.meta{color:var(--muted);font-size:9px;line-height:1.6;text-transform:uppercase;letter-spacing:.07em}.read{display:inline-block;margin-top:23px;color:var(--orange);font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.13em}.placeholder{width:100%;height:100%;min-height:500px;background:linear-gradient(135deg,#121923,#25221e);display:grid;place-items:center;color:#777;font-size:11px}
+.magazine{
+  display:grid;grid-template-columns:minmax(0,1fr) 390px;
+  gap:34px;padding-top:30px
+}
+.main-column,.sidebar{min-width:0}
+.section-head{
+  display:flex;justify-content:space-between;align-items:center;
+  min-height:48px;border-bottom:1px solid var(--line)
+}
+.section-head h2{margin:0;font-size:15px;font-weight:900;letter-spacing:-.01em}
+.section-head span{
+  color:var(--orange);font-size:8px;font-weight:900;
+  letter-spacing:.16em;text-transform:uppercase
+}
+
+/* FEATURED */
+.featured-wrap{padding-bottom:34px}
+.feature{
+  margin-top:18px;border:1px solid var(--line2);background:var(--panel);
+  display:grid;grid-template-columns:1.08fr .92fr;min-height:500px;overflow:hidden
+}
+.feature-media{min-height:500px;background:#161b29;overflow:hidden;display:block}
+.feature-media img{width:100%;height:100%;object-fit:cover}
+.feature-copy{
+  padding:44px 40px;display:flex;flex-direction:column;justify-content:center
+}
+.feature-copy h3{
+  margin:14px 0 18px;font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(38px,3.4vw,58px);line-height:.92;letter-spacing:-.045em
+}
+.feature-copy p{margin:0;color:var(--muted);font-size:12px;line-height:1.7;max-width:470px}
+.meta{
+  color:var(--muted);font-size:9px;line-height:1.6;
+  text-transform:uppercase;letter-spacing:.07em
+}
+.read{
+  display:inline-block;margin-top:23px;color:var(--orange);
+  font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.13em
+}
+.placeholder{
+  width:100%;height:100%;min-height:500px;
+  background:linear-gradient(135deg,#121923,#25221e);
+  display:grid;place-items:center;color:#777;font-size:11px
+}
+
 /* POPULAR */
-.popular{padding:0 0 32px}.popular-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}.pop-card{border:1px solid var(--line2);background:var(--panel2);display:grid;grid-template-columns:112px minmax(0,1fr);min-height:126px;overflow:hidden}.pop-card img{width:112px;height:100%;min-height:126px;object-fit:cover}.pop-copy{padding:13px 14px}.pop-rank{color:var(--orange);font-size:8px;font-weight:900;letter-spacing:.14em}.pop-card h3{margin:7px 0 0;font-family:Georgia,serif;font-size:16px;line-height:1.02}.pop-card .meta{margin-top:7px;font-size:7px}
+.popular{padding:0 0 32px}
+.popular-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;margin-top:18px
+}
+.pop-card{
+  border:1px solid var(--line2);background:var(--panel2);
+  display:grid;grid-template-columns:112px minmax(0,1fr);
+  min-height:126px;overflow:hidden
+}
+.pop-card img{width:112px;height:100%;min-height:126px;object-fit:cover}
+.pop-copy{padding:13px 14px}
+.pop-rank{color:var(--orange);font-size:8px;font-weight:900;letter-spacing:.14em}
+.pop-card h3{
+  margin:7px 0 0;font-family:Georgia,serif;
+  font-size:16px;line-height:1.02
+}
+.pop-card .meta{margin-top:7px;font-size:7px}
+
 /* AD */
-.ad-slot{margin:0 0 34px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);min-height:170px;display:grid;place-items:center;background:#090908}.ad-slot-inner{text-align:center;color:#5f5b53}.ad-slot strong{display:block;color:#777;font-size:8px;letter-spacing:.2em;text-transform:uppercase}.ad-slot span{display:block;margin-top:8px;font-size:9px}
+.ad-slot{
+  margin:0 0 34px;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);min-height:170px;
+  display:grid;place-items:center;background:#090908
+}
+.ad-slot-inner{text-align:center;color:#5f5b53}
+.ad-slot strong{
+  display:block;color:#777;font-size:8px;
+  letter-spacing:.2em;text-transform:uppercase
+}
+.ad-slot span{display:block;margin-top:8px;font-size:9px}
+
 /* LATEST */
-.latest{padding:0 0 72px}.posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}.card{border:1px solid var(--line2);background:var(--panel);overflow:hidden;transition:transform .2s,border-color .2s}.card:hover{transform:translateY(-3px);border-color:#665f53}.card-img{display:block;aspect-ratio:4/3;background:#151515;overflow:hidden}.card-img img{width:100%;height:100%;object-fit:cover}.card-body{padding:16px 17px 19px;min-height:190px}.card .eyebrow{font-size:7px}.card h3{margin:8px 0 9px;font-family:Georgia,"Times New Roman",serif;font-size:20px;line-height:1.03;letter-spacing:-.025em}.card p{margin:0;color:var(--muted);font-size:10px;line-height:1.55}.card .read{margin-top:14px}
+.latest{padding:0 0 48px}
+.posts{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;margin-top:18px
+}
+.card{
+  border:1px solid var(--line2);background:var(--panel);
+  overflow:hidden;transition:transform .2s,border-color .2s
+}
+.card:hover{transform:translateY(-3px);border-color:#665f53}
+.card-img{display:block;aspect-ratio:4/3;background:#151515;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover}
+.card-body{padding:16px 17px 19px;min-height:190px}
+.card .eyebrow{font-size:7px}
+.card h3{
+  margin:8px 0 9px;font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;line-height:1.03;letter-spacing:-.025em
+}
+.card p{margin:0;color:var(--muted);font-size:10px;line-height:1.55}
+.card .read{margin-top:14px}
+
 /* ARCHIVE */
-.archive-section{margin-top:10px;padding:34px 0 0;border-top:1px solid var(--line)}.archive-section[hidden]{display:none}.archive-intro{color:var(--muted);font-size:11px;line-height:1.7;max-width:680px;padding:15px 0 4px}.archive-intro p{margin:0}.archive-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}.archive-card{border:1px solid var(--line2);background:var(--panel);overflow:hidden}.archive-card .archive-img{display:block;aspect-ratio:4/3;background:#151515;overflow:hidden}.archive-card .archive-img img{width:100%;height:100%;object-fit:cover}.archive-card .archive-body{padding:15px 16px 18px}.archive-card h3{margin:8px 0 8px;font-family:Georgia,serif;font-size:19px;line-height:1.05}.archive-card p{margin:0;color:var(--muted);font-size:10px;line-height:1.55}.archive-actions{display:flex;align-items:center;justify-content:center;gap:16px;padding:28px 0 10px}.archive-btn,.view-all{border:1px solid var(--orange);background:transparent;color:var(--text);padding:13px 20px;font-size:9px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}.archive-btn:hover,.view-all:hover{background:var(--orange);color:#080807}.archive-btn:disabled{opacity:.45;cursor:not-allowed}.archive-status{color:#777;font-size:9px}.view-all-wrap{display:flex;justify-content:center;padding:0 0 54px}.view-all{background:var(--orange);color:#080807}.view-all:hover{background:transparent;color:var(--orange)}
+.archive-section{
+  margin-top:10px;padding:34px 0 0;border-top:1px solid var(--line)
+}
+.archive-section[hidden]{display:none}
+.archive-intro{color:var(--muted);font-size:11px;line-height:1.7;max-width:680px;padding:15px 0 4px}
+.archive-intro p{margin:0}
+.archive-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;margin-top:18px
+}
+.archive-card{border:1px solid var(--line2);background:var(--panel);overflow:hidden}
+.archive-card .archive-img{
+  display:block;aspect-ratio:4/3;background:#151515;overflow:hidden
+}
+.archive-card .archive-img img{width:100%;height:100%;object-fit:cover}
+.archive-card .archive-body{padding:15px 16px 18px}
+.archive-card h3{margin:8px 0 8px;font-family:Georgia,serif;font-size:19px;line-height:1.05}
+.archive-card p{margin:0;color:var(--muted);font-size:10px;line-height:1.55}
+.archive-actions{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;padding:28px 0 10px
+}
+.archive-btn,.view-all{
+  border:1px solid var(--orange);background:transparent;color:var(--text);
+  padding:13px 20px;font-size:9px;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer
+}
+.archive-btn:hover,.view-all:hover{background:var(--orange);color:#080807}
+.archive-btn:disabled{opacity:.45;cursor:not-allowed}
+.archive-status{color:#777;font-size:9px}
+.view-all-wrap{display:flex;justify-content:center;padding:0 0 54px}
+.view-all{background:var(--orange);color:#080807}
+.view-all:hover{background:transparent;color:var(--orange)}
+
 /* SIDEBAR */
-.widget{border:1px solid var(--line2);background:var(--panel);padding:22px 22px;margin-bottom:18px}.widget-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:15px}.widget h3{margin:0;font-size:14px;font-weight:900}.widget-head span{color:var(--orange);font-size:8px;font-weight:900;letter-spacing:.14em;text-transform:uppercase}.widget a.item{display:flex;justify-content:space-between;gap:12px;padding:16px 0;border-bottom:1px solid var(--line);font-size:11px;color:#d3cfc6}.widget a.item:last-child{border-bottom:0}.widget a.item:hover{color:var(--orange)}.widget a.item small{color:#777;font-size:8px}.sidebar-pop .item{align-items:center}.sidebar-pop .num{flex:0 0 27px;width:27px;height:27px;border:1px solid var(--orange);border-radius:50%;display:grid;place-items:center;color:var(--orange);font-size:8px;font-weight:900}.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}.topic{border:1px solid var(--line);padding:12px 10px;font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.topic:hover{border-color:var(--orange);color:var(--orange)}.empty{grid-column:1/-1;border:1px dashed var(--line2);padding:35px;color:var(--muted);text-align:center}
+.widget{
+  border:1px solid var(--line2);background:var(--panel);
+  padding:22px;margin-bottom:18px
+}
+.widget-head{
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--line);padding-bottom:15px
+}
+.widget h3{margin:0;font-size:14px;font-weight:900}
+.widget-head span{
+  color:var(--orange);font-size:8px;font-weight:900;
+  letter-spacing:.14em;text-transform:uppercase
+}
+.widget a.item{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:16px 0;border-bottom:1px solid var(--line);
+  font-size:11px;color:#d3cfc6
+}
+.widget a.item:last-child{border-bottom:0}
+.widget a.item:hover{color:var(--orange)}
+.widget a.item small{color:#777;font-size:8px}
+.sidebar-pop .item{align-items:center}
+.sidebar-pop .num{
+  flex:0 0 27px;width:27px;height:27px;
+  border:1px solid var(--orange);border-radius:50%;
+  display:grid;place-items:center;color:var(--orange);
+  font-size:8px;font-weight:900
+}
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.topic{
+  border:1px solid var(--line);padding:12px 10px;
+  font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.08em
+}
+.topic:hover{border-color:var(--orange);color:var(--orange)}
+.empty{
+  grid-column:1/-1;border:1px dashed var(--line2);
+  padding:35px;color:var(--muted);text-align:center
+}
+
 /* FOOTER */
-footer{border-top:1px solid var(--line);padding:32px 0 42px;color:#777;font-size:9px;display:flex;justify-content:space-between;text-transform:uppercase;letter-spacing:.08em}.footer-brand{color:var(--text);font-weight:900}
+footer{
+  border-top:1px solid var(--line);padding:32px 0 42px;color:#777;
+  font-size:9px;display:flex;justify-content:space-between;
+  text-transform:uppercase;letter-spacing:.08em
+}
+.footer-brand{color:var(--text);font-weight:900}
+
 /* SEARCH */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;display:none;padding:100px 24px}.overlay.open{display:block}.overlay input{width:min(760px,100%);background:#111;border:1px solid var(--line2);padding:18px;color:white;font-size:20px;outline:none}.close{position:absolute;right:28px;top:28px;background:none;border:1px solid var(--line2);color:white;width:38px;height:38px;cursor:pointer}
-@media(max-width:1180px){.site{width:min(calc(100% - 48px),var(--max))}.hero{grid-template-columns:minmax(0,1fr) 310px;gap:55px}.magazine{grid-template-columns:minmax(0,1fr) 340px}.feature{grid-template-columns:1fr}.feature-media{min-height:390px;aspect-ratio:16/8}.feature-copy{padding:32px}.feature-copy h3{font-size:48px}.popular-grid{grid-template-columns:1fr}.archive-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:850px){.hero{grid-template-columns:1fr;gap:28px;padding:52px 0 40px}.hero-note{max-width:560px}.magazine{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.widget{margin:0}.posts{grid-template-columns:repeat(2,minmax(0,1fr))}.archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:600px){.site{width:calc(100% - 28px)}.nav{min-height:62px}.brand{font-size:18px}.menu{display:none}.search{margin-left:auto}.mobile-menu{display:block}.hero{padding:38px 0 30px}.hero h1{font-size:clamp(48px,14vw,72px);line-height:.86}.hero-note{font-size:12px}.magazine{padding-top:20px}.feature-media{min-height:250px;aspect-ratio:4/3}.feature-copy{padding:25px 20px}.feature-copy h3{font-size:36px}.popular-grid,.posts,.archive-grid{grid-template-columns:1fr}.pop-card{grid-template-columns:104px 1fr}.pop-card img{width:104px;min-height:120px}.sidebar{display:block}.widget{margin-bottom:14px}.card-img{aspect-ratio:4/3}.card h3{font-size:24px}.ad-slot{min-height:120px}footer{display:block;line-height:2}footer div+div{margin-top:8px}}
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:100;
+  display:none;padding:100px 24px
+}
+.overlay.open{display:block}
+.overlay input{
+  width:min(760px,100%);background:#111;border:1px solid var(--line2);
+  padding:18px;color:white;font-size:20px;outline:none
+}
+.close{
+  position:absolute;right:28px;top:28px;background:none;
+  border:1px solid var(--line2);color:white;width:38px;height:38px;cursor:pointer
+}
+
+/* RESPONSIVE */
+@media(max-width:1180px){
+  .site{width:min(calc(100% - 48px),var(--max))}
+  .hero{grid-template-columns:minmax(0,1fr) 310px;gap:55px}
+  .magazine{grid-template-columns:minmax(0,1fr) 340px}
+  .feature{grid-template-columns:1fr}
+  .feature-media{min-height:390px;aspect-ratio:16/8}
+  .feature-copy{padding:32px}
+  .feature-copy h3{font-size:48px}
+  .popular-grid{grid-template-columns:1fr}
+  .archive-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:850px){
+  .hero{grid-template-columns:1fr;gap:28px;padding:52px 0 40px}
+  .hero-note{max-width:560px}
+  .magazine{grid-template-columns:1fr}
+  .sidebar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+  .widget{margin:0}
+  .posts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .archive-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .site{width:calc(100% - 28px)}
+  .nav{min-height:62px}
+  .brand{font-size:18px}
+  .menu{display:none}
+  .search{margin-left:auto}
+  .mobile-menu{display:block}
+  .hero{padding:38px 0 30px}
+  .hero h1{font-size:clamp(48px,14vw,72px);line-height:.86}
+  .hero-note{font-size:12px}
+  .magazine{padding-top:20px}
+  .feature-media{min-height:250px;aspect-ratio:4/3}
+  .feature-copy{padding:25px 20px}
+  .feature-copy h3{font-size:36px}
+  .popular-grid,.posts,.archive-grid{grid-template-columns:1fr}
+  .pop-card{grid-template-columns:104px 1fr}
+  .pop-card img{width:104px;min-height:120px}
+  .sidebar{display:block}
+  .widget{margin-bottom:14px}
+  .card-img{aspect-ratio:4/3}
+  .card h3{font-size:24px}
+  .ad-slot{min-height:120px}
+  footer{display:block;line-height:2}
+  footer div+div{margin-top:8px}
+}
 </style>
 </head>
+
 <body>
 <div class="topline"></div>
+
 <header>
   <div class="site nav">
     <a class="brand" href="./">MIRROR<span>//</span>ILLUSION</a>
@@ -80,105 +344,129 @@ footer{border-top:1px solid var(--line);padding:32px 0 42px;color:#777;font-size
 </header>
 
 <main class="site">
-  <section class="hero" id="about">
-    <div>
-      <div class="kicker">Stories · Ideas · Perspectives</div>
-      <h1>Stories that <em>matter.</em><br>Ideas that stay.</h1>
-    </div>
-    <div class="hero-note">
-      <strong>MIRROR//ILLUSION</strong><br>
-      A modern editorial space for thoughtful stories on mental health, society, culture, everyday life and the questions that refuse easy answers.
-    </div>
-  </section>
 
-  <div class="magazine">
-    <div class="main-column">
-      <section class="featured-wrap" id="featured">
-        <div class="section-head"><h2>Featured Story</h2><span>01 / Lead Story</span></div>
-        <article class="feature" id="featuredPost">
-          <div class="feature-media"><div class="placeholder">Loading latest story…</div></div>
-          <div class="feature-copy">
-            <div class="eyebrow">Latest editorial</div>
-            <h3>Loading the latest story…</h3>
-            <p>Fetching the newest post from Blogger.</p>
-          </div>
-        </article>
-      </section>
-
-      <section class="popular" id="popular">
-        <div class="section-head"><h2>Popular Posts</h2><span>Readers' picks</span></div>
-        <div class="popular-grid" id="popularPosts">
-          <div class="empty">Loading popular stories…</div>
-        </div>
-      </section>
-
-      <div class="ad-slot" aria-label="Advertisement">
-        <div class="ad-slot-inner">
-          <strong>Advertisement</strong>
-          <span>Reserved space for a future banner or sponsored feature</span>
-        </div>
-      </div>
-
-      <section class="latest" id="latest">
-        <div class="section-head"><h2>Latest Stories</h2><span>New from the journal</span></div>
-        <div class="posts" id="posts"><div class="empty">Loading latest posts…</div></div>
-      </section>
-      <section class="archive-section" id="archiveSection" hidden>
-        <div class="section-head"><h2>All Stories</h2><span>Archive</span></div>
-        <div class="archive-intro">
-          <p>Browse the journal beyond the homepage. New stories continue to arrive automatically from Blogger.</p>
-        </div>
-        <div class="archive-grid" id="archivePosts"></div>
-        <div class="archive-actions">
-          <button class="archive-btn" id="loadOlder">Load older stories</button>
-          <span class="archive-status" id="archiveStatus"></span>
-        </div>
-      </section>
-      <div class="view-all-wrap">
-        <button class="view-all" id="viewAllStories">View all stories →</button>
-      </div>
-    </div>
-
-    <aside class="sidebar" id="topics">
-      <div class="widget">
-        <div class="widget-head"><h3>PDF Library</h3><span>Resources</span></div>
-        <a class="item" href="#"><span>Mental Health Guides</span><small>PDF →</small></a>
-        <a class="item" href="#"><span>Self-Care Worksheets</span><small>PDF →</small></a>
-        <a class="item" href="#"><span>Recovery Resources</span><small>PDF →</small></a>
-        <a class="item" href="#"><span>Reading Collection</span><small>PDF →</small></a>
-      </div>
-
-      <div class="widget sidebar-pop">
-        <div class="widget-head"><h3>Popular Posts</h3><span>Top reads</span></div>
-        <div id="sidebarPopular">
-          <a class="item"><span class="num">01</span><span>Loading top story…</span></a>
-          <a class="item"><span class="num">02</span><span>Loading…</span></a>
-          <a class="item"><span class="num">03</span><span>Loading…</span></a>
-          <a class="item"><span class="num">04</span><span>Loading…</span></a>
-        </div>
-      </div>
-
-      <div class="widget">
-        <div class="widget-head"><h3>Utility Wizards</h3><span>Tools</span></div>
-        <a class="item" href="#"><span>Word Counter</span><small>TOOL →</small></a>
-        <a class="item" href="#"><span>Reading Time</span><small>TOOL →</small></a>
-        <a class="item" href="#"><span>Text Formatter</span><small>TOOL →</small></a>
-        <a class="item" href="#"><span>Daily Reflection</span><small>TOOL →</small></a>
-      </div>
-
-      <div class="widget">
-        <div class="widget-head"><h3>Explore Topics</h3><span>Index</span></div>
-        <div class="topic-grid">
-          <a class="topic" href="#">Mental Health</a>
-          <a class="topic" href="#">Society</a>
-          <a class="topic" href="#">Lifestyle</a>
-          <a class="topic" href="#">Education</a>
-          <a class="topic" href="#">Culture</a>
-          <a class="topic" href="#">Mindfulness</a>
-        </div>
-      </div>
-    </aside>
+<section class="hero" id="about">
+  <div>
+    <div class="kicker">Stories · Ideas · Perspectives</div>
+    <h1>Stories that <em>matter.</em><br>Ideas that stay.</h1>
   </div>
+  <div class="hero-note">
+    <strong>MIRROR//ILLUSION</strong><br>
+    A modern editorial space for thoughtful stories on mental health, society,
+    culture, everyday life and the questions that refuse easy answers.
+  </div>
+</section>
+
+<div class="magazine">
+  <div class="main-column">
+
+    <section class="featured-wrap" id="featured">
+      <div class="section-head">
+        <h2>Featured Story</h2>
+        <span>01 / Lead Story</span>
+      </div>
+      <article class="feature" id="featuredPost">
+        <div class="feature-media">
+          <div class="placeholder">Loading latest story…</div>
+        </div>
+        <div class="feature-copy">
+          <div class="eyebrow">Latest editorial</div>
+          <h3>Loading the latest story…</h3>
+          <p>Fetching the newest post from Blogger.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="popular" id="popular">
+      <div class="section-head">
+        <h2>Popular Posts</h2>
+        <span>Readers' picks</span>
+      </div>
+      <div class="popular-grid" id="popularPosts">
+        <div class="empty">Loading popular stories…</div>
+      </div>
+    </section>
+
+    <div class="ad-slot" aria-label="Advertisement">
+      <div class="ad-slot-inner">
+        <strong>Advertisement</strong>
+        <span>Reserved space for a future banner or sponsored feature</span>
+      </div>
+    </div>
+
+    <section class="latest" id="latest">
+      <div class="section-head">
+        <h2>Latest Stories</h2>
+        <span>New from the journal</span>
+      </div>
+      <div class="posts" id="posts">
+        <div class="empty">Loading latest posts…</div>
+      </div>
+    </section>
+
+    <section class="archive-section" id="archiveSection" hidden>
+      <div class="section-head">
+        <h2>All Stories</h2>
+        <span>Archive</span>
+      </div>
+      <div class="archive-intro">
+        <p>Browse the journal beyond the homepage. New stories continue to arrive automatically from Blogger.</p>
+      </div>
+      <div class="archive-grid" id="archivePosts"></div>
+      <div class="archive-actions">
+        <button class="archive-btn" id="loadOlder">Load older stories</button>
+        <span class="archive-status" id="archiveStatus"></span>
+      </div>
+    </section>
+
+    <div class="view-all-wrap">
+      <button class="view-all" id="viewAllStories">View all stories →</button>
+    </div>
+
+  </div>
+
+  <aside class="sidebar" id="topics">
+
+    <div class="widget">
+      <div class="widget-head"><h3>PDF Library</h3><span>Resources</span></div>
+      <a class="item" href="#"><span>Mental Health Guides</span><small>PDF →</small></a>
+      <a class="item" href="#"><span>Self-Care Worksheets</span><small>PDF →</small></a>
+      <a class="item" href="#"><span>Recovery Resources</span><small>PDF →</small></a>
+      <a class="item" href="#"><span>Reading Collection</span><small>PDF →</small></a>
+    </div>
+
+    <div class="widget sidebar-pop">
+      <div class="widget-head"><h3>Popular Posts</h3><span>Top reads</span></div>
+      <div id="sidebarPopular">
+        <a class="item"><span class="num">01</span><span>Loading top story…</span></a>
+        <a class="item"><span class="num">02</span><span>Loading…</span></a>
+        <a class="item"><span class="num">03</span><span>Loading…</span></a>
+        <a class="item"><span class="num">04</span><span>Loading…</span></a>
+      </div>
+    </div>
+
+    <div class="widget">
+      <div class="widget-head"><h3>Utility Wizards</h3><span>Tools</span></div>
+      <a class="item" href="#"><span>Word Counter</span><small>TOOL →</small></a>
+      <a class="item" href="#"><span>Reading Time</span><small>TOOL →</small></a>
+      <a class="item" href="#"><span>Text Formatter</span><small>TOOL →</small></a>
+      <a class="item" href="#"><span>Daily Reflection</span><small>TOOL →</small></a>
+    </div>
+
+    <div class="widget">
+      <div class="widget-head"><h3>Explore Topics</h3><span>Index</span></div>
+      <div class="topic-grid">
+        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Mental%20Health">Mental Health</a>
+        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Society">Society</a>
+        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Lifestyle">Lifestyle</a>
+        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Education">Education</a>
+        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Culture">Culture</a>
+        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Mindfulness">Mindfulness</a>
+      </div>
+    </div>
+
+  </aside>
+</div>
 </main>
 
 <footer class="site">
@@ -189,18 +477,52 @@ footer{border-top:1px solid var(--line);padding:32px 0 42px;color:#777;font-size
 <div class="overlay" id="searchOverlay">
   <button class="close" id="closeSearch">×</button>
   <input id="searchInput" placeholder="Search Mirror//Illusion…" autocomplete="off">
+  <div id="searchResults" style="max-width:760px"></div>
 </div>
 
 <script>
 /*
-  PUBLISHING ARCHITECTURE — DO NOT CHANGE
-  Blogger remains the CMS.
-  GitHub is the presentation layer.
+  ==========================================================
+  MIRROR//ILLUSION PUBLISHING ARCHITECTURE
+  ==========================================================
+
+  Blogger = CMS / publishing source
+  GitHub = presentation / SEO / technical layer
+
+  DO NOT PUT POSTS INTO THIS FILE.
+
+  Publish normally in Blogger. This page reads the public
+  Blogger JSON-in-script feed and updates itself.
+
+  SUPPORTED EDITORIAL LABELS:
+    Featured  -> optional explicit featured story
+    Popular   -> optional explicit popular stories
+
+  If those labels are absent:
+    Featured falls back to newest post.
+    Popular falls back to the next newest posts.
+
+  ARCHIVE:
+    Homepage shows a controlled set.
+    "View all stories" reveals the archive.
+    "Load older stories" retrieves older Blogger posts
+    in batches, so 40, 50, 100+ posts do not require
+    editing this file.
 */
+
 const BLOG_URL = "https://mirrorandillusionlm.blogspot.com";
-const MAX_POSTS = 20;
-const HOME_POSTS = 12;
+
+const HOME_LATEST_COUNT = 9;       // 3 x 3 cards
+const POPULAR_COUNT = 4;
+const INITIAL_ARCHIVE_COUNT = 20;  // hidden until View All
 const ARCHIVE_BATCH = 20;
+
+let latestEntries = [];
+let popularEntries = [];
+let archiveEntries = [];
+let archiveNextIndex = 1;
+let archiveLoading = false;
+let archiveEnd = false;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -209,220 +531,376 @@ function cleanText(html){
   d.innerHTML=html||"";
   return (d.textContent||d.innerText||"").replace(/\s+/g," ").trim();
 }
-function getImage(entry){
-  if(entry.media$thumbnail && entry.media$thumbnail.url){
-    return entry.media$thumbnail.url.replace(/\/s72-c\//,"/s1000/");
-  }
-  const html=(entry.content&&entry.content.$t)||(entry.summary&&entry.summary.$t)||"";
-  const m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
-  return m?m[1]:"";
+
+function esc(value){
+  return String(value||"").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[m]));
 }
-function getLink(entry){
+
+function imageOf(entry){
+  if(entry.media$thumbnail && entry.media$thumbnail.url){
+    return entry.media$thumbnail.url
+      .replace(/\/s72-c\//,"/s1000/")
+      .replace(/\/s[0-9]+(-c)?\//,"/s1000/");
+  }
+
+  const html=(entry.content&&entry.content.$t)||
+             (entry.summary&&entry.summary.$t)||"";
+
+  const m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return m ? m[1] : "";
+}
+
+function postUrl(entry){
   const links=entry.link||[];
   const alt=links.find(x=>x.rel==="alternate");
-  return alt?alt.href:"#";
+  return alt ? alt.href : "#";
 }
-function formatDate(v){
-  try{return new Date(v).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});}
-  catch(e){return "";}
+
+function dateOf(entry){
+  try{
+    return new Date(entry.published.$t).toLocaleDateString(undefined,{
+      year:"numeric",month:"short",day:"numeric"
+    });
+  }catch(e){ return ""; }
 }
-function esc(s){
-  return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+function categoryOf(entry){
+  return (entry.category && entry.category[0] && entry.category[0].term)
+    ? entry.category[0].term
+    : "Story";
 }
-function normalizeEntries(entries){
+
+function textOf(entry){
+  return cleanText(
+    (entry.summary&&entry.summary.$t)||
+    (entry.content&&entry.content.$t)||""
+  );
+}
+
+function hasLabel(entry,label){
+  return (entry.category||[]).some(c =>
+    String(c.term||"").toLowerCase() === label.toLowerCase()
+  );
+}
+
+function normalize(entries){
   return entries.map(e=>({
+    raw:e,
     title:(e.title&&e.title.$t)||"Untitled story",
-    link:getLink(e),
-    image:getImage(e),
-    date:formatDate(e.published&&e.published.$t),
-    text:cleanText((e.summary&&e.summary.$t)||(e.content&&e.content.$t))
+    link:postUrl(e),
+    image:imageOf(e),
+    date:dateOf(e),
+    category:categoryOf(e),
+    text:textOf(e)
   }));
 }
 
-function render(data){
-  const entries=(data.feed&&data.feed.entry)||[];
-  if(!entries.length){
-    document.getElementById("posts").innerHTML='<div class="empty">No published posts were found.</div>';
-    return;
-  }
+/* JSONP loader — works cross-origin on GitHub Pages */
+function loadBloggerFeed(startIndex,maxResults,callback){
+  const callbackName =
+    "miFeed_" + Date.now() + "_" + Math.floor(Math.random()*100000);
 
-  const posts=normalizeEntries(entries);
+  const script=document.createElement("script");
+  script.id="mi-feed-"+Date.now();
 
-  /* FEATURED: newest Blogger post */
-  const f=posts[0];
-  document.getElementById("featuredPost").innerHTML=`
-    <a class="feature-media" href="${f.link}" aria-label="${esc(f.title)}">
-      ${f.image?`<img src="${f.image}" alt="">`:`<div class="placeholder">Mirror//Illusion</div>`}
-    </a>
-    <div class="feature-copy">
-      <div class="eyebrow">Latest editorial · ${esc(f.date)}</div>
-      <h3><a href="${f.link}">${esc(f.title)}</a></h3>
-      <p>${esc(f.text.slice(0,260))}${f.text.length>260?"…":""}</p>
-      <a class="read" href="${f.link}">Read featured story →</a>
-    </div>`;
-
-  /*
-    POPULAR VISUAL BLOCK
-    Blogger's public feed does not expose reliable public view counts.
-    We therefore keep the existing editorial-pick mechanism:
-    the next four published stories populate the visual Top Reads block.
-  */
-  const popular=posts.slice(1,5);
-  document.getElementById("popularPosts").innerHTML=popular.length?popular.map((p,i)=>`
-    <article class="pop-card">
-      <a href="${p.link}">
-        ${p.image?`<img loading="lazy" src="${p.image}" alt="">`:`<div class="placeholder" style="min-height:118px">M//I</div>`}
-      </a>
-      <div class="pop-copy">
-        <div class="pop-rank">0${i+1} · PICK</div>
-        <h3><a href="${p.link}">${esc(p.title)}</a></h3>
-        <div class="meta">${esc(p.date)}</div>
-      </div>
-    </article>`).join(""):'<div class="empty">Publish more stories in Blogger and they will appear here.</div>';
-
-  /* SIDEBAR POPULAR */
-  document.getElementById("sidebarPopular").innerHTML=popular.length?popular.slice(0,4).map((p,i)=>`
-    <a class="item" href="${p.link}">
-      <span class="num">0${i+1}</span>
-      <span>${esc(p.title)}</span>
-    </a>`).join(""):'';
-
-  /* HOMEPAGE LATEST: fixed number so the front page remains controlled */
-  const rest=posts.slice(1, HOME_POSTS);
-  document.getElementById("posts").innerHTML=rest.length?rest.map(p=>`
-    <article class="card">
-      <a class="card-img" href="${p.link}">
-        ${p.image?`<img loading="lazy" src="${p.image}" alt="">`:`<div class="placeholder" style="min-height:0;height:100%">Mirror//Illusion</div>`}
-      </a>
-      <div class="card-body">
-        <div class="eyebrow">${esc(p.date)}</div>
-        <h3><a href="${p.link}">${esc(p.title)}</a></h3>
-        <p>${esc(p.text.slice(0,145))}${p.text.length>145?"…":""}</p>
-        <a class="read" href="${p.link}">Read story →</a>
-      </div>
-    </article>`).join(""):'<div class="empty">Publish more stories in Blogger and they will appear here.</div>';
-
-  /* First archive batch comes from posts 13–20 already returned by the same feed. */
-  archiveEntries = posts.slice(HOME_POSTS);
-}
-
-let archiveEntries=[];
-let archiveStart=21;
-
-function archiveCard(p){
-  return `<article class="archive-card">
-    <a class="archive-img" href="${p.link}">
-      ${p.image?`<img loading="lazy" src="${p.image}" alt="">`:`<div class="placeholder" style="min-height:0;height:100%">Mirror//Illusion</div>`}
-    </a>
-    <div class="archive-body">
-      <div class="eyebrow">${esc(p.date)}</div>
-      <h3><a href="${p.link}">${esc(p.title)}</a></h3>
-      <p>${esc(p.text.slice(0,130))}${p.text.length>130?"…":""}</p>
-      <a class="read" href="${p.link}">Read story →</a>
-    </div>
-  </article>`;
-}
-
-function showArchive(){
-  const section=document.getElementById("archiveSection");
-  section.hidden=false;
-  const grid=document.getElementById("archivePosts");
-
-  if(!grid.innerHTML){
-    grid.innerHTML=archiveEntries.length
-      ?archiveEntries.map(archiveCard).join("")
-      :'<div class="empty">No older stories are available yet.</div>';
-  }
-  section.scrollIntoView({behavior:"smooth",block:"start"});
-  updateArchiveButton();
-}
-
-function updateArchiveButton(){
-  const btn=document.getElementById("loadOlder");
-  const status=document.getElementById("archiveStatus");
-  if(archiveEntries.length && archiveEntries.length % ARCHIVE_BATCH !== 0 && archiveStart>21){
-    btn.disabled=true;
-    status.textContent="You have reached the end of the archive.";
-  }else{
-    btn.disabled=false;
-    status.textContent=archiveEntries.length
-      ?archiveEntries.length+" older stories loaded"
-      :"";
-  }
-}
-
-function loadOlderStories(){
-  const btn=document.getElementById("loadOlder");
-  const status=document.getElementById("archiveStatus");
-  btn.disabled=true;
-  status.textContent="Loading older stories…";
-
-  window.mirrorArchiveFeed=function(data){
-    const entries=(data.feed&&data.feed.entry)||[];
-    const batch=normalizeEntries(entries);
-    const grid=document.getElementById("archivePosts");
-
-    if(batch.length){
-      archiveEntries=archiveEntries.concat(batch);
-      grid.innerHTML=archiveEntries.map(archiveCard).join("");
-      archiveStart += ARCHIVE_BATCH;
-      status.textContent=batch.length+" more stories loaded";
-      if(batch.length<ARCHIVE_BATCH){
-        btn.disabled=true;
-        status.textContent="End of archive · "+archiveEntries.length+" older stories loaded";
-      }else{
-        btn.disabled=false;
-      }
-    }else{
-      btn.disabled=true;
-      status.textContent="End of archive · "+archiveEntries.length+" older stories loaded";
+  window[callbackName]=function(data){
+    try{
+      callback((data && data.feed && data.feed.entry) || []);
+    }finally{
+      delete window[callbackName];
+      script.remove();
     }
   };
 
-  const old=document.getElementById("blogger-archive-feed");
-  if(old) old.remove();
-
-  const s=document.createElement("script");
-  s.id="blogger-archive-feed";
-  s.src=BLOG_URL+"/feeds/posts/default?alt=json-in-script&max-results="+ARCHIVE_BATCH+"&start-index="+archiveStart+"&callback=mirrorArchiveFeed";
-  s.onerror=()=>{
-    btn.disabled=false;
-    status.textContent="Could not load older stories. Please try again.";
+  script.onerror=function(){
+    delete window[callbackName];
+    script.remove();
+    callback(null);
   };
-  document.body.appendChild(s);
+
+  const params =
+    "?alt=json-in-script" +
+    "&orderby=published" +
+    "&max-results="+encodeURIComponent(maxResults) +
+    "&start-index="+encodeURIComponent(startIndex) +
+    "&callback="+encodeURIComponent(callbackName);
+
+  script.src=BLOG_URL+"/feeds/posts/default"+params;
+  document.body.appendChild(script);
 }
 
-function loadBlogger(){
-  window.mirrorFeed=render;
-  const old=document.getElementById("blogger-feed");
-  if(old) old.remove();
-  const s=document.createElement("script");
-  s.id="blogger-feed";
-  s.src=BLOG_URL+"/feeds/posts/default?alt=json-in-script&max-results="+MAX_POSTS+"&callback=mirrorFeed";
-  s.onerror=()=>document.getElementById("posts").innerHTML='<div class="empty">The Blogger feed could not be loaded. The rest of the homepage is still available.</div>';
-  document.body.appendChild(s);
+function renderFeatured(post){
+  if(!post) return;
+
+  document.getElementById("featuredPost").innerHTML=`
+    <a class="feature-media" href="${esc(post.link)}" aria-label="${esc(post.title)}">
+      ${post.image
+        ? `<img src="${esc(post.image)}" alt="${esc(post.title)}">`
+        : `<div class="placeholder">Mirror//Illusion</div>`}
+    </a>
+    <div class="feature-copy">
+      <div class="eyebrow">${hasLabel(post.raw,"Featured")?"Featured editorial":"Latest editorial"} · ${esc(post.date)}</div>
+      <h3><a href="${esc(post.link)}">${esc(post.title)}</a></h3>
+      <p>${esc(post.text.slice(0,300))}${post.text.length>300?"…":""}</p>
+      <a class="read" href="${esc(post.link)}">Read featured story →</a>
+    </div>`;
 }
-loadBlogger();
 
-document.getElementById("viewAllStories").addEventListener("click", showArchive);
-document.getElementById("loadOlder").addEventListener("click", loadOlderStories);
+function popularCard(post,index){
+  return `
+    <article class="pop-card">
+      <a href="${esc(post.link)}">
+        ${post.image
+          ? `<img loading="lazy" src="${esc(post.image)}" alt="${esc(post.title)}">`
+          : `<div class="placeholder" style="min-height:118px">M//I</div>`}
+      </a>
+      <div class="pop-copy">
+        <div class="pop-rank">0${index+1} · PICK</div>
+        <h3><a href="${esc(post.link)}">${esc(post.title)}</a></h3>
+        <div class="meta">${esc(post.date)}</div>
+      </div>
+    </article>`;
+}
 
-/* UI only — Blogger feed mechanism above remains untouched */
+function renderPopular(posts){
+  const box=document.getElementById("popularPosts");
+
+  box.innerHTML=posts.length
+    ? posts.slice(0,POPULAR_COUNT).map(popularCard).join("")
+    : `<div class="empty">Publish more stories in Blogger and they will appear here.</div>`;
+
+  document.getElementById("sidebarPopular").innerHTML=posts.length
+    ? posts.slice(0,POPULAR_COUNT).map((p,i)=>`
+        <a class="item" href="${esc(p.link)}">
+          <span class="num">0${i+1}</span>
+          <span>${esc(p.title)}</span>
+        </a>`).join("")
+    : "";
+}
+
+function latestCard(post){
+  return `
+    <article class="card">
+      <a class="card-img" href="${esc(post.link)}">
+        ${post.image
+          ? `<img loading="lazy" src="${esc(post.image)}" alt="${esc(post.title)}">`
+          : `<div class="placeholder" style="min-height:0;height:100%">Mirror//Illusion</div>`}
+      </a>
+      <div class="card-body">
+        <div class="eyebrow">${esc(post.category)} · ${esc(post.date)}</div>
+        <h3><a href="${esc(post.link)}">${esc(post.title)}</a></h3>
+        <p>${esc(post.text.slice(0,150))}${post.text.length>150?"…":""}</p>
+        <a class="read" href="${esc(post.link)}">Read story →</a>
+      </div>
+    </article>`;
+}
+
+function archiveCard(post){
+  return `
+    <article class="archive-card">
+      <a class="archive-img" href="${esc(post.link)}">
+        ${post.image
+          ? `<img loading="lazy" src="${esc(post.image)}" alt="${esc(post.title)}">`
+          : `<div class="placeholder" style="min-height:0;height:100%">Mirror//Illusion</div>`}
+      </a>
+      <div class="archive-body">
+        <div class="eyebrow">${esc(post.category)} · ${esc(post.date)}</div>
+        <h3><a href="${esc(post.link)}">${esc(post.title)}</a></h3>
+        <p>${esc(post.text.slice(0,135))}${post.text.length>135?"…":""}</p>
+        <a class="read" href="${esc(post.link)}">Read story →</a>
+      </div>
+    </article>`;
+}
+
+function renderHome(entries){
+  const posts=normalize(entries);
+
+  if(!posts.length){
+    document.getElementById("posts").innerHTML=
+      `<div class="empty">No published Blogger posts were found.</div>`;
+    document.getElementById("featuredPost").innerHTML=
+      `<div class="placeholder">Publish a story in Blogger</div>`;
+    return;
+  }
+
+  latestEntries=posts;
+
+  /* Featured: explicit Featured label wins; otherwise newest post. */
+  const featured=posts.find(p=>hasLabel(p.raw,"Featured")) || posts[0];
+  renderFeatured(featured);
+
+  /* Popular: explicit Popular label wins; otherwise next newest posts. */
+  const labeledPopular=posts.filter(p=>hasLabel(p.raw,"Popular"));
+  popularEntries=(labeledPopular.length
+    ? labeledPopular
+    : posts.filter(p=>p!==featured).slice(0,POPULAR_COUNT)
+  );
+  renderPopular(popularEntries);
+
+  /*
+    Latest Stories: exclude the featured item so the homepage
+    remains editorially distinct.
+  */
+  const latest=posts
+    .filter(p=>p!==featured)
+    .slice(0,HOME_LATEST_COUNT);
+
+  document.getElementById("posts").innerHTML=latest.length
+    ? latest.map(latestCard).join("")
+    : `<div class="empty">Publish more stories in Blogger and they will appear here.</div>`;
+}
+
+/* Load the newest batch */
+function loadHome(){
+  loadBloggerFeed(1,HOME_LATEST_COUNT+POPULAR_COUNT+3,(entries)=>{
+    if(entries===null){
+      document.getElementById("posts").innerHTML=
+        `<div class="empty">The Blogger feed could not be loaded. Please check the Blogger feed or internet connection.</div>`;
+      return;
+    }
+    renderHome(entries);
+  });
+}
+
+/* Reveal archive and load first older batch */
+function showArchive(){
+  const section=document.getElementById("archiveSection");
+  section.hidden=false;
+
+  if(!archiveEntries.length && !archiveLoading){
+    loadArchiveBatch();
+  }
+
+  section.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* Archive starts after the controlled homepage window */
+function loadArchiveBatch(){
+  if(archiveLoading || archiveEnd) return;
+
+  archiveLoading=true;
+
+  const btn=document.getElementById("loadOlder");
+  const status=document.getElementById("archiveStatus");
+
+  btn.disabled=true;
+  status.textContent="Loading older stories…";
+
+  loadBloggerFeed(archiveNextIndex,ARCHIVE_BATCH,(entries)=>{
+    archiveLoading=false;
+
+    if(entries===null){
+      btn.disabled=false;
+      status.textContent="Could not load older stories. Try again.";
+      return;
+    }
+
+    if(!entries.length){
+      archiveEnd=true;
+      btn.disabled=true;
+      status.textContent=
+        "End of archive · "+archiveEntries.length+" stories loaded";
+      return;
+    }
+
+    const batch=normalize(entries);
+
+    archiveEntries=archiveEntries.concat(batch);
+    archiveNextIndex += batch.length;
+
+    document.getElementById("archivePosts").innerHTML=
+      archiveEntries.map(archiveCard).join("");
+
+    if(batch.length<ARCHIVE_BATCH){
+      archiveEnd=true;
+      btn.disabled=true;
+      status.textContent=
+        "End of archive · "+archiveEntries.length+" stories loaded";
+    }else{
+      btn.disabled=false;
+      status.textContent=
+        archiveEntries.length+" older stories loaded";
+    }
+  });
+}
+
+/*
+  The archive query must start after the homepage records.
+  This is intentionally separate from the first feed request.
+*/
+archiveNextIndex=HOME_LATEST_COUNT+POPULAR_COUNT+4;
+
+document.getElementById("viewAllStories")
+  .addEventListener("click",showArchive);
+
+document.getElementById("loadOlder")
+  .addEventListener("click",loadArchiveBatch);
+
+/* Search */
 const overlay=document.getElementById("searchOverlay");
+const searchInput=document.getElementById("searchInput");
+const searchResults=document.getElementById("searchResults");
+
 document.getElementById("searchBtn").onclick=()=>{
   overlay.classList.add("open");
-  setTimeout(()=>document.getElementById("searchInput").focus(),50)
+  setTimeout(()=>searchInput.focus(),50);
 };
-document.getElementById("closeSearch").onclick=()=>overlay.classList.remove("open");
+document.getElementById("closeSearch").onclick=()=>{
+  overlay.classList.remove("open");
+};
+
+searchInput.addEventListener("input",()=>{
+  const q=searchInput.value.toLowerCase().trim();
+
+  if(!q){
+    searchResults.innerHTML="";
+    return;
+  }
+
+  const source=[...latestEntries,...popularEntries];
+  const seen=new Set();
+
+  const hits=source.filter(p=>{
+    if(seen.has(p.link)) return false;
+    seen.add(p.link);
+    return p.title.toLowerCase().includes(q) ||
+           p.text.toLowerCase().includes(q) ||
+           p.category.toLowerCase().includes(q);
+  });
+
+  searchResults.innerHTML=hits.length
+    ? hits.slice(0,10).map(p=>`
+        <p style="padding:12px 0;border-bottom:1px solid #292823">
+          <a href="${esc(p.link)}">${esc(p.title)}</a>
+        </p>`).join("")
+    : `<p style="color:#77736a">No matching stories.</p>`;
+});
+
+/* Mobile navigation */
 document.getElementById("mobileBtn").onclick=()=>{
   const nav=document.getElementById("mainMenu");
   const open=nav.style.display==="flex";
+
   nav.style.display=open?"none":"flex";
-  nav.style.position="absolute";nav.style.top="64px";nav.style.left="14px";nav.style.right="14px";
-  nav.style.background="#0b0b0a";nav.style.padding="18px";nav.style.border="1px solid #2a2924";
-  nav.style.flexDirection="column";nav.style.alignItems="flex-start";
+  nav.style.position="absolute";
+  nav.style.top="64px";
+  nav.style.left="14px";
+  nav.style.right="14px";
+  nav.style.background="#0b0b0a";
+  nav.style.padding="18px";
+  nav.style.border="1px solid #2a2924";
+  nav.style.flexDirection="column";
+  nav.style.alignItems="flex-start";
 };
-document.addEventListener("keydown",e=>{if(e.key==="Escape")overlay.classList.remove("open")});
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape") overlay.classList.remove("open");
+});
+
+/* START */
+loadHome();
 </script>
 </body>
 </html>
