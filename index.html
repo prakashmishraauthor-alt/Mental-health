@@ -8,16 +8,16 @@
 <style>
 :root{
   --bg:#070706;
-  --surface:#0e0e0c;
-  --surface2:#12120f;
-  --line:#2a2924;
-  --line2:#3a3831;
-  --text:#f2eee5;
-  --muted:#9b978e;
+  --panel:#0d0d0b;
+  --panel2:#11110f;
+  --panel3:#151512;
+  --line:#292823;
+  --line2:#403d35;
+  --text:#f3eee4;
+  --muted:#99958c;
   --orange:#ff5a00;
   --orange2:#ff7a22;
-  --max:1280px;
-  --gutter:32px;
+  --max:1360px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -27,115 +27,236 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 a{color:inherit;text-decoration:none}
+img{max-width:100%}
 button{font:inherit}
-.site{width:min(calc(100% - 48px),var(--max));margin:auto}
 .topline{height:4px;background:var(--orange)}
+.site{width:min(calc(100% - 56px),var(--max));margin:auto}
 header{
   border-bottom:1px solid var(--line);
   position:sticky;top:0;z-index:50;
-  background:rgba(7,7,6,.94);backdrop-filter:blur(14px)
+  background:rgba(7,7,6,.96);backdrop-filter:blur(14px)
 }
-.nav{
-  min-height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px
-}
-.brand{font-weight:900;font-size:22px;letter-spacing:-1.4px;white-space:nowrap}
-.brand b{color:var(--orange)}
-.menu{display:flex;gap:28px;align-items:center;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#b7b3aa}
+.nav{min-height:76px;display:flex;align-items:center;gap:30px}
+.brand{font-size:22px;font-weight:900;letter-spacing:-1.3px;white-space:nowrap}
+.brand span{color:var(--orange)}
+.brand b{color:var(--text)}
+.menu{margin-left:auto;display:flex;gap:28px;align-items:center;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#aaa69d}
 .menu a:hover,.menu a.active{color:var(--orange)}
-.search{
-  width:36px;height:36px;border:1px solid var(--line2);background:transparent;color:var(--text);
+.search,.mobile-menu{
+  width:38px;height:38px;border:1px solid var(--line2);background:transparent;color:var(--text);
   border-radius:7px;cursor:pointer
 }
+.mobile-menu{display:none}
+
+/* HERO */
 .hero{
-  padding:64px 0 48px;
-  display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.65fr);
-  gap:72px;align-items:end;border-bottom:1px solid var(--line)
+  padding:68px 0 52px;
+  display:grid;grid-template-columns:minmax(0,1fr) 360px;
+  gap:80px;align-items:end;border-bottom:1px solid var(--line)
 }
 .kicker,.eyebrow{
-  color:var(--orange);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase
+  color:var(--orange);font-size:10px;font-weight:900;
+  letter-spacing:.18em;text-transform:uppercase
 }
 .hero h1{
-  margin:16px 0 20px;max-width:900px;
-  font-size:clamp(54px,7vw,104px);line-height:.88;letter-spacing:-.065em;font-weight:900
+  margin:18px 0 0;max-width:940px;
+  font-size:clamp(58px,7.1vw,108px);line-height:.86;
+  letter-spacing:-.07em;font-weight:900
 }
 .hero h1 em{font-style:normal;color:var(--orange)}
 .hero-note{
-  border-left:2px solid var(--orange);padding:4px 0 4px 18px;
-  color:var(--muted);font-size:14px;line-height:1.7;max-width:350px
+  border-left:2px solid var(--orange);padding:2px 0 2px 20px;
+  color:var(--muted);font-size:14px;line-height:1.7
 }
+.hero-note strong{color:var(--text);font-size:12px;letter-spacing:.08em}
+
+/* MAIN MAGAZINE GRID */
+.magazine{
+  display:grid;grid-template-columns:minmax(0,1fr) 350px;
+  gap:30px;padding-top:28px
+}
+.main-column{min-width:0}
 .section-head{
   display:flex;justify-content:space-between;align-items:center;
-  padding:28px 0 14px;border-bottom:1px solid var(--line)
+  min-height:48px;border-bottom:1px solid var(--line)
 }
-.section-head h2{font-size:15px;margin:0;font-weight:800}
-.section-head span{font-size:10px;color:var(--orange);font-weight:800;letter-spacing:.14em;text-transform:uppercase}
-.content{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:30px}
+.section-head h2{margin:0;font-size:16px;font-weight:900;letter-spacing:-.01em}
+.section-head span{
+  color:var(--orange);font-size:9px;font-weight:900;
+  letter-spacing:.16em;text-transform:uppercase
+}
+
+/* DISTINCT FEATURED */
+.featured-wrap{padding-bottom:30px}
 .feature{
-  margin-top:16px;border:1px solid var(--line2);background:var(--surface);
-  display:grid;grid-template-columns:1.25fr 1fr;min-height:430px;overflow:hidden
+  margin-top:18px;border:1px solid var(--line2);background:var(--panel);
+  display:grid;grid-template-columns:1.16fr .84fr;min-height:470px;overflow:hidden
 }
-.feature-media{background:#151b2b;min-height:430px;overflow:hidden}
+.feature-media{min-height:470px;background:#161b29;overflow:hidden}
 .feature-media img{width:100%;height:100%;object-fit:cover;display:block}
-.feature-copy{padding:38px 34px;display:flex;flex-direction:column;justify-content:center}
-.feature-copy h3{
-  margin:12px 0 16px;font-family:Georgia,"Times New Roman",serif;
-  font-size:clamp(34px,4vw,56px);line-height:.94;letter-spacing:-.045em
+.feature-copy{
+  padding:42px 38px;display:flex;flex-direction:column;justify-content:center
 }
-.meta{color:var(--muted);font-size:11px;line-height:1.5}
-.read{margin-top:26px;color:var(--orange);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}
-.placeholder{width:100%;height:100%;min-height:430px;background:linear-gradient(135deg,#121923,#25221e);display:grid;place-items:center;color:#777;font-size:12px}
-.sidebar{padding-top:16px}
-.widget{border:1px solid var(--line2);background:var(--surface);padding:22px;margin-bottom:16px}
-.widget-head{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:4px}
-.widget h3{margin:0;font-size:13px}
-.widget-head span{font-size:9px;color:var(--orange);font-weight:800;letter-spacing:.12em;text-transform:uppercase}
-.widget a.item{display:block;padding:15px 0;border-bottom:1px solid var(--line);font-size:11px;color:#d2cec5}
+.feature-copy h3{
+  margin:14px 0 18px;font-family:Georgia,"Times New Roman",serif;
+  font-size:clamp(36px,3.8vw,60px);line-height:.94;letter-spacing:-.045em
+}
+.feature-copy p{margin:0;color:var(--muted);font-size:13px;line-height:1.7;max-width:470px}
+.meta{color:var(--muted);font-size:10px;line-height:1.6;text-transform:uppercase;letter-spacing:.07em}
+.read{
+  display:inline-block;margin-top:24px;color:var(--orange);
+  font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.13em
+}
+.placeholder{
+  width:100%;height:100%;min-height:470px;
+  background:linear-gradient(135deg,#121923,#25221e);
+  display:grid;place-items:center;color:#777;font-size:12px
+}
+
+/* POPULAR */
+.popular{padding:0 0 30px}
+.popular-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
+.pop-card{
+  border:1px solid var(--line2);background:var(--panel2);
+  display:grid;grid-template-columns:94px 1fr;min-height:118px;overflow:hidden
+}
+.pop-card img{width:94px;height:100%;min-height:118px;object-fit:cover}
+.pop-copy{padding:13px 14px}
+.pop-rank{color:var(--orange);font-size:9px;font-weight:900;letter-spacing:.14em}
+.pop-card h3{
+  margin:7px 0 0;font-family:Georgia,serif;font-size:18px;line-height:1.05
+}
+.pop-card .meta{margin-top:8px;font-size:8px}
+
+/* AD SLOT */
+.ad-slot{
+  margin:0 0 30px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  min-height:150px;display:grid;place-items:center;background:#0a0a09
+}
+.ad-slot-inner{text-align:center;color:#5f5b53}
+.ad-slot strong{display:block;color:#777;font-size:9px;letter-spacing:.2em;text-transform:uppercase}
+.ad-slot span{display:block;margin-top:8px;font-size:10px}
+
+/* POSTCARD LATEST CARDS */
+.latest{padding:0 0 70px}
+.posts{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px
+}
+.card{
+  border:1px solid var(--line2);background:var(--panel);
+  overflow:hidden;transition:transform .2s,border-color .2s
+}
+.card:hover{transform:translateY(-3px);border-color:#625d52}
+.card-img{display:block;aspect-ratio:4/3;background:#151515;overflow:hidden}
+.card-img img{width:100%;height:100%;object-fit:cover;display:block}
+.card-body{padding:16px 17px 19px;min-height:178px}
+.card .eyebrow{font-size:8px}
+.card h3{
+  margin:8px 0 9px;font-family:Georgia,"Times New Roman",serif;
+  font-size:22px;line-height:1.05;letter-spacing:-.025em
+}
+.card p{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
+.card .read{margin-top:14px}
+
+/* SIDEBAR */
+.sidebar{min-width:0}
+.widget{
+  border:1px solid var(--line2);background:var(--panel);
+  padding:22px;margin-bottom:16px
+}
+.widget-head{
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--line);padding-bottom:15px;margin-bottom:0
+}
+.widget h3{margin:0;font-size:14px;font-weight:900}
+.widget-head span{
+  color:var(--orange);font-size:8px;font-weight:900;
+  letter-spacing:.14em;text-transform:uppercase
+}
+.widget a.item{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:16px 0;border-bottom:1px solid var(--line);
+  font-size:11px;color:#d3cfc6
+}
 .widget a.item:last-child{border-bottom:0}
 .widget a.item:hover{color:var(--orange)}
-.latest{padding:28px 0 70px}
-.posts{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
-.card{border:1px solid var(--line2);background:var(--surface);overflow:hidden;transition:.2s transform,.2s border-color}
-.card:hover{transform:translateY(-3px);border-color:#5a554b}
-.card-img{aspect-ratio:16/9;background:#151515;overflow:hidden}
-.card-img img{width:100%;height:100%;object-fit:cover;display:block}
-.card-body{padding:18px 18px 20px}
-.card h3{margin:8px 0 10px;font-family:Georgia,serif;font-size:22px;line-height:1.05;letter-spacing:-.025em}
-.card p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
-.card .read{display:block;margin-top:17px}
+.widget a.item small{color:#777;font-size:9px}
+.sidebar-pop .item{align-items:center}
+.sidebar-pop .num{
+  flex:0 0 27px;width:27px;height:27px;border:1px solid var(--orange);
+  border-radius:50%;display:grid;place-items:center;color:var(--orange);
+  font-size:9px;font-weight:900
+}
+.topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.topic{
+  border:1px solid var(--line);padding:12px 10px;
+  font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.08em
+}
+.topic:hover{border-color:var(--orange);color:var(--orange)}
 .empty{grid-column:1/-1;border:1px dashed var(--line2);padding:35px;color:var(--muted);text-align:center}
-footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#777;font-size:11px;display:flex;justify-content:space-between}
-.mobile-menu{display:none}
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:100;display:none;padding:90px 24px}
+
+/* FOOTER */
+footer{
+  border-top:1px solid var(--line);padding:32px 0 42px;
+  color:#777;font-size:10px;display:flex;justify-content:space-between;
+  text-transform:uppercase;letter-spacing:.08em
+}
+.footer-brand{color:var(--text);font-weight:900}
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:100;
+  display:none;padding:100px 24px
+}
 .overlay.open{display:block}
-.overlay input{width:min(700px,100%);background:#111;border:1px solid var(--line2);padding:18px;color:white;font-size:20px;outline:none}
-.close{position:absolute;right:28px;top:28px;background:none;border:1px solid var(--line2);color:white;width:38px;height:38px;cursor:pointer}
-@media(max-width:900px){
-  .site{width:min(calc(100% - 32px),var(--max))}
-  .hero{grid-template-columns:1fr;gap:28px;padding:48px 0 36px}
-  .hero h1{font-size:clamp(52px,10vw,78px)}
-  .content{grid-template-columns:1fr}
-  .sidebar{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.overlay input{
+  width:min(760px,100%);background:#111;border:1px solid var(--line2);
+  padding:18px;color:white;font-size:20px;outline:none
+}
+.close{
+  position:absolute;right:28px;top:28px;background:none;
+  border:1px solid var(--line2);color:white;width:38px;height:38px;cursor:pointer
+}
+
+@media(max-width:1050px){
+  .site{width:min(calc(100% - 40px),var(--max))}
+  .hero{grid-template-columns:1fr 300px;gap:45px}
+  .magazine{grid-template-columns:minmax(0,1fr) 310px}
+  .feature{grid-template-columns:1fr;min-height:0}
+  .feature-media{min-height:360px;aspect-ratio:16/8}
+  .feature-copy{padding:30px}
+  .popular-grid{grid-template-columns:1fr}
+  .pop-card{grid-template-columns:110px 1fr}
+  .pop-card img{width:110px;min-height:128px}
+}
+@media(max-width:800px){
+  .hero{grid-template-columns:1fr;gap:28px;padding:50px 0 38px}
+  .magazine{grid-template-columns:1fr}
+  .sidebar{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
   .widget{margin:0}
   .posts{grid-template-columns:repeat(2,1fr)}
 }
-@media(max-width:650px){
-  :root{--gutter:18px}
+@media(max-width:600px){
   .site{width:calc(100% - 28px)}
-  .nav{min-height:62px}
+  .nav{min-height:64px}
   .brand{font-size:19px}
   .menu{display:none}
-  .mobile-menu{display:block;background:none;border:1px solid var(--line2);color:white;width:36px;height:36px;border-radius:6px}
+  .search{margin-left:auto}
+  .mobile-menu{display:block}
   .hero{padding:38px 0 30px}
-  .hero h1{font-size:clamp(46px,14vw,68px);line-height:.9}
-  .feature{grid-template-columns:1fr;min-height:0}
-  .feature-media{min-height:260px;aspect-ratio:16/9}
-  .feature-copy{padding:26px 22px}
+  .hero h1{font-size:clamp(48px,14vw,70px);line-height:.88}
+  .hero-note{font-size:13px}
+  .magazine{padding-top:20px}
+  .feature-media{min-height:250px;aspect-ratio:4/3}
+  .feature-copy{padding:25px 20px}
   .feature-copy h3{font-size:36px}
   .sidebar{display:block}
   .widget{margin-bottom:14px}
+  .popular-grid{grid-template-columns:1fr}
   .posts{grid-template-columns:1fr}
+  .card-img{aspect-ratio:4/3}
   .card h3{font-size:25px}
-  footer{display:block;line-height:1.8}
+  .ad-slot{min-height:120px}
+  footer{display:block;line-height:2}
+  footer div+div{margin-top:8px}
 }
 </style>
 </head>
@@ -143,10 +264,11 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#777;font-size
 <div class="topline"></div>
 <header>
   <div class="site nav">
-    <a class="brand" href="./">MIRROR<span>//</span><b>ILLUSION</b></a>
-    <nav class="menu">
+    <a class="brand" href="./">MIRROR<span>//</span>ILLUSION</a>
+    <nav class="menu" id="mainMenu">
       <a class="active" href="#latest">Latest</a>
       <a href="#featured">Featured</a>
+      <a href="#popular">Popular</a>
       <a href="#topics">Topics</a>
       <a href="#about">About</a>
     </nav>
@@ -162,53 +284,90 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#777;font-size
       <h1>Stories that <em>matter.</em><br>Ideas that stay.</h1>
     </div>
     <div class="hero-note">
-      <strong style="color:#f2eee5">MIRROR//ILLUSION</strong><br>
+      <strong>MIRROR//ILLUSION</strong><br>
       A modern editorial space for thoughtful stories on mental health, society, culture, everyday life and the questions that refuse easy answers.
     </div>
   </section>
 
-  <div class="content" id="featured">
-    <section>
-      <div class="section-head"><h2>Featured Story</h2><span>01 / Lead</span></div>
-      <article class="feature" id="featuredPost">
-        <div class="feature-media"><div class="placeholder">Loading latest story…</div></div>
-        <div class="feature-copy"><div class="eyebrow">Latest editorial</div><h3>Loading the latest story…</h3><div class="meta">Fetching the newest post from Blogger.</div></div>
-      </article>
+  <div class="magazine">
+    <div class="main-column">
+      <section class="featured-wrap" id="featured">
+        <div class="section-head"><h2>Featured Story</h2><span>01 / Lead Story</span></div>
+        <article class="feature" id="featuredPost">
+          <div class="feature-media"><div class="placeholder">Loading latest story…</div></div>
+          <div class="feature-copy">
+            <div class="eyebrow">Latest editorial</div>
+            <h3>Loading the latest story…</h3>
+            <p>Fetching the newest post from Blogger.</p>
+          </div>
+        </article>
+      </section>
+
+      <section class="popular" id="popular">
+        <div class="section-head"><h2>Popular Posts</h2><span>Readers' picks</span></div>
+        <div class="popular-grid" id="popularPosts">
+          <div class="empty">Loading popular stories…</div>
+        </div>
+      </section>
+
+      <div class="ad-slot" aria-label="Advertisement">
+        <div class="ad-slot-inner">
+          <strong>Advertisement</strong>
+          <span>Reserved space for a future banner or sponsored feature</span>
+        </div>
+      </div>
+
       <section class="latest" id="latest">
         <div class="section-head"><h2>Latest Stories</h2><span>New from the journal</span></div>
         <div class="posts" id="posts"><div class="empty">Loading latest posts…</div></div>
       </section>
-    </section>
+    </div>
 
     <aside class="sidebar" id="topics">
       <div class="widget">
         <div class="widget-head"><h3>PDF Library</h3><span>Resources</span></div>
-        <a class="item" href="#">Mental Health Guides →</a>
-        <a class="item" href="#">Self-Care Worksheets →</a>
-        <a class="item" href="#">Recovery Resources →</a>
-        <a class="item" href="#">Reading Collection →</a>
+        <a class="item" href="#"><span>Mental Health Guides</span><small>PDF →</small></a>
+        <a class="item" href="#"><span>Self-Care Worksheets</span><small>PDF →</small></a>
+        <a class="item" href="#"><span>Recovery Resources</span><small>PDF →</small></a>
+        <a class="item" href="#"><span>Reading Collection</span><small>PDF →</small></a>
       </div>
+
+      <div class="widget sidebar-pop">
+        <div class="widget-head"><h3>Popular Posts</h3><span>Top reads</span></div>
+        <div id="sidebarPopular">
+          <a class="item"><span class="num">01</span><span>Loading top story…</span></a>
+          <a class="item"><span class="num">02</span><span>Loading…</span></a>
+          <a class="item"><span class="num">03</span><span>Loading…</span></a>
+          <a class="item"><span class="num">04</span><span>Loading…</span></a>
+        </div>
+      </div>
+
       <div class="widget">
         <div class="widget-head"><h3>Utility Wizards</h3><span>Tools</span></div>
-        <a class="item" href="#">Word Counter →</a>
-        <a class="item" href="#">Reading Time →</a>
-        <a class="item" href="#">Text Formatter →</a>
-        <a class="item" href="#">Daily Reflection →</a>
+        <a class="item" href="#"><span>Word Counter</span><small>TOOL →</small></a>
+        <a class="item" href="#"><span>Reading Time</span><small>TOOL →</small></a>
+        <a class="item" href="#"><span>Text Formatter</span><small>TOOL →</small></a>
+        <a class="item" href="#"><span>Daily Reflection</span><small>TOOL →</small></a>
       </div>
+
       <div class="widget">
         <div class="widget-head"><h3>Explore Topics</h3><span>Index</span></div>
-        <a class="item" href="#">Mental Health</a>
-        <a class="item" href="#">Society</a>
-        <a class="item" href="#">Lifestyle</a>
-        <a class="item" href="#">Education</a>
+        <div class="topic-grid">
+          <a class="topic" href="#">Mental Health</a>
+          <a class="topic" href="#">Society</a>
+          <a class="topic" href="#">Lifestyle</a>
+          <a class="topic" href="#">Education</a>
+          <a class="topic" href="#">Culture</a>
+          <a class="topic" href="#">Mindfulness</a>
+        </div>
       </div>
     </aside>
   </div>
 </main>
 
 <footer class="site">
-  <div>© <span id="year"></span> Mirror//Illusion</div>
-  <div>Stories that matter. Ideas that stay.</div>
+  <div><span class="footer-brand">MIRROR//ILLUSION</span> · © <span id="year"></span></div>
+  <div>Stories that matter · Ideas that stay · Built for thoughtful reading</div>
 </footer>
 
 <div class="overlay" id="searchOverlay">
@@ -218,11 +377,9 @@ footer{border-top:1px solid var(--line);padding:28px 0 40px;color:#777;font-size
 
 <script>
 /*
-  PUBLISHING ARCHITECTURE
+  PUBLISHING ARCHITECTURE — DO NOT CHANGE
   Blogger remains the CMS.
   GitHub is the presentation layer.
-
-  Change BLOG_URL only if the Blogger address changes.
 */
 const BLOG_URL = "https://mirrorandillusionlm.blogspot.com";
 const MAX_POSTS = 12;
@@ -260,23 +417,51 @@ function render(data){
     document.getElementById("posts").innerHTML='<div class="empty">No published posts were found.</div>';
     return;
   }
+
   const posts=entries.slice(0,MAX_POSTS).map(e=>({
     title:e.title.$t,link:getLink(e),image:getImage(e),
     date:formatDate(e.published&&e.published.$t),
     text:cleanText((e.summary&&e.summary.$t)||(e.content&&e.content.$t))
   }));
+
+  /* FEATURED: newest Blogger post */
   const f=posts[0];
-  const featured=document.getElementById("featuredPost");
-  featured.innerHTML=`
+  document.getElementById("featuredPost").innerHTML=`
     <a class="feature-media" href="${f.link}" aria-label="${esc(f.title)}">
       ${f.image?`<img src="${f.image}" alt="">`:`<div class="placeholder">Mirror//Illusion</div>`}
     </a>
     <div class="feature-copy">
-      <div class="eyebrow">Latest editorial</div>
+      <div class="eyebrow">Latest editorial · ${esc(f.date)}</div>
       <h3><a href="${f.link}">${esc(f.title)}</a></h3>
-      <div class="meta">${esc(f.date)}${f.text?' · '+esc(f.text.slice(0,150))+'…':''}</div>
-      <a class="read" href="${f.link}">Read story →</a>
+      <p>${esc(f.text.slice(0,260))}${f.text.length>260?"…":""}</p>
+      <a class="read" href="${f.link}">Read featured story →</a>
     </div>`;
+
+  /* POPULAR VISUAL BLOCK: uses the next four Blogger posts.
+     Blogger's public feed does not expose view-count popularity,
+     so this section is automatically populated without changing
+     the Blogger publishing mechanism. */
+  const popular=posts.slice(1,5);
+  document.getElementById("popularPosts").innerHTML=popular.length?popular.map((p,i)=>`
+    <article class="pop-card">
+      <a href="${p.link}">
+        ${p.image?`<img loading="lazy" src="${p.image}" alt="">`:`<div class="placeholder" style="min-height:118px">M//I</div>`}
+      </a>
+      <div class="pop-copy">
+        <div class="pop-rank">0${i+1} · PICK</div>
+        <h3><a href="${p.link}">${esc(p.title)}</a></h3>
+        <div class="meta">${esc(p.date)}</div>
+      </div>
+    </article>`).join(""):'<div class="empty">Publish more stories in Blogger and they will appear here.</div>';
+
+  /* SIDEBAR POPULAR */
+  document.getElementById("sidebarPopular").innerHTML=popular.length?popular.slice(0,4).map((p,i)=>`
+    <a class="item" href="${p.link}">
+      <span class="num">0${i+1}</span>
+      <span>${esc(p.title)}</span>
+    </a>`).join(""):'';
+
+  /* LATEST: remaining Blogger posts */
   const rest=posts.slice(1);
   document.getElementById("posts").innerHTML=rest.length?rest.map(p=>`
     <article class="card">
@@ -286,8 +471,8 @@ function render(data){
       <div class="card-body">
         <div class="eyebrow">${esc(p.date)}</div>
         <h3><a href="${p.link}">${esc(p.title)}</a></h3>
-        <p>${esc(p.text.slice(0,135))}${p.text.length>135?"…":""}</p>
-        <a class="read" href="${p.link}">Read →</a>
+        <p>${esc(p.text.slice(0,145))}${p.text.length>145?"…":""}</p>
+        <a class="read" href="${p.link}">Read story →</a>
       </div>
     </article>`).join(""):'<div class="empty">Publish more stories in Blogger and they will appear here.</div>';
 }
@@ -303,15 +488,20 @@ function loadBlogger(){
 }
 loadBlogger();
 
+/* UI only — Blogger feed mechanism above remains untouched */
 const overlay=document.getElementById("searchOverlay");
-document.getElementById("searchBtn").onclick=()=>{overlay.classList.add("open");setTimeout(()=>document.getElementById("searchInput").focus(),50)};
+document.getElementById("searchBtn").onclick=()=>{
+  overlay.classList.add("open");
+  setTimeout(()=>document.getElementById("searchInput").focus(),50)
+};
 document.getElementById("closeSearch").onclick=()=>overlay.classList.remove("open");
 document.getElementById("mobileBtn").onclick=()=>{
-  const nav=document.querySelector(".menu");
+  const nav=document.getElementById("mainMenu");
   const open=nav.style.display==="flex";
   nav.style.display=open?"none":"flex";
-  nav.style.position="absolute";nav.style.top="62px";nav.style.left="14px";nav.style.right="14px";
-  nav.style.background="#0b0b0a";nav.style.padding="18px";nav.style.border="1px solid #2a2924";nav.style.flexDirection="column";nav.style.alignItems="flex-start";
+  nav.style.position="absolute";nav.style.top="64px";nav.style.left="14px";nav.style.right="14px";
+  nav.style.background="#0b0b0a";nav.style.padding="18px";nav.style.border="1px solid #2a2924";
+  nav.style.flexDirection="column";nav.style.alignItems="flex-start";
 };
 document.addEventListener("keydown",e=>{if(e.key==="Escape")overlay.classList.remove("open")});
 </script>
