@@ -1,238 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aura Blog — Your Journey to Mental Wellness</title>
-  <meta name="description" content="A calm, modern mental wellness blog for stories, reflection, wellbeing and inner peace.">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Mirror//Illusion — stories, ideas and perspectives that stay with you.">
+<title>Mirror//Illusion — Stories That Matter</title>
+<style>
+:root{
+  --bg:#080807;
+  --surface:#11110f;
+  --surface2:#161613;
+  --surface3:#1b1a16;
+  --text:#f2efe8;
+  --muted:#aaa69d;
+  --dim:#77736a;
+  --line:#2b2924;
+  --orange:#f36b21;
+  --orange2:#ff8a3d;
+  --max:1440px;
+  --radius:4px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,Helvetica,sans-serif;line-height:1.55}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+button{font:inherit}
+.site{width:min(calc(100% - 48px),var(--max));margin:auto}
+.topline{height:4px;background:var(--orange)}
+header{border-bottom:1px solid var(--line);background:rgba(8,8,7,.96);position:sticky;top:0;z-index:20;backdrop-filter:blur(12px)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{font-weight:900;letter-spacing:-1.8px;font-size:25px;white-space:nowrap}
+.brand span{color:var(--orange)}
+.navlinks{display:flex;gap:26px;color:#c5c1b8;font-size:13px;text-transform:uppercase;letter-spacing:1.1px}
+.navlinks a:hover{color:var(--orange2)}
+.searchbtn{border:1px solid var(--line);background:transparent;color:var(--text);width:40px;height:40px;cursor:pointer}
+.hero{padding:74px 0 58px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.35fr) minmax(320px,.65fr);gap:70px;align-items:end}
+.kicker{color:var(--orange);font-size:12px;font-weight:800;letter-spacing:2.3px;text-transform:uppercase;margin-bottom:18px}
+.hero h1{font-size:clamp(48px,6.7vw,100px);line-height:.91;letter-spacing:-5px;margin:0;max-width:920px}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero-copy{border-left:2px solid var(--orange);padding-left:24px;color:var(--muted);font-size:17px;max-width:460px}
+.hero-copy strong{display:block;color:var(--text);font-size:14px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px}
+.sectionhead{display:flex;align-items:end;justify-content:space-between;border-bottom:1px solid var(--line);padding:38px 0 15px;margin-bottom:22px}
+.sectionhead h2{margin:0;font-size:20px;letter-spacing:-.4px;text-transform:uppercase}
+.sectionhead span{font-size:11px;color:var(--orange);letter-spacing:1.6px;text-transform:uppercase}
+.content{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:42px}
+.feature{display:grid;grid-template-columns:1.35fr 1fr;background:var(--surface);border:1px solid var(--line);min-height:390px}
+.feature-media{min-height:390px;background:linear-gradient(135deg,#25231e,#0d0d0b);position:relative;overflow:hidden}
+.feature-media img{width:100%;height:100%;object-fit:cover}
+.feature-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 60%,rgba(8,8,7,.6))}
+.feature-body{padding:34px;display:flex;flex-direction:column;justify-content:center}
+.label{color:var(--orange);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.7px}
+.feature h3{font-family:Georgia,serif;font-size:clamp(28px,3vw,45px);line-height:1.02;letter-spacing:-1.2px;margin:13px 0 16px}
+.excerpt{color:var(--muted);font-size:14px}
+.meta{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px;margin-top:20px}
+.read{margin-top:26px;color:var(--orange);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}
+.posts{display:flex;flex-direction:column}
+.post{display:grid;grid-template-columns:260px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--line)}
+.thumb{height:150px;background:var(--surface2);overflow:hidden}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.post h3{font-family:Georgia,serif;font-size:25px;line-height:1.08;margin:7px 0 8px}
+.post p{margin:0;color:var(--muted);font-size:13px}
+.sidebar{display:flex;flex-direction:column;gap:18px}
+.widget{border:1px solid var(--line);background:var(--surface);padding:22px}
+.widget h3{font-size:12px;text-transform:uppercase;letter-spacing:1.7px;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.widget h3 span{color:var(--orange)}
+.widget a{display:block;padding:10px 0;border-bottom:1px solid #22211d;color:#c7c3ba;font-size:13px}
+.widget a:last-child{border-bottom:0}
+.widget a:hover{color:var(--orange2)}
+.tool{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.tool b{font-weight:500}
+.badge{font-size:9px;color:var(--orange);border:1px solid #57301d;padding:3px 6px;text-transform:uppercase}
+.newsletter{background:var(--orange);color:#100c08;border:0}
+.newsletter h3,.newsletter p{color:#100c08;border-color:rgba(0,0,0,.2)}
+.newsletter input{width:100%;border:0;background:#fff;padding:12px;margin:5px 0 8px}
+.newsletter button{border:0;background:#100c08;color:#fff;padding:11px 15px;font-weight:800;text-transform:uppercase;font-size:10px;letter-spacing:1px}
+footer{margin-top:65px;border-top:1px solid var(--line);padding:32px 0 45px;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between}
+.loading{padding:40px 0;color:var(--dim)}
+.searchpanel{display:none;position:fixed;inset:0;background:rgba(8,8,7,.97);z-index:50;padding:90px 24px}
+.searchpanel.open{display:block}
+.searchinner{max-width:900px;margin:auto}
+.searchinner input{width:100%;background:transparent;border:0;border-bottom:2px solid var(--orange);color:#fff;font-size:42px;padding:15px 0;outline:none}
+.close{float:right;background:none;border:0;color:#fff;font-size:30px;cursor:pointer}
+@media(max-width:1050px){
+ .navlinks{display:none}.hero{grid-template-columns:1fr;gap:28px}.content{grid-template-columns:1fr}.sidebar{display:grid;grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+ .site{width:min(calc(100% - 28px),var(--max))}
+ .nav{height:64px}.brand{font-size:21px}
+ .hero{padding:48px 0 40px}.hero h1{font-size:clamp(44px,15vw,70px);letter-spacing:-3px}
+ .hero-copy{font-size:15px}
+ .feature{grid-template-columns:1fr}.feature-media{min-height:230px}.feature-body{padding:24px}
+ .post{grid-template-columns:115px 1fr;gap:14px}.thumb{height:88px}.post h3{font-size:19px}.post p{display:none}
+ .sidebar{grid-template-columns:1fr}.widget{padding:18px}
+ footer{display:block}.searchinner input{font-size:28px}
+}
+</style>
 </head>
 <body>
-  <div class="site-shell">
+<div class="topline"></div>
+<header>
+  <div class="site nav">
+    <a class="brand" href="#">MIRROR<span>//</span>ILLUSION</a>
+    <nav class="navlinks">
+      <a href="#latest">Latest</a><a href="#featured">Featured</a><a href="#topics">Topics</a><a href="#about">About</a>
+    </nav>
+    <button class="searchbtn" id="openSearch" aria-label="Search">⌕</button>
+  </div>
+</header>
 
-    <!-- NAVBAR -->
-    <header class="navbar">
-      <a class="brand" href="#">Aura Blog</a>
+<main class="site">
+<section class="hero">
+  <div>
+    <div class="kicker">Stories · Ideas · Perspectives</div>
+    <h1>Stories that <em>matter.</em><br>Ideas that stay.</h1>
+  </div>
+  <div class="hero-copy">
+    <strong>Mirror//Illusion</strong>
+    A modern editorial space for thoughtful stories on mental health, society, culture, everyday life and the questions that refuse easy answers.
+  </div>
+</section>
 
-      <nav class="nav-links" aria-label="Main navigation">
-        <a class="active" href="#home">Home</a>
-        <a href="#latest">Explore</a>
-        <a href="#latest">Stories</a>
-        <a href="#wellness">Wellness</a>
-        <a href="#community">Community</a>
-        <a href="#resources">Resources</a>
-      </nav>
-
-      <button class="theme-toggle" aria-label="Toggle theme" title="Toggle theme">
-        <span class="sun">☀</span><span class="moon">◐</span>
-      </button>
-      <a class="join-btn" href="#community">Join Community</a>
-    </header>
-
-    <!-- HERO SECTION -->
-    <section class="hero" id="home">
-      <div class="hero-copy">
-        <p class="eyebrow">A SPACE TO BREATHE</p>
-        <h1>Embrace Inner<br>Peace: Your Journey<br>to Mental Wellness</h1>
-        <p class="hero-subtitle">Find solace, stories, and strength in every post.</p>
-        <a class="primary-btn" href="#latest">Start Exploring</a>
-      </div>
-
-      <div class="hero-image-wrap">
-        <img
-          src="aura-hero.png"
-          alt="Peaceful landscape beside a lake"
-          class="hero-image"
-        >
-        <div class="image-wash"></div>
-      </div>
-
-      <a class="scroll-cue" href="#latest">
-        <span>Scroll Down</span>
-        <strong>⌄</strong>
-      </a>
+<div class="content">
+  <div>
+    <section id="featured">
+      <div class="sectionhead"><h2>Featured Story</h2><span>Editor's pick</span></div>
+      <article class="feature" id="featureCard">
+        <div class="feature-media" id="featureImage"></div>
+        <div class="feature-body">
+          <div class="label" id="featureLabel">Latest</div>
+          <h3 id="featureTitle">Loading the latest story…</h3>
+          <p class="excerpt" id="featureExcerpt">Your newest Blogger post will appear here automatically.</p>
+          <div class="meta" id="featureMeta"></div>
+          <a class="read" id="featureLink" href="#">Read story →</a>
+        </div>
+      </article>
     </section>
 
-    <!-- MAIN CONTENT LAYOUT -->
-    <div class="blog-layout">
-
-      <!-- SIDEBAR -->
-      <aside class="sidebar">
-
-        <!-- Categories Card -->
-        <div class="side-card">
-          <div class="side-label">EXPLORE</div>
-          <h2>Categories</h2>
-          <div class="category-list">
-            <a href="#">Mindfulness <span>12</span></a>
-            <a href="#">Mental Wellness <span>18</span></a>
-            <a href="#">Self Growth <span>15</span></a>
-            <a href="#">Relationships <span>9</span></a>
-            <a href="#">Healthy Living <span>14</span></a>
-            <a href="#">Inner Peace <span>11</span></a>
-          </div>
-        </div>
-
-        <!-- Sidebar Popular Posts (Compact Widget) -->
-        <div class="side-card">
-          <div class="side-label">TRENDING</div>
-          <h2>Popular Posts</h2>
-          <div class="popular-posts-list">
-            
-            <article class="popular-post-card">
-              <a href="the-surprising-public-health-science-behind-belonging.html" class="popular-thumb">
-                <img src="science-of-belonging.jpg" alt="Mindfulness" />
-              </a>
-              <div class="popular-details">
-                <span class="popular-meta">5 MIN READ</span>
-                <h4><a href="the-surprising-public-health-science-behind-belonging.html">The Surprising Public Health Science Behind Belonging</a></h4>
-              </div>
-            </article>
-
-            <article class="popular-post-card">
-              <a href="untapped-lifeliness.html" class="popular-thumb">
-                <img src="untapped_lifelines_infrastructure.jpg" alt="Mental Health" />
-              </a>
-              <div class="popular-details">
-                <span class="popular-meta">9 MIN READ</span>
-                <h4><a href="untapped-lifeliness.html">370,000 Untapped Lifelines: Faith Spaces as Infrastructure</a></h4>
-              </div>
-            </article>
-
-          </div>
-        </div>
-
-      </aside>
-
-      <!-- MAIN ARTICLES COLUMN -->
-      <main class="main-content">
-
-        <!-- Latest Posts Section -->
-        <section class="post-section" id="latest">
-          <div class="section-heading">
-            <h2>Latest Posts</h2>
-          </div>
-
-          <div class="post-grid">
-
-            <article class="post-card">
-              <a href="the-surprising-public-health-science-behind-belonging.html" class="post-thumb">
-                <img src="science-of-belonging.jpg" alt="People gathered together in a peaceful outdoor setting">
-                <span class="tag">Mindfulness</span>
-              </a>
-              <div class="post-body">
-                <p class="post-meta">5 MIN READ · AUG 16</p>
-                <h3>
-                  <a href="the-surprising-public-health-science-behind-belonging.html">
-                    The Surprising Public Health Science Behind Belonging: Why Medicine Alone Can’t Cure the Mental Health Crisis
-                  </a>
-                </h3>
-                <p>New research reveals how belonging, community, and shared purpose may play a powerful role in addressing the global mental health crisis.</p>
-              </div>
-            </article>
-
-            <article class="post-card">
-              <a href="untapped-lifeliness.html" class="post-thumb">
-                <img src="untapped_lifelines_infrastructure.jpg" alt="Faith community spaces connected through a network">
-                <span class="tag">Mental Health</span>
-              </a>
-              <div class="post-body">
-                <p class="post-meta">9 MIN READ · AUG 14</p>
-                <h3>
-                  <a href="untapped-lifeliness.html">
-                    370,000 Untapped Lifelines: Faith Spaces as Vital Public Health Infrastructure
-                  </a>
-                </h3>
-                <p>The global mental health crisis is accelerating at an unprecedented rate, currently affecting more than 1 billion people worldwide.</p>
-              </div>
-            </article>
-
-            <article class="post-card">
-              <a href="#" class="post-thumb">
-                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=900&q=85" alt="Person meditating">
-                <span class="tag">Inner Peace</span>
-              </a>
-              <div class="post-body">
-                <p class="post-meta">6 MIN READ · AUG 12</p>
-                <h3><a href="#">When Your Mind Needs a Little Space</a></h3>
-                <p>A practical reflection on creating mental room when life feels loud, busy, or emotionally overwhelming.</p>
-              </div>
-            </article>
-
-          </div>
-        </section>
-
-        <!-- Readers Choice Section -->
-        <section class="post-section" id="popular">
-          <div class="section-heading">
-            <div>
-              <p class="section-kicker">LOVED BY OUR READERS</p>
-              <h2>Popular Stories</h2>
-            </div>
-            <a href="#">View all <span>→</span></a>
-          </div>
-
-          <div class="post-grid">
-            <article class="post-card">
-              <a href="#" class="post-thumb">
-                <img src="https://images.unsplash.com/photo-1470252649378-9c29740c9fa8?auto=format&fit=crop&w=900&q=85" alt="Sunlight through trees">
-                <span class="tag">Mental Wellness</span>
-              </a>
-              <div class="post-body">
-                <p class="post-meta">8 MIN READ · AUG 09</p>
-                <h3><a href="#">You Don't Have to Have It All Figured Out</a></h3>
-                <p>Uncertainty is not failure. Learn to move forward while leaving room for life to unfold naturally.</p>
-              </div>
-            </article>
-
-            <article class="post-card">
-              <a href="#" class="post-thumb">
-                <img src="https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?auto=format&fit=crop&w=900&q=85" alt="Woman in a peaceful setting">
-                <span class="tag">Healthy Living</span>
-              </a>
-              <div class="post-body">
-                <p class="post-meta">5 MIN READ · AUG 06</p>
-                <h3><a href="#">Small Rituals That Make Life Feel Better</a></h3>
-                <p>Discover a few simple daily rituals that can turn ordinary moments into anchors of calm.</p>
-              </div>
-            </article>
-
-            <article class="post-card">
-              <a href="#" class="post-thumb">
-                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=85" alt="Friends talking together">
-                <span class="tag">Relationships</span>
-              </a>
-              <div class="post-body">
-                <p class="post-meta">9 MIN READ · AUG 03</p>
-                <h3><a href="#">The People Who Help Us Feel Like Ourselves</a></h3>
-                <p>Why meaningful connection matters, and how to build relationships that feel safe, warm and real.</p>
-              </div>
-            </article>
-          </div>
-        </section>
-
-      </main>
-    </div>
-
-    <!-- FOOTER -->
-    <footer id="community">
-      <div>
-        <a class="brand footer-brand" href="#">Aura Blog</a>
-        <p>A quiet corner for a more meaningful life.</p>
-      </div>
-      <div class="footer-links" id="resources">
-        <a href="#">About</a>
-        <a href="#">Contact</a>
-        <a href="#">Privacy</a>
-        <a href="#">Instagram</a>
-      </div>
-    </footer>
-
+    <section id="latest">
+      <div class="sectionhead"><h2>Latest Stories</h2><span>Fresh from the journal</span></div>
+      <div class="posts" id="postList"><div class="loading">Loading latest stories…</div></div>
+    </section>
   </div>
 
-  <script src="script.js"></script>
+  <aside class="sidebar">
+    <div class="widget">
+      <h3>PDF <span>Library</span></h3>
+      <a href="#">Mental Health Guides <span>→</span></a>
+      <a href="#">Self-Care Worksheets <span>→</span></a>
+      <a href="#">Recovery Resources <span>→</span></a>
+      <a href="#">Reading Collection <span>→</span></a>
+    </div>
+    <div class="widget">
+      <h3>Utility <span>Wizards</span></h3>
+      <a class="tool" href="#"><b>Word Counter</b><span class="badge">Tool</span></a>
+      <a class="tool" href="#"><b>Reading Time</b><span class="badge">Tool</span></a>
+      <a class="tool" href="#"><b>Text Formatter</b><span class="badge">Tool</span></a>
+      <a class="tool" href="#"><b>Quick Calculator</b><span class="badge">Tool</span></a>
+    </div>
+    <div class="widget" id="topics">
+      <h3>Explore <span>Topics</span></h3>
+      <a href="#">Mental Health</a><a href="#">Society</a><a href="#">Culture</a><a href="#">Relationships</a><a href="#">Wellbeing</a>
+    </div>
+    <div class="widget newsletter" id="about">
+      <h3>Stay <span>Connected</span></h3>
+      <p>New stories, ideas and useful resources — without the noise.</p>
+      <input type="email" placeholder="Your email address">
+      <button type="button">Subscribe</button>
+    </div>
+  </aside>
+</div>
+</main>
+
+<footer class="site">
+  <div>© <span id="year"></span> Mirror//Illusion</div>
+  <div>Stories that matter. Ideas that stay.</div>
+</footer>
+
+<div class="searchpanel" id="searchPanel">
+  <button class="close" id="closeSearch">×</button>
+  <div class="searchinner"><input id="searchInput" placeholder="Search stories…" autocomplete="off"><div id="searchResults"></div></div>
+</div>
+
+<script>
+const BLOG_URL = "https://mirrorandillusionlm.blogspot.com";
+const FEED_URL = BLOG_URL + "/feeds/posts/default?alt=json-in-script&max-results=12&callback=miFeed";
+const $ = s => document.querySelector(s);
+
+function strip(html){
+  const d=document.createElement("div"); d.innerHTML=html||"";
+  return (d.textContent||d.innerText||"").replace(/\s+/g," ").trim();
+}
+function imageOf(entry){
+  if(entry.media$thumbnail && entry.media$thumbnail.url) return entry.media$thumbnail.url.replace(/\/s72-c\//,"/s900/");
+  const html=(entry.content&&entry.content.$t)||"";
+  const m=html.match(/<img[^>]+src=["']([^"']+)["']/i);
+  return m?m[1]:"";
+}
+function postUrl(entry){
+  const a=(entry.link||[]).find(x=>x.rel==="alternate");
+  return a?a.href:"#";
+}
+function dateOf(entry){
+  return new Date(entry.published.$t).toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});
+}
+function textOf(entry){
+  return strip((entry.summary&&entry.summary.$t)||(entry.content&&entry.content.$t)||"");
+}
+function render(data){
+  const entries=(data.feed.entry||[]);
+  if(!entries.length){ $("#featureTitle").textContent="No posts found yet."; $("#postList").innerHTML="<div class='loading'>Publish a Blogger post and it will appear here.</div>"; return; }
+  const first=entries[0], img=imageOf(first), url=postUrl(first);
+  $("#featureLabel").textContent=(first.category&&first.category[0]&&first.category[0].term)||"Featured";
+  $("#featureTitle").textContent=first.title.$t;
+  $("#featureExcerpt").textContent=textOf(first).slice(0,220);
+  $("#featureMeta").textContent=dateOf(first);
+  $("#featureLink").href=url;
+  $("#featureImage").innerHTML=img?`<img src="${img}" alt="">`:"";
+  $("#postList").innerHTML=entries.slice(1).map(e=>{
+    const im=imageOf(e), u=postUrl(e);
+    return `<article class="post"><a class="thumb" href="${u}">${im?`<img src="${im}" alt="">`:""}</a><div><div class="label">${(e.category&&e.category[0]&&e.category[0].term)||"Story"}</div><h3><a href="${u}">${e.title.$t}</a></h3><p>${textOf(e).slice(0,170)}</p><div class="meta">${dateOf(e)}</div></div></article>`;
+  }).join("");
+  window.MI_POSTS=entries;
+}
+function loadFeed(){
+  const old=document.getElementById("miFeedScript"); if(old) old.remove();
+  window.miFeed=function(data){ render(data); delete window.miFeed; };
+  const s=document.createElement("script"); s.id="miFeedScript"; s.src=FEED_URL+"&t="+Date.now(); s.onerror=()=>$("#postList").innerHTML="<div class='loading'>Posts could not be loaded. The magazine layout is ready; check your Blogger feed or internet connection.</div>"; document.body.appendChild(s);
+}
+document.getElementById("year").textContent=new Date().getFullYear();
+document.getElementById("openSearch").onclick=()=>{ $("#searchPanel").classList.add("open"); $("#searchInput").focus(); };
+document.getElementById("closeSearch").onclick=()=>$("#searchPanel").classList.remove("open");
+document.getElementById("searchInput").addEventListener("input",e=>{
+ const q=e.target.value.toLowerCase().trim(), box=$("#searchResults");
+ if(!q){box.innerHTML="";return}
+ const hits=(window.MI_POSTS||[]).filter(p=>p.title.$t.toLowerCase().includes(q));
+ box.innerHTML=hits.map(p=>`<p style="padding:12px 0;border-bottom:1px solid #292823"><a href="${postUrl(p)}">${p.title.$t}</a></p>`).join("")||"<p style='color:#77736a'>No matching stories.</p>";
+});
+loadFeed();
+</script>
 </body>
 </html>
