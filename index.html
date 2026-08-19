@@ -617,21 +617,170 @@ footer{
   }
 
 
-  /* FOOTER */
+ /* =========================================================
+   MIRROR//ILLUSION FOOTER
+   ========================================================= */
 
-  .site-footer {
-    margin-top: 55px;
-    padding: 25px 0;
+.mi-footer {
+  margin-top: 70px;
+  background: #0b0b09;
+  border-top: 1px solid #292823;
+  padding: 55px 0 0;
+}
+
+.mi-footer-inner {
+  width: min(calc(100% - 64px), 1380px);
+  margin: 0 auto;
+
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 55px;
+
+  padding-bottom: 48px;
+}
+
+.mi-footer-logo {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  color: #f3eee4;
+}
+
+.mi-footer-logo span {
+  color: #ff5a00;
+}
+
+.mi-footer-brand p {
+  max-width: 360px;
+  margin: 18px 0 0;
+
+  color: #858179;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.mi-footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mi-footer-column h4 {
+  margin: 0 0 18px;
+
+  color: #ff5a00;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.mi-footer-column a {
+  margin-bottom: 11px;
+
+  color: #aaa69d;
+  font-size: 12px;
+  line-height: 1.5;
+
+  transition: color .2s ease;
+}
+
+.mi-footer-column a:hover {
+  color: #ff5a00;
+}
+
+.mi-footer-bottom {
+  width: min(calc(100% - 64px), 1380px);
+  margin: 0 auto;
+
+  border-top: 1px solid #292823;
+
+  padding: 20px 0 25px;
+
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+
+  color: #66635c;
+  font-size: 9px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   FOOTER — TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .mi-footer-inner {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: 35px;
   }
 
-  .footer-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 15px;
+  .mi-footer-brand {
+    grid-column: 1 / -1;
   }
 
 }
 
+
+/* =========================================================
+   FOOTER — MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .mi-footer {
+    margin-top: 50px;
+    padding-top: 40px;
+  }
+
+  .mi-footer-inner {
+    width: calc(100% - 28px);
+
+    grid-template-columns: 1fr 1fr;
+    gap: 35px 25px;
+
+    padding-bottom: 35px;
+  }
+
+  .mi-footer-brand {
+    grid-column: 1 / -1;
+  }
+
+  .mi-footer-logo {
+    font-size: 21px;
+  }
+
+  .mi-footer-brand p {
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .mi-footer-column h4 {
+    font-size: 10px;
+  }
+
+  .mi-footer-column a {
+    font-size: 12px;
+  }
+
+  .mi-footer-bottom {
+    width: calc(100% - 28px);
+
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    padding: 18px 0 22px;
+
+    font-size: 8px;
+    line-height: 1.5;
+  }
+
+}
 
 /* ---------- SMALL PHONES ---------- */
 @media (max-width: 420px) {
@@ -812,11 +961,6 @@ footer{
   </aside>
 </div>
 </main>
-
-<footer class="site">
-  <div><span class="footer-brand">MIRROR//ILLUSION</span> · © <span id="year"></span></div>
-  <div>Stories that matter · Ideas that stay · Built for thoughtful reading</div>
-</footer>
 
 <div class="overlay" id="searchOverlay">
   <button class="close" id="closeSearch">×</button>
@@ -1245,6 +1389,56 @@ document.addEventListener("keydown",e=>{
 
 /* START */
 loadHome();
+</script>
+  <footer class="mi-footer">
+  <div class="mi-footer-inner">
+
+    <div class="mi-footer-brand">
+      <div class="mi-footer-logo">
+        Mirror<span>//</span>Illusion Site
+      </div>
+
+      <p>
+        Stories, ideas and perspectives for thoughtful readers.
+        A modern editorial space built around conversations that matter.
+      </p>
+    </div>
+
+    <div class="mi-footer-column">
+      <h4>Explore</h4>
+      <a href="#latest">Latest Stories</a>
+      <a href="#featured">Featured</a>
+      <a href="#popular">Popular Posts</a>
+      <a href="#topics">Topics</a>
+    </div>
+
+    <div class="mi-footer-column">
+      <h4>Resources</h4>
+      <a href="#">PDF Library</a>
+      <a href="#">Utility Wizards</a>
+      <a href="#">Reading Collection</a>
+      <a href="#">Archive</a>
+    </div>
+
+    <div class="mi-footer-column">
+      <h4>Mirror//Illusion</h4>
+      <a href="#about">About</a>
+      <a href="#">Contact</a>
+      <a href="#">Privacy</a>
+      <a href="#">Disclaimer</a>
+    </div>
+
+  </div>
+
+  <div class="mi-footer-bottom">
+    <span>© <span id="mi-footer-year"></span> Mirror//Illusion Site</span>
+    <span>All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("mi-footer-year").textContent =
+    new Date().getFullYear();
 </script>
 </body>
 </html>
