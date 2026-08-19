@@ -158,6 +158,61 @@ header{
 .card p{margin:0;color:var(--muted);font-size:11px;line-height:1.55}
 .card .read{margin-top:14px}
 
+/* ARCHIVE / PAGINATION */
+.archive-section{
+  margin-top:10px;
+  padding:34px 0 0;
+  border-top:1px solid var(--line)
+}
+.archive-section[hidden]{display:none}
+.archive-intro{
+  color:var(--muted);font-size:12px;line-height:1.7;
+  max-width:680px;padding:16px 0 4px
+}
+.archive-intro p{margin:0}
+.archive-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:18px;margin-top:18px
+}
+.archive-card{
+  border:1px solid var(--line2);background:var(--panel);
+  overflow:hidden
+}
+.archive-card .archive-img{
+  display:block;aspect-ratio:4/3;background:#151515;overflow:hidden
+}
+.archive-card .archive-img img{
+  width:100%;height:100%;object-fit:cover;display:block
+}
+.archive-card .archive-body{padding:15px 16px 18px}
+.archive-card h3{
+  margin:8px 0 8px;font-family:Georgia,"Times New Roman",serif;
+  font-size:20px;line-height:1.05;letter-spacing:-.02em
+}
+.archive-card p{
+  margin:0;color:var(--muted);font-size:11px;line-height:1.55
+}
+.archive-actions{
+  display:flex;align-items:center;justify-content:center;
+  gap:16px;padding:28px 0 10px
+}
+.archive-btn,.view-all{
+  border:1px solid var(--orange);background:transparent;color:var(--text);
+  padding:13px 20px;font-size:10px;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;cursor:pointer
+}
+.archive-btn:hover,.view-all:hover{background:var(--orange);color:#080807}
+.archive-btn:disabled{opacity:.45;cursor:not-allowed}
+.archive-status{color:#777;font-size:10px}
+.view-all-wrap{
+  display:flex;justify-content:center;
+  padding:0 0 54px
+}
+.view-all{
+  background:var(--orange);color:#080807
+}
+.view-all:hover{background:transparent;color:var(--orange)}
+
 /* SIDEBAR */
 .sidebar{min-width:0}
 .widget{
@@ -217,6 +272,8 @@ footer{
 }
 
 @media(max-width:1050px){
+  .archive-grid{grid-template-columns:repeat(2,1fr)}
+
   .site{width:min(calc(100% - 40px),var(--max))}
   .hero{grid-template-columns:1fr 300px;gap:45px}
   .magazine{grid-template-columns:minmax(0,1fr) 310px}
@@ -321,6 +378,20 @@ footer{
         <div class="section-head"><h2>Latest Stories</h2><span>New from the journal</span></div>
         <div class="posts" id="posts"><div class="empty">Loading latest posts…</div></div>
       </section>
+      <section class="archive-section" id="archiveSection" hidden>
+        <div class="section-head"><h2>All Stories</h2><span>Archive</span></div>
+        <div class="archive-intro">
+          <p>Browse the journal beyond the homepage. New stories continue to arrive automatically from Blogger.</p>
+        </div>
+        <div class="archive-grid" id="archivePosts"></div>
+        <div class="archive-actions">
+          <button class="archive-btn" id="loadOlder">Load older stories</button>
+          <span class="archive-status" id="archiveStatus"></span>
+        </div>
+      </section>
+      <div class="view-all-wrap">
+        <button class="view-all" id="viewAllStories">View all stories →</button>
+      </div>
     </div>
 
     <aside class="sidebar" id="topics">
@@ -382,7 +453,9 @@ footer{
   GitHub is the presentation layer.
 */
 const BLOG_URL = "https://mirrorandillusionlm.blogspot.com";
-const MAX_POSTS = 12;
+const MAX_POSTS = 20;
+const HOME_POSTS = 12;
+const ARCHIVE_BATCH = 20;
 
 document.getElementById("year").textContent = new Date().getFullYear();
 
@@ -411,6 +484,16 @@ function formatDate(v){
 function esc(s){
   return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 }
+function normalizeEntries(entries){
+  return entries.map(e=>({
+    title:(e.title&&e.title.$t)||"Untitled story",
+    link:getLink(e),
+    image:getImage(e),
+    date:formatDate(e.published&&e.published.$t),
+    text:cleanText((e.summary&&e.summary.$t)||(e.content&&e.content.$t))
+  }));
+}
+
 function render(data){
   const entries=(data.feed&&data.feed.entry)||[];
   if(!entries.length){
@@ -418,11 +501,7 @@ function render(data){
     return;
   }
 
-  const posts=entries.slice(0,MAX_POSTS).map(e=>({
-    title:e.title.$t,link:getLink(e),image:getImage(e),
-    date:formatDate(e.published&&e.published.$t),
-    text:cleanText((e.summary&&e.summary.$t)||(e.content&&e.content.$t))
-  }));
+  const posts=normalizeEntries(entries);
 
   /* FEATURED: newest Blogger post */
   const f=posts[0];
@@ -437,10 +516,12 @@ function render(data){
       <a class="read" href="${f.link}">Read featured story →</a>
     </div>`;
 
-  /* POPULAR VISUAL BLOCK: uses the next four Blogger posts.
-     Blogger's public feed does not expose view-count popularity,
-     so this section is automatically populated without changing
-     the Blogger publishing mechanism. */
+  /*
+    POPULAR VISUAL BLOCK
+    Blogger's public feed does not expose reliable public view counts.
+    We therefore keep the existing editorial-pick mechanism:
+    the next four published stories populate the visual Top Reads block.
+  */
   const popular=posts.slice(1,5);
   document.getElementById("popularPosts").innerHTML=popular.length?popular.map((p,i)=>`
     <article class="pop-card">
@@ -461,8 +542,8 @@ function render(data){
       <span>${esc(p.title)}</span>
     </a>`).join(""):'';
 
-  /* LATEST: remaining Blogger posts */
-  const rest=posts.slice(1);
+  /* HOMEPAGE LATEST: fixed number so the front page remains controlled */
+  const rest=posts.slice(1, HOME_POSTS);
   document.getElementById("posts").innerHTML=rest.length?rest.map(p=>`
     <article class="card">
       <a class="card-img" href="${p.link}">
@@ -475,7 +556,97 @@ function render(data){
         <a class="read" href="${p.link}">Read story →</a>
       </div>
     </article>`).join(""):'<div class="empty">Publish more stories in Blogger and they will appear here.</div>';
+
+  /* First archive batch comes from posts 13–20 already returned by the same feed. */
+  archiveEntries = posts.slice(HOME_POSTS);
 }
+
+let archiveEntries=[];
+let archiveStart=21;
+
+function archiveCard(p){
+  return `<article class="archive-card">
+    <a class="archive-img" href="${p.link}">
+      ${p.image?`<img loading="lazy" src="${p.image}" alt="">`:`<div class="placeholder" style="min-height:0;height:100%">Mirror//Illusion</div>`}
+    </a>
+    <div class="archive-body">
+      <div class="eyebrow">${esc(p.date)}</div>
+      <h3><a href="${p.link}">${esc(p.title)}</a></h3>
+      <p>${esc(p.text.slice(0,130))}${p.text.length>130?"…":""}</p>
+      <a class="read" href="${p.link}">Read story →</a>
+    </div>
+  </article>`;
+}
+
+function showArchive(){
+  const section=document.getElementById("archiveSection");
+  section.hidden=false;
+  const grid=document.getElementById("archivePosts");
+
+  if(!grid.innerHTML){
+    grid.innerHTML=archiveEntries.length
+      ?archiveEntries.map(archiveCard).join("")
+      :'<div class="empty">No older stories are available yet.</div>';
+  }
+  section.scrollIntoView({behavior:"smooth",block:"start"});
+  updateArchiveButton();
+}
+
+function updateArchiveButton(){
+  const btn=document.getElementById("loadOlder");
+  const status=document.getElementById("archiveStatus");
+  if(archiveEntries.length && archiveEntries.length % ARCHIVE_BATCH !== 0 && archiveStart>21){
+    btn.disabled=true;
+    status.textContent="You have reached the end of the archive.";
+  }else{
+    btn.disabled=false;
+    status.textContent=archiveEntries.length
+      ?archiveEntries.length+" older stories loaded"
+      :"";
+  }
+}
+
+function loadOlderStories(){
+  const btn=document.getElementById("loadOlder");
+  const status=document.getElementById("archiveStatus");
+  btn.disabled=true;
+  status.textContent="Loading older stories…";
+
+  window.mirrorArchiveFeed=function(data){
+    const entries=(data.feed&&data.feed.entry)||[];
+    const batch=normalizeEntries(entries);
+    const grid=document.getElementById("archivePosts");
+
+    if(batch.length){
+      archiveEntries=archiveEntries.concat(batch);
+      grid.innerHTML=archiveEntries.map(archiveCard).join("");
+      archiveStart += ARCHIVE_BATCH;
+      status.textContent=batch.length+" more stories loaded";
+      if(batch.length<ARCHIVE_BATCH){
+        btn.disabled=true;
+        status.textContent="End of archive · "+archiveEntries.length+" older stories loaded";
+      }else{
+        btn.disabled=false;
+      }
+    }else{
+      btn.disabled=true;
+      status.textContent="End of archive · "+archiveEntries.length+" older stories loaded";
+    }
+  };
+
+  const old=document.getElementById("blogger-archive-feed");
+  if(old) old.remove();
+
+  const s=document.createElement("script");
+  s.id="blogger-archive-feed";
+  s.src=BLOG_URL+"/feeds/posts/default?alt=json-in-script&max-results="+ARCHIVE_BATCH+"&start-index="+archiveStart+"&callback=mirrorArchiveFeed";
+  s.onerror=()=>{
+    btn.disabled=false;
+    status.textContent="Could not load older stories. Please try again.";
+  };
+  document.body.appendChild(s);
+}
+
 function loadBlogger(){
   window.mirrorFeed=render;
   const old=document.getElementById("blogger-feed");
@@ -487,6 +658,9 @@ function loadBlogger(){
   document.body.appendChild(s);
 }
 loadBlogger();
+
+document.getElementById("viewAllStories").addEventListener("click", showArchive);
+document.getElementById("loadOlder").addEventListener("click", loadOlderStories);
 
 /* UI only — Blogger feed mechanism above remains untouched */
 const overlay=document.getElementById("searchOverlay");
