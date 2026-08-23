@@ -248,6 +248,74 @@ header{
   border:1px solid var(--line);padding:12px 10px;
   font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.08em
 }
+.topic:hover{border-color:var(--orange);color:var(--orange)}
+.topic-button{
+  width:100%;background:transparent;color:inherit;text-align:left;cursor:pointer;
+  font:inherit;
+}
+.topic-button:focus-visible{
+  outline:2px solid var(--orange);outline-offset:2px;
+}
+.topic-modal{
+  position:fixed;inset:0;z-index:125;display:none;
+  align-items:center;justify-content:center;padding:24px;
+  background:rgba(0,0,0,.86);backdrop-filter:blur(9px);
+}
+.topic-modal.open{display:flex}
+.topic-panel{
+  width:min(980px,100%);max-height:min(820px,calc(100vh - 48px));
+  overflow:auto;border:1px solid var(--line2);background:var(--panel);
+  box-shadow:0 24px 80px rgba(0,0,0,.6);
+}
+.topic-panel-head{
+  position:sticky;top:0;z-index:2;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;padding:18px 20px;
+  background:rgba(13,13,11,.98);border-bottom:1px solid var(--line);
+}
+.topic-panel-head h3{
+  margin:0;font-family:Georgia,"Times New Roman",serif;
+  font-size:28px;line-height:1;
+}
+.topic-panel-head span{
+  display:block;margin-top:7px;color:var(--orange);font-size:8px;
+  font-weight:900;letter-spacing:.14em;text-transform:uppercase;
+}
+.topic-close{
+  flex:0 0 auto;width:34px;height:34px;border:1px solid var(--line2);
+  background:transparent;color:var(--text);cursor:pointer;font-size:20px;
+}
+.topic-close:hover{border-color:var(--orange);color:var(--orange)}
+.topic-body{padding:20px}
+.topic-results{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;
+}
+.topic-result-card{
+  border:1px solid var(--line2);background:var(--panel2);overflow:hidden;
+}
+.topic-result-img{
+  display:block;aspect-ratio:4/3;background:#151515;overflow:hidden;
+}
+.topic-result-img img{width:100%;height:100%;object-fit:cover}
+.topic-result-body{padding:14px 15px 17px}
+.topic-result-body h4{
+  margin:7px 0 8px;font-family:Georgia,"Times New Roman",serif;
+  font-size:18px;line-height:1.05;
+}
+.topic-result-body p{margin:0;color:var(--muted);font-size:10px;line-height:1.5}
+.topic-loading,.topic-empty{
+  grid-column:1/-1;border:1px dashed var(--line2);padding:40px;
+  text-align:center;color:var(--muted);font-size:11px;
+}
+@media(max-width:850px){
+  .topic-results{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:600px){
+  .topic-modal{padding:14px}
+  .topic-panel{max-height:calc(100vh - 28px)}
+  .topic-body{padding:14px}
+  .topic-results{grid-template-columns:1fr}
+  .topic-panel-head h3{font-size:24px}
+}
 .utility-item{
   width:100%;border:0;border-bottom:1px solid var(--line);
   background:transparent;color:#d3cfc6;text-align:left;cursor:pointer;
@@ -897,12 +965,12 @@ footer{
     <div class="widget">
       <div class="widget-head"><h3>Explore Topics</h3><span>Index</span></div>
       <div class="topic-grid">
-        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Mental%20Health">Mental Health</a>
-        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Society">Society</a>
-        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Lifestyle">Lifestyle</a>
-        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Education">Education</a>
-        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Culture">Culture</a>
-        <a class="topic" href="https://mirrorandillusionlm.blogspot.com/search/label/Mindfulness">Mindfulness</a>
+        <button class="topic topic-button" type="button" data-topic="Mental Health">Mental Health</button>
+        <button class="topic topic-button" type="button" data-topic="Society">Society</button>
+        <button class="topic topic-button" type="button" data-topic="Lifestyle">Lifestyle</button>
+        <button class="topic topic-button" type="button" data-topic="Education">Education</button>
+        <button class="topic topic-button" type="button" data-topic="Culture">Culture</button>
+        <button class="topic topic-button" type="button" data-topic="Mindfulness">Mindfulness</button>
       </div>
     </div>
 
@@ -914,6 +982,23 @@ footer{
   <div><span class="footer-brand">MIRROR//ILLUSION</span> · © <span id="year"></span></div>
   <div>Stories that matter · Ideas that stay · Built for thoughtful reading</div>
 </footer>
+
+<div class="topic-modal" id="topicModal" aria-hidden="true">
+  <div class="topic-panel" role="dialog" aria-modal="true" aria-labelledby="topicTitle">
+    <div class="topic-panel-head">
+      <div>
+        <h3 id="topicTitle">Explore Topic</h3>
+        <span id="topicSubtitle">Stories from Mirror//Illusion</span>
+      </div>
+      <button class="topic-close" id="topicClose" type="button" aria-label="Close topic">×</button>
+    </div>
+    <div class="topic-body">
+      <div class="topic-results" id="topicResults">
+        <div class="topic-loading">Loading stories…</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="utility-modal" id="utilityModal" aria-hidden="true">
   <div class="utility-panel" role="dialog" aria-modal="true" aria-labelledby="utilityTitle">
@@ -1352,6 +1437,111 @@ document.getElementById("mobileBtn").onclick=()=>{
 
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape") overlay.classList.remove("open");
+});
+
+/* =========================================================
+   EXPLORE TOPICS
+   Frontend-only topic browser. Blogger remains the CMS.
+   ========================================================= */
+
+const topicModal = document.getElementById("topicModal");
+const topicResults = document.getElementById("topicResults");
+const topicTitle = document.getElementById("topicTitle");
+const topicSubtitle = document.getElementById("topicSubtitle");
+const topicClose = document.getElementById("topicClose");
+
+function loadBloggerTopicFeed(label,maxResults,callback){
+  const callbackName =
+    "miTopic_" + Date.now() + "_" + Math.floor(Math.random()*100000);
+
+  const script=document.createElement("script");
+  script.id="mi-topic-"+Date.now();
+
+  window[callbackName]=function(data){
+    try{
+      callback((data && data.feed && data.feed.entry) || []);
+    }finally{
+      delete window[callbackName];
+      script.remove();
+    }
+  };
+
+  script.onerror=function(){
+    delete window[callbackName];
+    script.remove();
+    callback(null);
+  };
+
+  const params =
+    "?alt=json-in-script" +
+    "&orderby=published" +
+    "&max-results="+encodeURIComponent(maxResults) +
+    "&callback="+encodeURIComponent(callbackName);
+
+  script.src=BLOG_URL+"/feeds/posts/default/-/"+encodeURIComponent(label)+params;
+  document.body.appendChild(script);
+}
+
+function topicCard(post){
+  return `
+    <article class="topic-result-card">
+      <a class="topic-result-img" href="${esc(post.link)}">
+        ${post.image
+          ? `<img loading="lazy" src="${esc(post.image)}" alt="${esc(post.title)}">`
+          : `<div class="placeholder" style="min-height:0;height:100%">Mirror//Illusion</div>`}
+      </a>
+      <div class="topic-result-body">
+        <div class="eyebrow">${esc(post.category)} · ${esc(post.date)}</div>
+        <h4><a href="${esc(post.link)}">${esc(post.title)}</a></h4>
+        <p>${esc(post.text.slice(0,125))}${post.text.length>125?"…":""}</p>
+        <a class="read" href="${esc(post.link)}">Read story →</a>
+      </div>
+    </article>`;
+}
+
+function openTopic(label){
+  topicTitle.textContent=label;
+  topicSubtitle.textContent="Stories tagged "+label;
+  topicResults.innerHTML=`<div class="topic-loading">Loading ${esc(label)} stories…</div>`;
+  topicModal.classList.add("open");
+  topicModal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+
+  loadBloggerTopicFeed(label,30,entries=>{
+    if(entries===null){
+      topicResults.innerHTML=
+        `<div class="topic-empty">The topic stories could not be loaded. Please try again.</div>`;
+      return;
+    }
+
+    const posts=normalize(entries);
+
+    topicResults.innerHTML=posts.length
+      ? posts.map(topicCard).join("")
+      : `<div class="topic-empty">No published stories currently use the “${esc(label)}” topic.</div>`;
+  });
+}
+
+function closeTopic(){
+  topicModal.classList.remove("open");
+  topicModal.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+
+document.querySelectorAll(".topic-button").forEach(button=>{
+  button.addEventListener("click",()=>{
+    openTopic(button.dataset.topic);
+  });
+});
+
+topicClose.addEventListener("click",closeTopic);
+
+topicModal.addEventListener("click",e=>{
+  if(e.target===topicModal) closeTopic();
+});
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && topicModal.classList.contains("open")) closeTopic();
 });
 
 /* =========================================================
