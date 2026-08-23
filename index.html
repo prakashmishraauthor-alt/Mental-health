@@ -965,12 +965,16 @@ footer{
     <div class="widget">
       <div class="widget-head"><h3>Explore Topics</h3><span>Index</span></div>
       <div class="topic-grid">
-        <button class="topic topic-button" type="button" data-topic="Mental Health">Mental Health</button>
-        <button class="topic topic-button" type="button" data-topic="Society">Society</button>
-        <button class="topic topic-button" type="button" data-topic="Lifestyle">Lifestyle</button>
-        <button class="topic topic-button" type="button" data-topic="Education">Education</button>
-        <button class="topic topic-button" type="button" data-topic="Culture">Culture</button>
-        <button class="topic topic-button" type="button" data-topic="Mindfulness">Mindfulness</button>
+        <button class="topic topic-button" type="button" data-topic="and helps create a calmer">And Helps Create a Calmer</button>
+        <button class="topic topic-button" type="button" data-topic="boosts productivity">Boosts Productivity</button>
+        <button class="topic topic-button" type="button" data-topic="brain reset">Brain Reset</button>
+        <button class="topic topic-button" type="button" data-topic="breathing exercise">Breathing Exercise</button>
+        <button class="topic topic-button" type="button" data-topic="Building emotional resilience">Building Emotional Resilience</button>
+        <button class="topic topic-button" type="button" data-topic="circadian cycle">Circadian Cycle</button>
+        <button class="topic topic-button" type="button" data-topic="clinical study of mindfulness">Clinical Study of Mindfulness</button>
+        <button class="topic topic-button" type="button" data-topic="compassion">Compassion</button>
+        <button class="topic topic-button" type="button" data-topic="coping with stress">Coping With Stress</button>
+        <button class="topic topic-button" type="button" data-topic="cosmic science">Cosmic Science</button>
       </div>
     </div>
 
@@ -1451,35 +1455,22 @@ const topicSubtitle = document.getElementById("topicSubtitle");
 const topicClose = document.getElementById("topicClose");
 
 function loadBloggerTopicFeed(label,maxResults,callback){
-  const callbackName =
-    "miTopic_" + Date.now() + "_" + Math.floor(Math.random()*100000);
-
-  const script=document.createElement("script");
-  script.id="mi-topic-"+Date.now();
-
-  window[callbackName]=function(data){
-    try{
-      callback((data && data.feed && data.feed.entry) || []);
-    }finally{
-      delete window[callbackName];
-      script.remove();
+  /*
+     IMPORTANT:
+     Use the same general Blogger JSONP feed that already powers the site,
+     then filter its entries by Blogger label on the GitHub frontend.
+     This avoids relying on Blogger's /-/LABEL endpoint and keeps the
+     existing Blogger-to-GitHub mechanism intact.
+  */
+  loadBloggerFeed(1,100,entries=>{
+    if(entries===null){
+      callback(null);
+      return;
     }
-  };
 
-  script.onerror=function(){
-    delete window[callbackName];
-    script.remove();
-    callback(null);
-  };
-
-  const params =
-    "?alt=json-in-script" +
-    "&orderby=published" +
-    "&max-results="+encodeURIComponent(maxResults) +
-    "&callback="+encodeURIComponent(callbackName);
-
-  script.src=BLOG_URL+"/feeds/posts/default/-/"+encodeURIComponent(label)+params;
-  document.body.appendChild(script);
+    const matching=entries.filter(entry=>hasLabel(entry,label));
+    callback(matching);
+  });
 }
 
 function topicCard(post){
@@ -1501,7 +1492,7 @@ function topicCard(post){
 
 function openTopic(label){
   topicTitle.textContent=label;
-  topicSubtitle.textContent="Stories tagged "+label;
+  topicSubtitle.textContent="Blogger label · "+label;
   topicResults.innerHTML=`<div class="topic-loading">Loading ${esc(label)} stories…</div>`;
   topicModal.classList.add("open");
   topicModal.setAttribute("aria-hidden","false");
@@ -1518,7 +1509,7 @@ function openTopic(label){
 
     topicResults.innerHTML=posts.length
       ? posts.map(topicCard).join("")
-      : `<div class="topic-empty">No published stories currently use the “${esc(label)}” topic.</div>`;
+      : `<div class="topic-empty">No published stories currently use the “${esc(label)}” topic in the latest published posts.</div>`;
   });
 }
 
