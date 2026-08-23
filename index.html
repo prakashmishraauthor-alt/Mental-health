@@ -248,7 +248,95 @@ header{
   border:1px solid var(--line);padding:12px 10px;
   font-size:8px;font-weight:900;text-transform:uppercase;letter-spacing:.08em
 }
-.topic:hover{border-color:var(--orange);color:var(--orange)}
+.utility-item{
+  width:100%;border:0;border-bottom:1px solid var(--line);
+  background:transparent;color:#d3cfc6;text-align:left;cursor:pointer;
+}
+.utility-item:last-child{border-bottom:0}
+.utility-item:hover{color:var(--orange)}
+.utility-item:focus-visible{
+  outline:2px solid var(--orange);outline-offset:-2px;
+}
+.utility-modal{
+  position:fixed;inset:0;z-index:120;display:none;
+  align-items:center;justify-content:center;padding:24px;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(8px);
+}
+.utility-modal.open{display:flex}
+.utility-panel{
+  width:min(680px,100%);max-height:min(760px,calc(100vh - 48px));
+  overflow:auto;border:1px solid var(--line2);background:var(--panel);
+  box-shadow:0 20px 70px rgba(0,0,0,.55);
+}
+.utility-panel-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:20px;padding:18px 20px;border-bottom:1px solid var(--line);
+}
+.utility-panel-head h3{
+  margin:0;font-size:18px;font-weight:900;
+}
+.utility-panel-head span{
+  color:var(--orange);font-size:8px;font-weight:900;
+  letter-spacing:.16em;text-transform:uppercase;
+}
+.utility-close{
+  flex:0 0 auto;width:34px;height:34px;border:1px solid var(--line2);
+  background:transparent;color:var(--text);cursor:pointer;font-size:20px;
+}
+.utility-close:hover{border-color:var(--orange);color:var(--orange)}
+.utility-body{padding:22px}
+.utility-help{margin:0 0 14px;color:var(--muted);font-size:11px;line-height:1.6}
+.utility-textarea{
+  width:100%;min-height:210px;resize:vertical;
+  border:1px solid var(--line2);background:#090908;color:var(--text);
+  padding:15px;outline:none;font:13px/1.65 Arial,Helvetica,sans-serif;
+}
+.utility-textarea:focus{border-color:var(--orange)}
+.utility-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.utility-btn{
+  border:1px solid var(--line2);background:transparent;color:var(--text);
+  padding:10px 13px;font-size:8px;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+}
+.utility-btn:hover{border-color:var(--orange);color:var(--orange)}
+.utility-btn.primary{background:var(--orange);border-color:var(--orange);color:#080807}
+.utility-btn.primary:hover{background:transparent;color:var(--orange)}
+.utility-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:8px;margin-top:14px;
+}
+.utility-stat{
+  border:1px solid var(--line);background:var(--panel2);
+  padding:12px;text-align:center;
+}
+.utility-stat strong{display:block;font-size:20px;color:var(--text)}
+.utility-stat small{
+  display:block;margin-top:4px;color:var(--muted);
+  font-size:7px;text-transform:uppercase;letter-spacing:.1em;
+}
+.reflection-card{
+  border-left:2px solid var(--orange);padding:18px 20px;
+  background:var(--panel2);
+}
+.reflection-card blockquote{
+  margin:0;font-family:Georgia,"Times New Roman",serif;
+  font-size:26px;line-height:1.15;letter-spacing:-.02em;
+}
+.reflection-card .reflection-date{
+  margin-top:15px;color:var(--orange);font-size:8px;font-weight:900;
+  text-transform:uppercase;letter-spacing:.14em;
+}
+.reflection-prompt{
+  margin:18px 0 0;color:var(--muted);font-size:11px;line-height:1.65;
+}
+@media(max-width:600px){
+  .utility-modal{padding:14px}
+  .utility-panel{max-height:calc(100vh - 28px)}
+  .utility-body{padding:16px}
+  .utility-stats{grid-template-columns:repeat(2,1fr)}
+  .reflection-card blockquote{font-size:22px}
+}
+
 .empty{
   grid-column:1/-1;border:1px dashed var(--line2);
   padding:35px;color:var(--muted);text-align:center
@@ -792,10 +880,18 @@ footer{
 
     <div class="widget">
       <div class="widget-head"><h3>Utility Wizards</h3><span>Tools</span></div>
-      <a class="item" href="#"><span>Word Counter</span><small>TOOL →</small></a>
-      <a class="item" href="#"><span>Reading Time</span><small>TOOL →</small></a>
-      <a class="item" href="#"><span>Text Formatter</span><small>TOOL →</small></a>
-      <a class="item" href="#"><span>Daily Reflection</span><small>TOOL →</small></a>
+      <button class="item utility-item" type="button" data-utility="word-counter">
+        <span>Word Counter</span><small>TOOL →</small>
+      </button>
+      <button class="item utility-item" type="button" data-utility="reading-time">
+        <span>Reading Time</span><small>TOOL →</small>
+      </button>
+      <button class="item utility-item" type="button" data-utility="text-formatter">
+        <span>Text Formatter</span><small>TOOL →</small>
+      </button>
+      <button class="item utility-item" type="button" data-utility="daily-reflection">
+        <span>Daily Reflection</span><small>TOOL →</small>
+      </button>
     </div>
 
     <div class="widget">
@@ -818,6 +914,20 @@ footer{
   <div><span class="footer-brand">MIRROR//ILLUSION</span> · © <span id="year"></span></div>
   <div>Stories that matter · Ideas that stay · Built for thoughtful reading</div>
 </footer>
+
+<div class="utility-modal" id="utilityModal" aria-hidden="true">
+  <div class="utility-panel" role="dialog" aria-modal="true" aria-labelledby="utilityTitle">
+    <div class="utility-panel-head">
+      <div>
+        <h3 id="utilityTitle">Utility Wizard</h3>
+        <span id="utilityLabel">Tool</span>
+      </div>
+      <button class="utility-close" id="utilityClose" type="button" aria-label="Close utility">×</button>
+    </div>
+
+    <div class="utility-body" id="utilityBody"></div>
+  </div>
+</div>
 
 <div class="overlay" id="searchOverlay">
   <button class="close" id="closeSearch">×</button>
@@ -1242,6 +1352,206 @@ document.getElementById("mobileBtn").onclick=()=>{
 
 document.addEventListener("keydown",e=>{
   if(e.key==="Escape") overlay.classList.remove("open");
+});
+
+/* =========================================================
+   DAILY UTILITY WIZARDS
+   Frontend-only tools. These do not interact with Blogger.
+   ========================================================= */
+
+const utilityModal = document.getElementById("utilityModal");
+const utilityBody = document.getElementById("utilityBody");
+const utilityTitle = document.getElementById("utilityTitle");
+const utilityLabel = document.getElementById("utilityLabel");
+const utilityClose = document.getElementById("utilityClose");
+
+const reflections = [
+  {
+    quote:"What deserves your attention today?",
+    prompt:"Write down one thing that truly matters today, and one distraction you can consciously let go."
+  },
+  {
+    quote:"You do not have to solve everything at once.",
+    prompt:"Choose one small step that would make today feel a little lighter. Start there."
+  },
+  {
+    quote:"Clarity often begins with a quiet moment.",
+    prompt:"Spend two minutes without a screen. Notice what thought keeps returning."
+  },
+  {
+    quote:"Rest is part of progress, not the opposite of it.",
+    prompt:"Ask yourself whether you need more effort today—or better recovery."
+  },
+  {
+    quote:"A meaningful life is built from ordinary moments.",
+    prompt:"Name one ordinary moment from today that you would like to remember."
+  },
+  {
+    quote:"You can change direction without abandoning your journey.",
+    prompt:"Is there something you are continuing simply because you started it?"
+  },
+  {
+    quote:"Not every thought deserves to become a decision.",
+    prompt:"Notice one recurring thought today. Is it a fact, a fear, or simply a thought?"
+  }
+];
+
+function utilityShell(title, label, content){
+  utilityTitle.textContent=title;
+  utilityLabel.textContent=label;
+  utilityBody.innerHTML=content;
+  utilityModal.classList.add("open");
+  utilityModal.setAttribute("aria-hidden","false");
+  document.body.style.overflow="hidden";
+}
+
+function closeUtility(){
+  utilityModal.classList.remove("open");
+  utilityModal.setAttribute("aria-hidden","true");
+  document.body.style.overflow="";
+}
+
+function getTextStats(text){
+  const value=(text||"").trim();
+  const words=value ? value.split(/\s+/).length : 0;
+  const chars=(text||"").length;
+  const charsNoSpaces=(text||"").replace(/\s/g,"").length;
+  const sentences=value ? (value.match(/[.!?]+(?=\s|$)/g)||[]).length : 0;
+  const paragraphs=value ? value.split(/\n\s*\n/).filter(Boolean).length : 0;
+  return {words,chars,charsNoSpaces,sentences,paragraphs};
+}
+
+function statsMarkup(stats){
+  return `
+    <div class="utility-stats">
+      <div class="utility-stat"><strong>${stats.words}</strong><small>Words</small></div>
+      <div class="utility-stat"><strong>${stats.chars}</strong><small>Characters</small></div>
+      <div class="utility-stat"><strong>${stats.sentences}</strong><small>Sentences</small></div>
+      <div class="utility-stat"><strong>${stats.paragraphs}</strong><small>Paragraphs</small></div>
+    </div>`;
+}
+
+function openWordCounter(){
+  utilityShell("Word Counter","Writing tool",`
+    <p class="utility-help">Paste or type your text below. Counts update instantly.</p>
+    <textarea class="utility-textarea" id="utilityText" placeholder="Start writing or paste text here…"></textarea>
+    <div id="utilityStats">${statsMarkup(getTextStats(""))}</div>
+  `);
+  const text=document.getElementById("utilityText");
+  const stats=document.getElementById("utilityStats");
+  text.addEventListener("input",()=>{
+    stats.innerHTML=statsMarkup(getTextStats(text.value));
+  });
+  text.focus();
+}
+
+function openReadingTime(){
+  utilityShell("Reading Time","Reading tool",`
+    <p class="utility-help">Estimate how long it will take to read your text at an average pace of 200 words per minute.</p>
+    <textarea class="utility-textarea" id="utilityText" placeholder="Paste an article, essay or passage here…"></textarea>
+    <div id="readingResult" class="reflection-card" style="margin-top:14px">
+      <blockquote id="readingMinutes">0 min</blockquote>
+      <div class="reflection-date">Estimated reading time</div>
+    </div>
+  `);
+  const text=document.getElementById("utilityText");
+  const result=document.getElementById("readingMinutes");
+  text.addEventListener("input",()=>{
+    const words=getTextStats(text.value).words;
+    const minutes=words ? Math.max(1,Math.ceil(words/200)) : 0;
+    result.textContent=minutes ? `${minutes} min` : "0 min";
+  });
+  text.focus();
+}
+
+function titleCase(value){
+  return value.toLowerCase().replace(/\b([a-z])/g,match=>match.toUpperCase());
+}
+
+function openTextFormatter(){
+  utilityShell("Text Formatter","Formatting tool",`
+    <p class="utility-help">Quickly clean and transform text. Your original text stays in the editor until you change it.</p>
+    <textarea class="utility-textarea" id="utilityText" placeholder="Paste text here…"></textarea>
+    <div class="utility-actions">
+      <button class="utility-btn" type="button" data-format="upper">UPPERCASE</button>
+      <button class="utility-btn" type="button" data-format="lower">lowercase</button>
+      <button class="utility-btn" type="button" data-format="title">Title Case</button>
+      <button class="utility-btn" type="button" data-format="clean">Clean Spacing</button>
+      <button class="utility-btn primary" type="button" data-format="copy">Copy Text</button>
+    </div>
+  `);
+  const text=document.getElementById("utilityText");
+
+  utilityBody.querySelectorAll("[data-format]").forEach(button=>{
+    button.addEventListener("click",async()=>{
+      const action=button.dataset.format;
+      if(action==="upper") text.value=text.value.toUpperCase();
+      if(action==="lower") text.value=text.value.toLowerCase();
+      if(action==="title") text.value=titleCase(text.value);
+      if(action==="clean"){
+        text.value=text.value
+          .replace(/[ \t]+/g," ")
+          .replace(/\n{3,}/g,"\n\n")
+          .trim();
+      }
+      if(action==="copy"){
+        try{
+          await navigator.clipboard.writeText(text.value);
+          button.textContent="COPIED ✓";
+          setTimeout(()=>button.textContent="Copy Text",1200);
+        }catch(e){
+          text.select();
+          document.execCommand("copy");
+          button.textContent="COPIED ✓";
+          setTimeout(()=>button.textContent="Copy Text",1200);
+        }
+      }
+    });
+  });
+  text.focus();
+}
+
+function openDailyReflection(){
+  const now=new Date();
+  const dayOfYear=Math.floor(
+    (Date.UTC(now.getFullYear(),now.getMonth(),now.getDate()) -
+     Date.UTC(now.getFullYear(),0,0)) / 86400000
+  );
+  const item=reflections[dayOfYear % reflections.length];
+  const readable=now.toLocaleDateString(undefined,{
+    weekday:"long",year:"numeric",month:"long",day:"numeric"
+  });
+
+  utilityShell("Daily Reflection","Today",`
+    <div class="reflection-card">
+      <blockquote>“${esc(item.quote)}”</blockquote>
+      <div class="reflection-date">${esc(readable)}</div>
+    </div>
+    <p class="reflection-prompt">${esc(item.prompt)}</p>
+    <div class="utility-actions">
+      <button class="utility-btn primary" id="newReflection" type="button">Reflect on this →</button>
+    </div>
+  `);
+}
+
+document.querySelectorAll(".utility-item").forEach(item=>{
+  item.addEventListener("click",()=>{
+    const tool=item.dataset.utility;
+    if(tool==="word-counter") openWordCounter();
+    if(tool==="reading-time") openReadingTime();
+    if(tool==="text-formatter") openTextFormatter();
+    if(tool==="daily-reflection") openDailyReflection();
+  });
+});
+
+utilityClose.addEventListener("click",closeUtility);
+
+utilityModal.addEventListener("click",e=>{
+  if(e.target===utilityModal) closeUtility();
+});
+
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape" && utilityModal.classList.contains("open")) closeUtility();
 });
 
 /* START */
