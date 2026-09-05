@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEROBIC ENGINE // MIRROR & ILLUSION</title>
+  <style>
+    :root {
+      --bg: #070706;
+      --surface: #0e0f12;
+      --surface-glass: rgba(18, 20, 26, 0.65);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(255, 90, 0, 0.4);
+      --text-main: #f0f2f5;
+      --text-muted: #8b909a;
+      --accent-orange: #ff5a00;
+      --accent-glow: rgba(255, 90, 0, 0.25);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    header {
+      backdrop-filter: blur(20px);
+      background: rgba(7, 7, 6, 0.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand span { color: var(--accent-orange); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+
+    .nav-links a.active, .nav-links a:hover { color: var(--accent-orange); }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #ff7a22, var(--accent-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 620px;
+    }
+
+    /* Section Component */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 60px 0 30px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .section-tag {
+      color: var(--accent-orange);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* Interactive Heart Rate Zone Calculator */
+    .calc-box {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-bottom: 40px;
+    }
+
+    .calc-inputs {
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .input-group input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-size: 16px;
+      outline: none;
+      width: 160px;
+    }
+
+    .calc-btn {
+      background: var(--accent-orange);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .calc-btn:hover {
+      box-shadow: 0 0 20px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .zones-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .zone-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .zone-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+    }
+
+    .zone-bpm {
+      font-size: 24px;
+      font-weight: 900;
+      margin: 6px 0;
+    }
+
+    .zone-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Interval Timer Widget */
+    .timer-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .timer-display {
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: -2px;
+      font-variant-numeric: tabular-nums;
+      color: var(--accent-orange);
+      margin: 16px 0;
+    }
+
+    .timer-status {
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 12px 24px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: var(--transition);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent-orange);
+      color: var(--accent-orange);
+    }
+
+    /* Training Modalities Grid (Responsive Layout) */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .modality-card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+
+    .modality-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+    }
+
+    .modality-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .modality-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .modality-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .zones-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-orb"></div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="mirror-illusion.html" class="brand">MIRROR<span>//</span>ILLUSION</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lifestyle.html">My Lifestyle</a></li>
+        <li><a href="aerobic.html" class="active">Aerobic Engine</a></li>
+        <li><a href="#">body.html</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title">AEROBIC <em>ENGINE</em>.</h1>
+      <p class="hero-desc">Scientific conditioning, metabolic zone programming, and cardiovascular endurance tracking designed for longevity and optimal physical energy output.</p>
+    </section>
+
+    <!-- Interactive Heart Rate Calculator -->
+    <div class="section-head">
+      <h2>Heart Rate Zone Calculator</h2>
+      <span class="section-tag">Metabolic Programming</span>
+    </div>
+
+    <div class="calc-box">
+      <div class="calc-inputs">
+        <div class="input-group">
+          <label for="userAge">Your Age</label>
+          <input type="number" id="userAge" value="28" min="15" max="90">
+        </div>
+        <div class="input-group">
+          <label for="restHR">Resting HR (BPM)</label>
+          <input type="number" id="restHR" value="60" min="40" max="100">
+        </div>
+        <button class="calc-btn" onclick="calculateZones()">Calculate Zones</button>
+      </div>
+
+      <div class="zones-grid">
+        <div class="zone-card">
+          <span class="zone-tag">Zone 2 // Aerobic Base</span>
+          <div class="zone-bpm" id="z2Val">125 - 142 BPM</div>
+          <p class="zone-desc">Mitochondrial growth, fat oxidation, and sustainable endurance building.</p>
+        </div>
+        <div class="zone-card">
+          <span class="zone-tag">Zone 3 // Tempo</span>
+          <div class="zone-bpm" id="z3Val">143 - 158 BPM</div>
+          <p class="zone-desc">Aerobic capacity enhancement and lactate clearance development.</p>
+        </div>
+        <div class="zone-card">
+          <span class="zone-tag">Zone 4 // Anaerobic Threshold</span>
+          <div class="zone-bpm" id="z4Val">159 - 175 BPM</div>
+          <p class="zone-desc">High-intensity cardiovascular resilience and peak VO2 Max push.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interval Protocol Timer -->
+    <div class="section-head">
+      <h2>Zone 2 Interval Timer</h2>
+      <span class="section-tag">Interactive Tool</span>
+    </div>
+
+    <div class="timer-card">
+      <div class="timer-status" id="timerLabel">Ready to begin</div>
+      <div class="timer-display" id="timerClock">20:00</div>
+      <div class="timer-controls">
+        <button class="calc-btn" onclick="startTimer()">Start Protocol</button>
+        <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Training Modalities -->
+    <div class="section-head">
+      <h2>Core & Advanced Protocols</h2>
+      <span class="section-tag">Methodology</span>
+    </div>
+
+    <div class="grid-3">
+      <!-- Original Core Protocols -->
+      <div class="modality-card">
+        <div class="modality-icon">🏃‍♂️</div>
+        <h3 class="modality-title">Zone 2 Running</h3>
+        <p class="modality-desc">Low-intensity steady state (LISS) training focusing on nose-breathing pace to maximize cellular lipid utilization.</p>
+      </div>
+
+      <div class="modality-card">
+        <div class="modality-icon">🚴‍♂️</div>
+        <h3 class="modality-title">Cadence Cycling</h3>
+        <p class="modality-desc">High-rpm, smooth-pedaling indoor or outdoor intervals to build cardiovascular volume without heavy joint impact.</p>
+      </div>
+
+      <div class="modality-card">
+        <div class="modality-icon">🏊‍♂️</div>
+        <h3 class="modality-title">Rhythmic Swimming</h3>
+        <p class="modality-desc">Full-body active recovery emphasizing breath control, core stabilization, and systemic oxygen distribution.</p>
+      </div>
+
+      <!-- Extra Exercise Protocols -->
+      <div class="modality-card">
+        <div class="modality-icon">⚡</div>
+        <h3 class="modality-title">HIIT Tabata Sweeps</h3>
+        <p class="modality-desc">8 rounds of 20-second maximal effort sprint intervals followed by 10 seconds of rest. Designed for rapid anaerobic threshold adaptation.</p>
+      </div>
+
+      <div class="modality-card">
+        <div class="modality-icon">🛷</div>
+        <h3 class="modality-title">Sled Pushes & Carries</h3>
+        <p class="modality-desc">Heavy concentric-only conditioning paired with farmer carries. Builds leg drive and cardiovascular toughness with zero eccentric muscle damage.</p>
+      </div>
+
+      <div class="modality-card">
+        <div class="modality-icon">🚣‍♂️</div>
+        <h3 class="modality-title">Rowing Pyramids</h3>
+        <p class="modality-desc">Structured ergometer intervals (250m, 500m, 750m, 500m, 250m) targeting posterior chain power and stroke efficiency under fatigue.</p>
+      </div>
+
+      <div class="modality-card">
+        <div class="modality-icon">🎒</div>
+        <h3 class="modality-title">Rucking Base Building</h3>
+        <p class="modality-desc">Weighted pack walking at a 15 min/mile pace. Builds Zone 2 endurance, posture endurance, and bone density simultaneously.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function calculateZones() {
+      const age = parseInt(document.getElementById('userAge').value) || 28;
+      const rest = parseInt(document.getElementById('restHR').value) || 60;
+      
+      const maxHR = 220 - age;
+      const hrr = maxHR - rest;
+
+      const z2Low = Math.round((hrr * 0.6) + rest);
+      const z2High = Math.round((hrr * 0.7) + rest);
+      const z3High = Math.round((hrr * 0.8) + rest);
+      const z4High = Math.round((hrr * 0.9) + rest);
+
+      document.getElementById('z2Val').innerText = `${z2Low} - ${z2High} BPM`;
+      document.getElementById('z3Val').innerText = `${z2High + 1} - ${z3High} BPM`;
+      document.getElementById('z4Val').innerText = `${z3High + 1} - ${z4High} BPM`;
+    }
+
+    let timerInterval = null;
+    let secondsLeft = 1200;
+
+    function startTimer() {
+      if (timerInterval) return;
+      document.getElementById('timerLabel').innerText = "Session Active — Maintain Zone 2";
+      
+      timerInterval = setInterval(() => {
+        if (secondsLeft <= 0) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+          document.getElementById('timerLabel').innerText = "Protocol Complete";
+          return;
+        }
+        secondsLeft--;
+        updateClockDisplay();
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      secondsLeft = 1200;
+      document.getElementById('timerLabel').innerText = "Ready to begin";
+      updateClockDisplay();
+    }
+
+    function updateClockDisplay() {
+      const mins = Math.floor(secondsLeft / 60);
+      const secs = secondsLeft % 60;
+      document.getElementById('timerClock').innerText = 
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+  </script>
+</body>
+</html>
