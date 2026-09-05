@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY BREATH | Body Mastery | Mirror and Illusion</title>
+  <style>
+    /* =========================================================
+       GLOBAL & NEURAL THEME STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: #03080d;
+      color: #e0f2fe;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(14, 116, 144, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+      background-attachment: fixed;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    /* Main Frame Viewport */
+    .app-viewport {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1280px;
+      min-height: 850px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(8, 15, 23, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 80px rgba(6, 182, 212, 0.12);
+      backdrop-filter: blur(20px);
+      margin: 20px;
+      padding: 30px;
+      overflow: hidden;
+    }
+
+    /* Header Nav */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    }
+
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .brand-title span {
+      color: #06b6d4;
+    }
+
+    .nav-breadcrumbs {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .nav-link-btn {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: rgba(15, 23, 42, 0.6);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link-btn:hover {
+      color: #ffffff;
+      border-color: #38bdf8;
+      background: rgba(6, 182, 212, 0.25);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Main Hero Split Content */
+    .breath-hero {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      margin-top: 30px;
+      align-items: center;
+    }
+
+    .hero-text h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-text p {
+      font-size: 0.95rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* Metrics Bar */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .metric-card {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      padding: 16px;
+      border-radius: 12px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 4px;
+    }
+
+    .metric-label {
+      font-size: 0.7rem;
+      color: #64748b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    /* =========================================================
+       INTERACTIVE BREATHING PACER WIDGET
+       ========================================================= */
+    .breath-trainer-box {
+      background: rgba(4, 10, 18, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      box-shadow: inset 0 0 30px rgba(6, 182, 212, 0.08);
+    }
+
+    .mode-selector {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 24px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px;
+      border-radius: 30px;
+      border: 1px solid rgba(56, 189, 248, 0.15);
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      padding: 8px 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .mode-btn.active {
+      background: rgba(6, 182, 212, 0.3);
+      color: #38bdf8;
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+    }
+
+    /* Pulsing Orb Container */
+    .visual-orb-wrapper {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 10px 0 24px;
+    }
+
+    .orb-ring {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px dashed rgba(56, 189, 248, 0.3);
+      animation: spinRing 30s linear infinite;
+    }
+
+    @keyframes spinRing {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .orb-core {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #38bdf8 0%, #06b6d4 50%, rgba(2, 6, 23, 0.8) 100%);
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+      transition: transform 1s ease-in-out;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .orb-status {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+    }
+
+    .counter-display {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #38bdf8;
+      margin-bottom: 16px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn-timer-trigger {
+      padding: 12px 32px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #03080d;
+      background: linear-gradient(135deg, #38bdf8, #06b6d4);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .btn-timer-trigger:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.7);
+    }
+
+    /* =========================================================
+       INFORMATIONAL CARDS
+       ========================================================= */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #f8fafc;
+      text-transform: uppercase;
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .info-card {
+      background: rgba(13, 25, 41, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-4px);
+      background: rgba(18, 38, 63, 0.9);
+      box-shadow: 0 10px 25px rgba(6, 182, 212, 0.2);
+    }
+
+    .info-card h3 {
+      font-size: 0.95rem;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+
+    .info-card p {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    /* Footer Controls */
+    .page-footer {
+      margin-top: auto;
+      padding-top: 30px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .breath-hero { grid-template-columns: 1fr; }
+      .info-grid { grid-template-columns: 1fr; }
+      .metrics-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-viewport">
+    
+    <!-- HEADER NAV -->
+    <header class="page-header">
+      <div class="brand-title">MIRROR<span>//</span>ILLUSION — BODY</div>
+      
+      <div class="nav-breadcrumbs">
+        <a href="../body.html" class="nav-link-btn">
+          ← BACK TO BODY
+        </a>
+        <a href="../index.html" class="nav-link-btn">
+          HOME
+        </a>
+      </div>
+    </header>
+
+    <!-- MAIN HERO SECTION -->
+    <section class="breath-hero">
+      
+      <!-- HERO TEXT & METRICS -->
+      <div class="hero-text">
+        <h1>
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+            <path d="M6 15a6 6 0 1 0 12 0c0-3.3-6-9-6-9s-6 5.7-6 9z"/>
+            <path d="M12 12v4"/>
+          </svg>
+          MY BREATH
+        </h1>
+        <p>
+          Breath is the bridge between the conscious autonomic system and metabolic vitality. By mastering respiratory cadence, oxygen uptake, and CO₂ tolerance, you regulate stress, activate parasympathetic recovery, and unlock peak neurological clarity.
+        </p>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-value">20,000+</div>
+            <div class="metric-label">Daily Cycles</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">6 L/min</div>
+            <div class="metric-label">Resting Flow</div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-value">100%</div>
+            <div class="metric-label">Autonomic Control</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERACTIVE BREATH PACER WIDGET -->
+      <div class="breath-trainer-box">
+        <div class="mode-selector">
+          <button class="mode-btn active" onclick="setMode('box')">BOX (4-4-4-4)</button>
+          <button class="mode-btn" onclick="setMode('relax')">RELAX (4-7-8)</button>
+          <button class="mode-btn" onclick="setMode('power')">POWER (In/Out)</button>
+        </div>
+
+        <div class="visual-orb-wrapper">
+          <div class="orb-ring"></div>
+          <div class="orb-core" id="pacerOrb">
+            <span class="orb-status" id="orbStatus">READY</span>
+          </div>
+        </div>
+
+        <div class="counter-display" id="timerCount">0</div>
+
+        <button class="btn-timer-trigger" id="startBtn" onclick="toggleTimer()">START SESSION</button>
+      </div>
+
+    </section>
+
+    <!-- PILLARS OF BREATH MASTERY -->
+    <div class="section-title">PILLARS OF RESPIRATORY MASTERY</div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <h3>1. Diaphragmatic Priming</h3>
+        <p>Engage the primary respiratory muscle rather than superficial chest breathing. Expands lower lung lobes for superior gas exchange efficiency.</p>
+      </div>
+      <div class="info-card">
+        <h3>2. Parasympathetic Shift</h3>
+        <p>Extended exhales stimulate the vagus nerve, slowing heart rate variability (HRV) and dropping acute sympathetic cortisol spikes instantly.</p>
+      </div>
+      <div class="info-card">
+        <h3>3. Nasal Nitric Oxide</h3>
+        <p>Nasal inhalation releases nitric oxide, expanding blood vessels, filtering pathogens, and increasing cellular oxygen delivery by up to 18%.</p>
+      </div>
+    </div>
+
+    <!-- FOOTER LINK -->
+    <footer class="page-footer">
+      <a href="../body.html" class="nav-link-btn" style="padding: 12px 30px;">RETURN TO BODY SYSTEM HUB</a>
+    </footer>
+
+  </div>
+
+  <script>
+    // =========================================================
+    // BREATHWORK PACER ENGINE
+    // =========================================================
+    const modes = {
+      box: [
+        { label: 'INHALE', time: 4, scale: 1.8 },
+        { label: 'HOLD', time: 4, scale: 1.8 },
+        { label: 'EXHALE', time: 4, scale: 1.0 },
+        { label: 'HOLD', time: 4, scale: 1.0 }
+      ],
+      relax: [
+        { label: 'INHALE', time: 4, scale: 1.8 },
+        { label: 'HOLD', time: 7, scale: 1.8 },
+        { label: 'EXHALE', time: 8, scale: 1.0 }
+      ],
+      power: [
+        { label: 'POWER IN', time: 2, scale: 1.9 },
+        { label: 'RELEASE', time: 2, scale: 1.0 }
+      ]
+    };
+
+    let activeMode = 'box';
+    let isRunning = false;
+    let currentStep = 0;
+    let secondsLeft = 0;
+    let timerInterval = null;
+
+    function setMode(modeKey) {
+      if (isRunning) toggleTimer();
+      activeMode = modeKey;
+      document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      document.getElementById('orbStatus').innerText = 'READY';
+      document.getElementById('timerCount').innerText = '0';
+      document.getElementById('pacerOrb').style.transform = 'scale(1)';
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('startBtn');
+      if (isRunning) {
+        clearInterval(timerInterval);
+        isRunning = false;
+        btn.innerText = 'START SESSION';
+        document.getElementById('orbStatus').innerText = 'PAUSED';
+        document.getElementById('pacerOrb').style.transform = 'scale(1)';
+      } else {
+        isRunning = true;
+        btn.innerText = 'STOP SESSION';
+        currentStep = 0;
+        startPhase();
+        timerInterval = setInterval(runTick, 1000);
+      }
+    }
+
+    function startPhase() {
+      const phase = modes[activeMode][currentStep];
+      secondsLeft = phase.time;
+      document.getElementById('orbStatus').innerText = phase.label;
+      document.getElementById('timerCount').innerText = secondsLeft;
+      
+      const orb = document.getElementById('pacerOrb');
+      orb.style.transition = `transform ${phase.time}s ease-in-out`;
+      orb.style.transform = `scale(${phase.scale})`;
+    }
+
+    function runTick() {
+      secondsLeft--;
+      document.getElementById('timerCount').innerText = secondsLeft;
+
+      if (secondsLeft <= 0) {
+        currentStep = (currentStep + 1) % modes[activeMode].length;
+        startPhase();
+      }
+    }
+
+    // =========================================================
+    // BACKGROUND NEURAL CANVAS
+    // =========================================================
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      radius: Math.random() * 2 + 1
+    }));
+
+    function drawBgParticles() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+        bgCtx.fill();
+      });
+      requestAnimationFrame(drawBgParticles);
+    }
+    drawBgParticles();
+  </script>
+</body>
+</html>
