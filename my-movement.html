@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY MOVEMENT | Body Mastery | Mirror and Illusion</title>
+  <style>
+    /* =========================================================
+       GLOBAL & NEURAL THEME STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: #03080d;
+      color: #e0f2fe;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(14, 116, 144, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+      background-attachment: fixed;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.35;
+    }
+
+    /* Main Viewport Container */
+    .app-viewport {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1280px;
+      min-height: 850px;
+      display: flex;
+      flex-direction: column;
+      background: rgba(8, 15, 23, 0.88);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 80px rgba(6, 182, 212, 0.12);
+      backdrop-filter: blur(20px);
+      margin: 20px;
+      padding: 35px;
+      overflow: hidden;
+    }
+
+    /* Header Nav */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+    }
+
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .brand-title span {
+      color: #06b6d4;
+    }
+
+    .nav-breadcrumbs {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .nav-link-btn {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: rgba(15, 23, 42, 0.6);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-link-btn:hover {
+      color: #ffffff;
+      border-color: #38bdf8;
+      background: rgba(6, 182, 212, 0.25);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Hero Headline */
+    .hero-banner {
+      margin-top: 25px;
+      margin-bottom: 30px;
+    }
+
+    .hero-banner h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(56, 189, 248, 0.5);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .hero-banner p {
+      font-size: 1.05rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      max-width: 900px;
+    }
+
+    .hero-banner strong {
+      color: #38bdf8;
+    }
+
+    /* =========================================================
+       THE REALITY WARNING CALLOUT
+       ========================================================= */
+    .warning-card {
+      background: linear-gradient(135deg, rgba(225, 29, 72, 0.12), rgba(15, 23, 42, 0.8));
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 35px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      box-shadow: 0 10px 30px rgba(225, 29, 72, 0.1);
+    }
+
+    .warning-icon {
+      width: 42px;
+      height: 42px;
+      background: rgba(244, 63, 94, 0.2);
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .warning-content h3 {
+      font-size: 1.1rem;
+      color: #fecdd3;
+      margin-bottom: 6px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .warning-content p {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+    }
+
+    /* =========================================================
+       STATE-BASED MOVEMENT PRESCRIPTION WIDGET
+       ========================================================= */
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #f8fafc;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(56, 189, 248, 0.15);
+    }
+
+    .prescriber-box {
+      background: rgba(4, 10, 18, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 35px;
+    }
+
+    .state-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .state-btn {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      color: #94a3b8;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .state-btn:hover {
+      border-color: #38bdf8;
+      color: #e0f2fe;
+    }
+
+    .state-btn.active {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(99, 102, 241, 0.3));
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .rx-display {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 14px;
+      padding: 24px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .rx-details h4 {
+      font-size: 1.2rem;
+      color: #38bdf8;
+      margin-bottom: 8px;
+    }
+
+    .rx-details p {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .rx-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      background: rgba(6, 182, 212, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .rx-protocol-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .rx-protocol-list li {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .rx-protocol-list li::before {
+      content: '⚡';
+      position: absolute;
+      left: 0;
+      font-size: 0.75rem;
+    }
+
+    /* =========================================================
+       DAILY ESSENTIAL MOVEMENTS GRID
+       ========================================================= */
+    .grid-movements {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 30px;
+    }
+
+    .movement-card {
+      background: rgba(13, 25, 41, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 14px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .movement-card:hover {
+      border-color: #38bdf8;
+      transform: translateY(-4px);
+      background: rgba(18, 38, 63, 0.9);
+      box-shadow: 0 10px 25px rgba(6, 182, 212, 0.2);
+    }
+
+    .movement-number {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: #06b6d4;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+    }
+
+    .movement-card h3 {
+      font-size: 1rem;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+    }
+
+    .movement-card p {
+      font-size: 0.78rem;
+      color: #94a3b8;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+
+    .movement-benefit {
+      margin-top: auto;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #38bdf8;
+      border-top: 1px dashed rgba(56, 189, 248, 0.2);
+      padding-top: 10px;
+    }
+
+    /* Footer Controls */
+    .page-footer {
+      margin-top: auto;
+      padding-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .state-buttons { grid-template-columns: 1fr 1fr; }
+      .rx-display { grid-template-columns: 1fr; }
+      .grid-movements { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .state-buttons { grid-template-columns: 1fr; }
+      .grid-movements { grid-template-columns: 1fr; }
+      .hero-banner h1 { font-size: 2.1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-viewport">
+    
+    <!-- HEADER NAV -->
+    <header class="page-header">
+      <div class="brand-title">MIRROR<span>//</span>ILLUSION — BODY</div>
+      
+      <div class="nav-breadcrumbs">
+        <a href="/body.html" class="nav-link-btn">
+          ← BACK TO BODY
+        </a>
+        <a href="index.html" class="nav-link-btn">
+          HOME
+        </a>
+      </div>
+    </header>
+
+    <!-- HERO BANNER -->
+    <section class="hero-banner">
+      <h1>
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
+          <circle cx="15" cy="4" r="2"/>
+          <path d="M13 8l-4 3 2 4 4-2M7 13l3 2M16 11l4-2M10 21l2-4"/>
+        </svg>
+        MY MOVEMENT
+      </h1>
+      <p>
+        Movement is not merely physical exercise; it is <strong>neurological medicine</strong>. When failure strikes, mental darkness takes over, or stress peaks, sitting still amplifies depression and accelerates metabolic decay. Movement shifts your physiology instantly—flushing cortisol, priming dopamine, and preserving youth.
+      </p>
+    </section>
+
+    <!-- REALITY WARNING CARD -->
+    <div class="warning-card">
+      <div class="warning-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2">
+          <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+          <line x1="12" y1="9" x2="12" y2="13"/>
+          <line x1="12" y1="17" x2="12.01" y2="17"/>
+        </svg>
+      </div>
+      <div class="warning-content">
+        <h3>The Rest Trap & Accelerated Aging</h3>
+        <p>
+          Resting excessively during stress or aging is a silent trap. Prolonged inactivity leads to muscle loss, joint calcification, systemic inflammation, and metabolic diseases. <strong>Motion is life; stillness under chronic stress is decay.</strong>
+        </p>
+      </div>
+    </div>
+
+    <!-- INTERACTIVE MOVEMENT RX WIDGET -->
+    <div class="section-title">PRESCRIBE MOVEMENT BY MENTAL & PHYSICAL STATE</div>
+
+    <div class="prescriber-box">
+      <div class="state-buttons">
+        <button class="state-btn active" onclick="setRx('stress')">HIGH STRESS / ANXIETY</button>
+        <button class="state-btn" onclick="setRx('lowness')">MENTAL LOWNESS / DEPRESSION</button>
+        <button class="state-btn" onclick="setRx('failure')">FAILURE / OVERWHELM</button>
+        <button class="state-btn" onclick="setRx('aging')">STIFFNESS / AGING PRESERVATION</button>
+      </div>
+
+      <div class="rx-display" id="rxDisplay">
+        <!-- JS inserts content here -->
+      </div>
+    </div>
+
+    <!-- 4 PRIMAL DAILY MOVEMENTS -->
+    <div class="section-title">THE 4 NON-NEGOTIABLE MOVEMENTS FOR VITALITY</div>
+
+    <div class="grid-movements">
+      <div class="movement-card">
+        <div class="movement-number">01 // SPINAL WAVE</div>
+        <h3>Spinal Decompression</h3>
+        <p>Gently wave the spine in cat-cow or standing rolls to re-hydrate intervertebral discs and release central nervous system tension.</p>
+        <div class="movement-benefit">Restores CNS fluid flow & posture.</div>
+      </div>
+
+      <div class="movement-card">
+        <div class="movement-number">02 // DEAD HANG</div>
+        <h3>Bar Suspension</h3>
+        <p>Hang passively from a pull-up bar for 60 seconds. Opens shoulder capsules, decompresses vertebrae, and boosts grip strength.</p>
+        <div class="movement-benefit">Key predictor of longevity.</div>
+      </div>
+
+      <div class="movement-card">
+        <div class="movement-number">03 // PRIMAL CRAWL</div>
+        <h3>Quadrupedal Locomotion</h3>
+        <p>Crawl on hands and feet across the floor. Re-wires contralateral neurological cross-patterning and builds shoulder resilience.</p>
+        <div class="movement-benefit">Re-engages deep brain-body links.</div>
+      </div>
+
+      <div class="movement-card">
+        <div class="movement-number">04 // DEEP SQUAT HOLD</div>
+        <h3>Ground Transition</h3>
+        <p>Spend 5 minutes accumulated daily in a full deep squat. Mobilizes ankles, hips, and lower back to prevent age-related mobility loss.</p>
+        <div class="movement-benefit">Protects mobility into old age.</div>
+      </div>
+    </div>
+
+    <!-- FOOTER LINK -->
+    <footer class="page-footer">
+      <a href="body.html" class="nav-link-btn" style="padding: 12px 30px;">RETURN TO BODY SYSTEM HUB</a>
+    </footer>
+
+  </div>
+
+  <script>
+    // =========================================================
+    // MOVEMENT PRESCRIPTION DATA
+    // =========================================================
+    const rxData = {
+      stress: {
+        title: "Rhythmic Cadence & Grounding Motion",
+        tag: "Cortisol Burner Protocol",
+        desc: "When overwhelmed by acute stress, intense high-impact cardio can spike cortisol further. Shift to rhythmic, continuous movement to discharge adrenaline without overburdening your nervous system.",
+        protocol: [
+          "Brisk 20-minute outdoor zone-1 walk in nature without a phone.",
+          "Rhythmic arm swings and torso rotations.",
+          "Long, slow exhales synchronized with foot strikes."
+        ]
+      },
+      lowness: {
+        title: "Explosive Postural Expansion",
+        tag: "Dopamine & Mood Primer",
+        desc: "Mental lowness collapses physical posture (rounded shoulders, shallow chest). Changing posture manually changes brain chemistry by signaling safety and vitality to the brainstem.",
+        protocol: [
+          "Standing tall with overhead chest openers and wall slides.",
+          "5 x 10-second fast-burst jumping jacks or high knees.",
+          "Outdoor sunlight exposure during movement to reset serotonin."
+        ]
+      },
+      failure: {
+        title: "Heavy Isometric Grounding",
+        tag: "Mental Toughness & Focus",
+        desc: "When experiencing failure or defeat, the mind cycles through intrusive thoughts. Heavy isometric holds require total neural focus, pulling your awareness immediately into the present moment.",
+        protocol: [
+          "Wall sit hold to failure (focus completely on muscle heat).",
+          "Plank hold focusing on full body tension and steady breathing.",
+          "Push-up lowers: 5-second slow eccentric down."
+        ]
+      },
+      aging: {
+        title: "Multi-Planar Joint Mobility",
+        tag: "Longevity & Anti-Calcification",
+        desc: "Aging speeds up when joints are kept in static, repetitive planes. Moving through full ranges of motion lubricates cartilage with synovial fluid and prevents stiffening.",
+        protocol: [
+          "Controlled Articular Rotations (CARs) for neck, shoulders, hips.",
+          "Daily floor-sitting in various positions (cross-legged, 90/90).",
+          "Barefoot balance drills on one leg to strengthen feet and ankles."
+        ]
+      }
+    };
+
+    function setRx(key) {
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const data = rxData[key];
+      const display = document.getElementById('rxDisplay');
+
+      display.innerHTML = `
+        <div class="rx-details">
+          <span class="rx-tag">${data.tag}</span>
+          <h4 style="margin-top:10px;">${data.title}</h4>
+          <p>${data.desc}</p>
+        </div>
+        <div>
+          <ul class="rx-protocol-list">
+            ${data.protocol.map(item => `<li>${item}</li>`).join('')}
+          </ul>
+        </div>
+      `;
+    }
+
+    // Default initialization
+    setRx('stress');
+
+    // =========================================================
+    // BACKGROUND NEURAL CANVAS
+    // =========================================================
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      radius: Math.random() * 2 + 1
+    }));
+
+    function drawBgParticles() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+        bgCtx.fill();
+      });
+      requestAnimationFrame(drawBgParticles);
+    }
+    drawBgParticles();
+  </script>
+</body>
+</html>
