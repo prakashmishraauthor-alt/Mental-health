@@ -501,6 +501,40 @@
         border-top: 1px solid rgba(56, 189, 248, 0.15);
       }
     }
+    .btn-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #38bdf8;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2));
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.btn-home:hover {
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), rgba(99, 102, 241, 0.4));
+  color: #ffffff;
+  border-color: #38bdf8;
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+  transform: translateY(-2px);
+}
+
+.icon-home {
+  transition: transform 0.3s ease;
+}
+
+.btn-home:hover .icon-home {
+  transform: scale(1.1);
+}
   </style>
 </head>
 <body>
@@ -671,7 +705,20 @@
       </div>
     </aside>
   </div>
+<a href="index.html" class="btn-home">
+  <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 1Here is the HTML and CSS code for a styled **Home** button linked to `index.html`:
 
+### HTML
+```html
+<a href="index.html" class="btn-home">
+  <svg class="icon-home" viewBox="0 0 24 24" width="18" height="18">
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span>Home</span>
+</a>
   <!-- JavaScript Logic -->
   <script>
     // ARTICLE DATA FOR JOURNAL SIDEBAR
