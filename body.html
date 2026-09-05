@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BODY | Mirror and Illusion</title>
+  <style>
+    /* =========================================================
+       RESET & BASE STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+      user-select: none;
+    }
+
+    body {
+      background-color: #03080d;
+      color: #e0f2fe;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(14, 116, 144, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+      background-attachment: fixed;
+    }
+
+    /* Background Neural Canvas Simulation */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    /* Main Container Frame */
+    .app-viewport {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1440px;
+      min-height: 900px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      background: rgba(8, 15, 23, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 80px rgba(6, 182, 212, 0.1);
+      backdrop-filter: blur(20px);
+      margin: 20px;
+      overflow: hidden;
+    }
+
+    /* =========================================================
+       MAIN STAGE (LEFT / CENTER)
+       ========================================================= */
+    .main-stage {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 30px 30px;
+      border-right: 1px solid rgba(56, 189, 248, 0.12);
+    }
+
+    /* Header Navigation Bar */
+    .top-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .center-logo-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+    }
+
+    .center-logo-box .logo-text {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 6px;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .center-logo-box .logo-icon {
+      width: 24px;
+      height: 24px;
+      filter: drop-shadow(0 0 8px #06b6d4);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      padding-bottom: 4px;
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: #38bdf8;
+      text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: #06b6d4;
+      box-shadow: 0 0 8px #06b6d4;
+      border-radius: 2px;
+    }
+
+    /* =========================================================
+       RADIAL HERO SECTION
+       ========================================================= */
+    .hero-radial-container {
+      position: relative;
+      width: 680px;
+      height: 620px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Central Rotating Hero Circle */
+    .center-hero-wrapper {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 5;
+    }
+
+    /* Continuous Rotating Outer Halo */
+    .rotating-halo {
+      position: absolute;
+      top: -15px;
+      left: -15px;
+      right: -15px;
+      bottom: -15px;
+      border-radius: 50%;
+      border: 2px dashed rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.2), inset 0 0 30px rgba(6, 182, 212, 0.15);
+      animation: rotateContinuous 35s linear infinite;
+      pointer-events: none;
+    }
+
+    .rotating-halo::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      border-top-color: #06b6d4;
+      border-bottom-color: #ec4899;
+      animation: rotateContinuous 20s linear infinite reverse;
+    }
+
+    @keyframes rotateContinuous {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Inner Hero Artwork Frame */
+    .hero-artwork {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 40px rgba(6, 182, 212, 0.4);
+      position: relative;
+      background: #020617;
+    }
+
+    .hero-artwork canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* =========================================================
+       RADIAL CARDS (COMPONENTS)
+       ========================================================= */
+    .radial-node {
+      position: absolute;
+      width: 140px;
+      padding: 12px 10px;
+      background: rgba(13, 25, 41, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 14px;
+      text-decoration: none;
+      color: #e0f2fe;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 10;
+      cursor: pointer;
+    }
+
+    /* Positional offsets around center */
+    /* 8 Nodes positioned symmetrically in circular radius ~230px */
+    .node-top           { top: 5px; left: 50%; transform: translateX(-50%); }
+    .node-top-right     { top: 70px; right: 40px; }
+    .node-right         { top: 50%; right: -15px; transform: translateY(-50%); }
+    .node-bottom-right  { bottom: 70px; right: 40px; }
+    .node-bottom        { bottom: 5px; left: 50%; transform: translateX(-50%); }
+    .node-bottom-left   { bottom: 70px; left: 40px; }
+    .node-left          { top: 50%; left: -15px; transform: translateY(-50%); }
+    .node-top-left      { top: 70px; left: 40px; }
+
+    /* Pop-up Hover Effect */
+    .radial-node:hover {
+      transform: scale(1.12) translateY(-6px);
+      border-color: #38bdf8;
+      box-shadow: 0 15px 30px rgba(6, 182, 212, 0.4), 0 0 20px rgba(56, 189, 248, 0.3);
+      background: rgba(18, 38, 63, 0.95);
+      z-index: 25;
+    }
+
+    .node-top:hover { transform: translateX(-50%) scale(1.12) translateY(-6px); }
+    .node-right:hover { transform: translateY(-50%) scale(1.12) translateX(6px); }
+    .node-bottom:hover { transform: translateX(-50%) scale(1.12) translateY(6px); }
+    .node-left:hover { transform: translateY(-50%) scale(1.12) translateX(-6px); }
+
+    .node-icon-box {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(56, 189, 248, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 8px;
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .radial-node:hover .node-icon-box {
+      background: rgba(6, 182, 212, 0.25);
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+    }
+
+    .node-icon-box svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #38bdf8;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .node-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #f8fafc;
+      margin-bottom: 4px;
+    }
+
+    .node-desc {
+      font-size: 0.65rem;
+      color: #94a3b8;
+      line-height: 1.25;
+      font-weight: 400;
+    }
+
+    /* Bottom Action Controls */
+    .bottom-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      z-index: 20;
+    }
+
+    .btn-action {
+      padding: 10px 28px;
+      border-radius: 30px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: transparent;
+      color: #e0f2fe;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.15);
+    }
+
+    .btn-primary:hover {
+      background: rgba(6, 182, 212, 0.2);
+      border-color: #38bdf8;
+      box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-home {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2));
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.5);
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+    }
+
+    .btn-home:hover {
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), rgba(99, 102, 241, 0.4));
+      color: #ffffff;
+      border-color: #38bdf8;
+      box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
+      transform: translateY(-2px);
+    }
+
+    /* =========================================================
+       RIGHT SIDEBAR: MY MASTERY JOURNAL
+       ========================================================= */
+    .sidebar-journal {
+      background: rgba(4, 10, 18, 0.9);
+      padding: 30px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      border-left: 1px solid rgba(56, 189, 248, 0.1);
+    }
+
+    .journal-header {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #f8fafc;
+      text-transform: uppercase;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .journal-header::after {
+      content: '✦';
+      color: #06b6d4;
+    }
+
+    .journal-content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      overflow-y: auto;
+      max-height: 720px;
+      padding-right: 4px;
+    }
+
+    .journal-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .journal-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: rgba(15, 23, 42, 0.9);
+      transform: translateX(-3px);
+    }
+
+    .journal-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #06b6d4;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .journal-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #f1f5f9;
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+
+    .journal-excerpt {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    .journal-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.68rem;
+      color: #64748b;
+    }
+
+    .journal-read-more {
+      color: #38bdf8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .journal-read-more:hover {
+      text-decoration: underline;
+    }
+
+    .social-footer {
+      margin-top: auto;
+      padding-top: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.68rem;
+      color: #64748b;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-icons span {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .social-icons span:hover {
+      color: #38bdf8;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1100px) {
+      .app-viewport {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .sidebar-journal {
+        border-left: none;
+        border-top: 1px solid rgba(56, 189, 248, 0.15);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Dynamic Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-viewport">
+    <!-- LEFT / MAIN INTERACTIVE STAGE -->
+    <main class="main-stage">
+      
+      <!-- TOP HEADER -->
+      <header class="top-header">
+        <div class="brand-title">| Mirror and Illusion</div>
+        
+        <div class="center-logo-box">
+          <div class="logo-text">
+            <svg class="logo-icon" viewBox="0 0 24 24">
+              <circle cx="12" cy="4" r="2" fill="#06b6d4"/>
+              <path d="M12 7v7M9 10l3-2 3 2M10 20l2-6 2 6" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            BODY
+          </div>
+        </div>
+
+        <nav class="nav-links">
+          <a href="#" class="active">HOME</a>
+          <a href="#components">COMPONENTS</a>
+          <a href="#practices">PRACTICES</a>
+          <a href="#guides">GUIDES</a>
+          <a href="#account">ACCOUNT</a>
+        </nav>
+      </header>
+
+      <!-- RADIAL HERO DISPLAY -->
+      <section class="hero-radial-container">
+        
+        <!-- CENTER CONTINUOUS ROTATING ARTWORK HERO -->
+        <div class="center-hero-wrapper">
+          <div class="rotating-halo"></div>
+          <div class="hero-artwork">
+            <canvas id="hero-canvas"></canvas>
+          </div>
+        </div>
+
+        <!-- 8 RADIAL COMPONENT CARDS (LINKABLE) -->
+        
+        <!-- 1. MY BODY (Top Center) -->
+        <a href="pages/my-body.html" class="radial-node node-top" data-component="body">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="5" r="2.5"/>
+              <path d="M12 8v8M8 11h8M9 21l3-5 3 5"/>
+            </svg>
+          </div>
+          <div class="node-title">MY BODY</div>
+          <div class="node-desc">Build foundation, refine form.</div>
+        </a>
+
+        <!-- 2. MY MOVEMENT (Top Right) -->
+        <a href="pages/my-movement.html" class="radial-node node-top-right" data-component="movement">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <circle cx="15" cy="4" r="2"/>
+              <path d="M13 8l-4 3 2 4 4-2M7 13l3 2M16 11l4-2M10 21l2-4"/>
+            </svg>
+          </div>
+          <div class="node-title">MY MOVEMENT</div>
+          <div class="node-desc">Master control and agility.</div>
+        </a>
+
+        <!-- 3. MY BREATH (Middle Right) -->
+        <a href="pages/my-breath.html" class="radial-node node-right" data-component="breath">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 15a6 6 0 1 0 12 0c0-3.3-6-9-6-9s-6 5.7-6 9z"/>
+              <path d="M12 12v4"/>
+            </svg>
+          </div>
+          <div class="node-title">MY BREATH</div>
+          <div class="node-desc">Harness life energy.</div>
+        </a>
+
+        <!-- 4. MY HYGIENE (Bottom Right) -->
+        <a href="pages/my-hygiene.html" class="radial-node node-bottom-right" data-component="hygiene">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+            </svg>
+          </div>
+          <div class="node-title">MY HYGIENE</div>
+          <div class="node-desc">Care and cleanliness rituals.</div>
+        </a>
+
+        <!-- 5. MY AEROBICS (Bottom Center) -->
+        <a href="pages/my-aerobics.html" class="radial-node node-bottom" data-component="aerobics">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l8.72-8.72 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+              <path d="M12 8v5l3 3"/>
+            </svg>
+          </div>
+          <div class="node-title">MY AEROBICS</div>
+          <div class="node-desc">Build endurance and flow.</div>
+        </a>
+
+        <!-- 6. MY RELAXATIONS (Bottom Left) -->
+        <a href="pages/my-relaxations.html" class="radial-node node-bottom-left" data-component="relaxations">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="7" r="2.5"/>
+              <path d="M5 19c0-3 3-5 7-5s7 2 7 5"/>
+              <path d="M8 14l-3 3M16 14l3 3"/>
+            </svg>
+          </div>
+          <div class="node-title">MY RELAXATIONS</div>
+          <div class="node-desc">Cultivate peace and release.</div>
+        </a>
+
+        <!-- 7. MY LIFESTYLE (Middle Left) -->
+        <a href="pages/my-lifestyle.html" class="radial-node node-left" data-component="lifestyle">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>
+            </svg>
+          </div>
+          <div class="node-title">MY LIFESTYLE</div>
+          <div class="node-desc">Daily choices for vitality.</div>
+        </a>
+
+        <!-- 8. MY SLEEP & AWAKENING (Top Left) -->
+        <a href="pages/my-sleep.html" class="radial-node node-top-left" data-component="sleep">
+          <div class="node-icon-box">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>
+              <circle cx="17" cy="5" r="1.5" fill="#38bdf8"/>
+            </svg>
+          </div>
+          <div class="node-title">MY SLEEP</div>
+          <div class="node-desc">Optimize rest and morning energy.</div>
+        </a>
+
+      </section>
+
+      <!-- BOTTOM NAVIGATION BUTTONS -->
+      <footer class="bottom-actions">
+        <a href="#journey" class="btn-action btn-primary">START YOUR JOURNEY</a>
+        <a href="/" class="btn-action btn-home">RETURN TO HOME PAGE</a>
+      </footer>
+
+    </main>
+
+    <!-- RIGHT SIDEBAR: JOURNAL & ARTICLES -->
+    <aside class="sidebar-journal">
+      <div class="journal-header">
+        MY MASTERY JOURNAL
+      </div>
+
+      <div class="journal-content" id="journal-list">
+        <!-- Dynamic Articles inserted via JavaScript -->
+      </div>
+
+      <div class="social-footer">
+        <div class="social-icons">
+          <span>FB</span> • <span>TW</span> • <span>IG</span> • <span>TK</span>
+        </div>
+        <div>Privacy Policy • Terms</div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- JavaScript Logic -->
+  <script>
+    // ARTICLE DATA FOR JOURNAL SIDEBAR
+    const journalArticles = {
+      default: [
+        {
+          tag: "PHYSIOLOGY & FORM",
+          title: "The Architecture of Human Stature",
+          excerpt: "Understanding kinetic chain alignment and biomechanical balance for maximum daily energy.",
+          time: "4 min read"
+        },
+        {
+          tag: "RESPIRATORY FLOW",
+          title: "Diaphragmatic Control in Motion",
+          excerpt: "How targeted breathwork modulates autonomic nervous system responses under physical tension.",
+          time: "6 min read"
+        },
+        {
+          tag: "CIRCADIAN RHYTHM",
+          title: "Mastering Awakening & Sleep Transitions",
+          excerpt: "Unlocking peak cortisol awakening response and deep restorative REM sleep stages.",
+          time: "5 min read"
+        }
+      ],
+      body: [
+        {
+          tag: "MY BODY",
+          title: "Postural Alignment and Kinetic Balance",
+          excerpt: "Rebuilding your physical foundation through daily axial lengthening and spine stability.",
+          time: "5 min read"
+        }
+      ],
+      movement: [
+        {
+          tag: "MY MOVEMENT",
+          title: "Agility, Motor Control, and Fluidity",
+          excerpt: "How multi-planar movement patterns enhance neuromuscular coordination.",
+          time: "4 min read"
+        }
+      ],
+      breath: [
+        {
+          tag: "MY BREATH",
+          title: "Pranayama and Oxygen Efficiency",
+          excerpt: "Harnessing controlled CO2 tolerance to increase stamina and calm the mind.",
+          time: "6 min read"
+        }
+      ],
+      hygiene: [
+        {
+          tag: "MY HYGIENE",
+          title: "Dermal Integrity and Care Rituals",
+          excerpt: "The science of lymphatic drainage, cold therapy, and cellular skin regeneration.",
+          time: "3 min read"
+        }
+      ],
+      aerobics: [
+        {
+          tag: "MY AEROBICS",
+          title: "Zone 2 Training for Mitochondrial Health",
+          excerpt: "Building sustained cardiovascular endurance without triggering excess stress hormones.",
+          time: "7 min read"
+        }
+      ],
+      relaxations: [
+        {
+          tag: "MY RELAXATIONS",
+          title: "Vagal Nerve Stimulation & Release",
+          excerpt: "De-escalating physical tension through somatic grounding and progressive relaxation.",
+          time: "5 min read"
+        }
+      ],
+      lifestyle: [
+        {
+          tag: "MY LIFESTYLE",
+          title: "Circadian Nutrition & Environmental Vitality",
+          excerpt: "Structuring your environment and metabolic timing for effortless daily energy.",
+          time: "4 min read"
+        }
+      ],
+      sleep: [
+        {
+          tag: "MY SLEEP",
+          title: "Sleep Architecture and Morning Awakening",
+          excerpt: "Optimizing bedroom light hygiene and morning sunlight exposure for deep recovery.",
+          time: "6 min read"
+        }
+      ]
+    };
+
+    // Render Journal Articles
+    function renderJournal(category = 'default') {
+      const container = document.getElementById('journal-list');
+      const list = journalArticles[category] || journalArticles.default;
+      
+      container.innerHTML = list.map(item => `
+        <article class="journal-card">
+          <span class="journal-tag">${item.tag}</span>
+          <h3 class="journal-title">${item.title}</h3>
+          <p class="journal-excerpt">${item.excerpt}</p>
+          <div class="journal-meta">
+            <span>${item.time}</span>
+            <a href="#" class="journal-read-more">Read Article →</a>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    renderJournal();
+
+    // Hover Interaction for Radial Nodes
+    const nodes = document.querySelectorAll('.radial-node');
+    nodes.forEach(node => {
+      node.addEventListener('mouseenter', () => {
+        const comp = node.getAttribute('data-component');
+        renderJournal(comp);
+      });
+      node.addEventListener('mouseleave', () => {
+        renderJournal('default');
+      });
+    });
+
+    // =========================================================
+    // DYNAMIC CANVAS ARTWORK IN CENTER HERO CIRCLE
+    // =========================================================
+    const canvas = document.getElementById('hero-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      canvas.width = 320;
+      canvas.height = 320;
+    }
+    resizeCanvas();
+
+    let angle = 0;
+    function drawCenterArtwork() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      // Dark Radiant Background
+      const bgGrad = ctx.createRadialGradient(cx, cy, 10, cx, cy, 160);
+      bgGrad.addColorStop(0, '#0f2b48');
+      bgGrad.addColorStop(0.6, '#071526');
+      bgGrad.addColorStop(1, '#020617');
+      ctx.fillStyle = bgGrad;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Rotating Flowing Rays
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate(angle);
+
+      for (let i = 0; i < 12; i++) {
+        ctx.rotate((Math.PI * 2) / 12);
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(0, 140);
+        ctx.strokeStyle = i % 2 === 0 ? 'rgba(6, 182, 212, 0.15)' : 'rgba(236, 72, 153, 0.12)';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Stylized Dynamic Figure
+      ctx.save();
+      ctx.translate(cx, cy);
+
+      // Pulsing energy core
+      const pulseScale = 1 + Math.sin(angle * 2) * 0.05;
+      ctx.scale(pulseScale, pulseScale);
+
+      // Head
+      ctx.beginPath();
+      ctx.arc(0, -50, 14, 0, Math.PI * 2);
+      ctx.fillStyle = '#e0f2fe';
+      ctx.shadowColor = '#38bdf8';
+      ctx.shadowBlur = 15;
+      ctx.fill();
+
+      // Spine / Torso Flow
+      ctx.beginPath();
+      ctx.moveTo(0, -32);
+      ctx.bezierCurveTo(15, -10, -15, 20, 0, 50);
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Flowing Arms
+      ctx.beginPath();
+      ctx.moveTo(0, -20);
+      ctx.bezierCurveTo(-40, -40, -50, -10, -35, 10);
+      ctx.moveTo(0, -20);
+      ctx.bezierCurveTo(40, -40, 50, -10, 35, 10);
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Dynamic Legs
+      ctx.beginPath();
+      ctx.moveTo(0, 50);
+      ctx.bezierCurveTo(-30, 70, -20, 95, -40, 110);
+      ctx.moveTo(0, 50);
+      ctx.bezierCurveTo(30, 70, 20, 95, 40, 110);
+      ctx.strokeStyle = '#ec4899';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      ctx.restore();
+
+      angle += 0.008;
+      requestAnimationFrame(drawCenterArtwork);
+    }
+    drawCenterArtwork();
+
+    // =========================================================
+    // BACKGROUND NEURAL PARTICLES
+    // =========================================================
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    const particles = Array.from({ length: 45 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      radius: Math.random() * 2 + 1
+    }));
+
+    function drawBgParticles() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      
+      particles.forEach((p, index) => {
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+        bgCtx.fill();
+
+        // Connect nearby particles
+        for (let j = index + 1; j < particles.length; j++) {
+          const p2 = particles[j];
+          const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+          if (dist < 120) {
+            bgCtx.beginPath();
+            bgCtx.moveTo(p.x, p.y);
+            bgCtx.lineTo(p2.x, p2.y);
+            bgCtx.strokeStyle = `rgba(6, 182, 212, ${0.15 - dist / 120 * 0.15})`;
+            bgCtx.lineWidth = 0.8;
+            bgCtx.stroke();
+          }
+        }
+      });
+
+      requestAnimationFrame(drawBgParticles);
+    }
+    drawBgParticles();
+  </script>
+</body>
+</html>
