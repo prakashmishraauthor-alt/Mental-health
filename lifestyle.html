@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY LIFESTYLE // MIRROR & ILLUSION</title>
+  <style>
+    :root {
+      --bg: #070706;
+      --surface: #0e0f12;
+      --surface-glass: rgba(18, 20, 26, 0.65);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(255, 90, 0, 0.4);
+      --text-main: #f0f2f5;
+      --text-muted: #8b909a;
+      --accent-orange: #ff5a00;
+      --accent-glow: rgba(255, 90, 0, 0.25);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    header {
+      backdrop-filter: blur(20px);
+      background: rgba(7, 7, 6, 0.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand span { color: var(--accent-orange); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+
+    .nav-links a.active, .nav-links a:hover { color: var(--accent-orange); }
+
+    /* Hero Banner */
+    .hero {
+      padding: 80px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #ff7a22, var(--accent-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 600px;
+    }
+
+    /* Section Component Structure */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 60px 0 30px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    /* Daily Rituals Progress Cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .routine-card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+
+    .routine-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+    }
+
+    .routine-time {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .routine-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .routine-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Curated Essentials Layout */
+    .essentials-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .essential-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+
+    .essential-item:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+    }
+
+    .essential-img {
+      height: 180px;
+      width: 100%;
+      object-fit: cover;
+      background: #181a20;
+    }
+
+    .essential-info {
+      padding: 20px;
+    }
+
+    .essential-category {
+      font-size: 11px;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .essential-name {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 6px 0;
+    }
+
+    .essential-detail {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Dynamic Quotes Bar */
+    .quote-box {
+      margin: 60px 0;
+      padding: 40px;
+      background: var(--surface-glass);
+      border-left: 4px solid var(--accent-orange);
+      border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+    }
+
+    .quote-text {
+      font-size: 20px;
+      font-weight: 600;
+      line-height: 1.4;
+      font-style: italic;
+    }
+
+    .quote-author {
+      margin-top: 12px;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .essentials-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .grid-3 { grid-template-columns: 1fr; }
+      .essentials-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-orb"></div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="brand">MIRROR<span>//</span>ILLUSION</a>
+      <ul class="nav-links">
+        <li><a href=index.html">Home</a></li>
+        <li><a href="lifestyle.html" class="active">My Lifestyle</a></li>
+        <li><a href=body.html">Body</a></li>
+        <li><a href=mirror-illusion.html">Main</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title">Intentional <em>Living</em>.</h1>
+      <p class="hero-desc">A deep dive into routines, essential gear, spaces, and philosophy that cultivate focus and balance.</p>
+    </section>
+
+    <!-- Section 1: Daily Rituals -->
+    <div class="section-head">
+      <h2>Daily Pillars & Rituals</h2>
+    </div>
+
+    <div class="grid-3">
+      <div class="routine-card">
+        <div class="routine-time">06:00 AM — Dawn</div>
+        <div class="routine-title">Analog Morning</div>
+        <p class="routine-desc">Zero screens for the first 90 minutes. Sunlight exposure, manual coffee brewing, and light physical movement to anchor circadian health.</p>
+      </div>
+
+      <div class="routine-card">
+        <div class="routine-time">10:00 AM — Deep Work</div>
+        <div class="routine-title">Monastic Focus</div>
+        <p class="routine-desc">Single-tasking blocks using noise-canceling auditory environments and visual minimization. Strict notification blocks active.</p>
+      </div>
+
+      <div class="routine-card">
+        <div class="routine-time">09:00 PM — Wind-down</div>
+        <div class="routine-title">Digital Sunset</div>
+        <p class="routine-desc">Dimmed warm ambient lighting, physical book reading, and reflective journaling to decouple cognition from digital input.</p>
+      </div>
+    </div>
+
+    <!-- Section 2: Personal Essentials -->
+    <div class="section-head">
+      <h2>Curated Workstation & Essentials</h2>
+    </div>
+
+    <div class="essentials-grid">
+      <div class="essential-item">
+        <img src="https://picsum.photos/300/200?grayscale&1" alt="Audio" class="essential-img">
+        <div class="essential-info">
+          <div class="essential-category">Audio Architecture</div>
+          <div class="essential-name">Planar Headphones</div>
+          <div class="essential-detail">Acoustic isolation for deep immersive soundscapes.</div>
+        </div>
+      </div>
+
+      <div class="essential-item">
+        <img src="https://picsum.photos/300/200?grayscale&2" alt="Carry" class="essential-img">
+        <div class="essential-info">
+          <div class="essential-category">Everyday Carry</div>
+          <div class="essential-name">Matte Black Journal</div>
+          <div class="essential-detail">Grid-dot layout for visual thoughts & tracking.</div>
+        </div>
+      </div>
+
+      <div class="essential-item">
+        <img src="https://picsum.photos/300/200?grayscale&3" alt="Tech" class="essential-img">
+        <div class="essential-info">
+          <div class="essential-category">Desk Space</div>
+          <div class="essential-name">Minimalist Mechanical Keyboard</div>
+          <div class="essential-detail">Tactile switches paired with custom keycaps.</div>
+        </div>
+      </div>
+
+      <div class="essential-item">
+        <img src="https://picsum.photos/300/200?grayscale&4" alt="Beverage" class="essential-img">
+        <div class="essential-info">
+          <div class="essential-category">Fuel</div>
+          <div class="essential-name">Ceramic Pour-Over Set</div>
+          <div class="essential-detail">Manual brewing as a meditative micro-break.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: Personal Ethos -->
+    <div class="quote-box">
+      <div class="quote-text">"Simplicity is not about having less. It's about making room for what matters."</div>
+      <div class="quote-author">—— Lifestyle Ethos</div>
+    </div>
+  </main>
+
+</body>
+</html>
