@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SLEEP & AWAKENING // MIRROR & ILLUSION</title>
+  <style>
+    :root {
+      --bg: #070706;
+      --surface: #0e0f12;
+      --surface-glass: rgba(18, 20, 26, 0.65);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(255, 90, 0, 0.4);
+      --text-main: #f0f2f5;
+      --text-muted: #8b909a;
+      --accent-orange: #ff5a00;
+      --accent-glow: rgba(255, 90, 0, 0.25);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    header {
+      backdrop-filter: blur(20px);
+      background: rgba(7, 7, 6, 0.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand span { color: var(--accent-orange); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+
+    .nav-links a.active, .nav-links a:hover { color: var(--accent-orange); }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #ff7a22, var(--accent-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 620px;
+    }
+
+    /* Section Headings */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 60px 0 30px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .section-tag {
+      color: var(--accent-orange);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* Interactive Morning Flow Widget */
+    .flow-box {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      margin-bottom: 40px;
+    }
+
+    .step-tracker {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    .step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      z-index: 1;
+      width: 18%;
+      text-align: center;
+    }
+
+    .step-circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: var(--text-muted);
+      transition: var(--transition);
+    }
+
+    .step-node.active .step-circle {
+      border-color: var(--accent-orange);
+      background: var(--accent-orange);
+      color: #000;
+      box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .step-node.active .step-label { color: var(--text-main); }
+
+    .interactive-stage {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 36px;
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .stage-title {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .stage-desc {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 580px;
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    .action-btn {
+      background: var(--accent-orange);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      padding: 14px 32px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .action-btn:hover {
+      box-shadow: 0 0 20px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    /* Palm Friction Animation Visualizer */
+    .palm-glow {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-orange) 0%, transparent 70%);
+      margin-bottom: 16px;
+      animation: pulse 1s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.8); opacity: 0.5; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+
+    /* Breath Circle Visualizer */
+    .breath-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--accent-orange);
+      margin-bottom: 16px;
+      transition: transform 4s ease-in-out;
+    }
+
+    /* Gratitude Interactive Cards */
+    .gratitude-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 500px;
+      margin-bottom: 20px;
+    }
+
+    .gratitude-inputs input {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .gratitude-inputs input:focus { border-color: var(--accent-orange); }
+
+    /* Evening Ritual Grid */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .sleep-card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .sleep-card.completed {
+      border-color: var(--border-accent);
+      background: rgba(255, 90, 0, 0.05);
+    }
+
+    .sleep-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .sleep-card-time {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+    }
+
+    .checkbox-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+    }
+
+    .sleep-card.completed .checkbox-icon {
+      background: var(--accent-orange);
+      color: #000;
+      border-color: var(--accent-orange);
+    }
+
+    .sleep-card-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .sleep-card-desc {
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .step-tracker { flex-wrap: wrap; gap: 12px; justify-content: center; }
+      .step-node { width: 30%; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-orb"></div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="brand">MIRROR<span>//</span>ILLUSION</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lifestyle.html">My Lifestyle</a></li>
+        <li><a href="aerobic.html">Aerobic Engine</a></li>
+        <li><a href="body.html">Body Architecture</a></li>
+        <li><a href="sleep/html" class="active">Sleep & Awakening</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title">AWAKENING & <em>REST</em>.</h1>
+      <p class="hero-desc">Interactive morning mindfulness protocols and guided evening wind-down rituals to align circadian biology and elevate mental tranquility.</p>
+    </section>
+
+    <!-- Interactive Morning Flow -->
+    <div class="section-head">
+      <h2>10-Minute Morning Awakening Flow</h2>
+      <span class="section-tag">Interactive Ritual</span>
+    </div>
+
+    <div class="flow-box">
+      <div class="step-tracker">
+        <div class="step-node active" id="node-0">
+          <div class="step-circle">1</div>
+          <div class="step-label">Switch Alarm</div>
+        </div>
+        <div class="step-node" id="node-1">
+          <div class="step-circle">2</div>
+          <div class="step-label">Palm Warmth</div>
+        </div>
+        <div class="step-node" id="node-2">
+          <div class="step-circle">3</div>
+          <div class="step-label">Deep Breath</div>
+        </div>
+        <div class="step-node" id="node-3">
+          <div class="step-circle">4</div>
+          <div class="step-label">Gratitude</div>
+        </div>
+        <div class="step-node" id="node-4">
+          <div class="step-circle">5</div>
+          <div class="step-label">Heart Opening</div>
+        </div>
+      </div>
+
+      <div class="interactive-stage" id="stageContent">
+        <!-- Stage content rendered dynamically -->
+      </div>
+    </div>
+
+    <!-- Evening Sleep Ritual Pack -->
+    <div class="section-head">
+      <h2>Evening Wind-Down & Sleep Pack</h2>
+      <span class="section-tag">Rest Architecture</span>
+    </div>
+
+    <div class="grid-3">
+      <div class="sleep-card" onclick="toggleCard(this)">
+        <div class="sleep-card-header">
+          <span class="sleep-card-time">9:00 PM — Digital Sunset</span>
+          <div class="checkbox-icon">✓</div>
+        </div>
+        <h3 class="sleep-card-title">Blue-Light Blocking</h3>
+        <p class="sleep-card-desc">Disconnect screens or switch devices to night mode. Suppress high-frequency blue spectrum to trigger natural pineal melatonin release.</p>
+      </div>
+
+      <div class="sleep-card" onclick="toggleCard(this)">
+        <div class="sleep-card-header">
+          <span class="sleep-card-time">9:30 PM — Hydro-Cooling</span>
+          <div class="checkbox-icon">✓</div>
+        </div>
+        <h3 class="sleep-card-title">Warm Shower / Thermal Drop</h3>
+        <p class="sleep-card-desc">Take a warm shower. As body heat dissipates afterward, core body temperature drops—signaling sleep readiness to the brain.</p>
+      </div>
+
+      <div class="sleep-card" onclick="toggleCard(this)">
+        <div class="sleep-card-header">
+          <span class="sleep-card-time">10:00 PM — Cognitive Unload</span>
+          <div class="checkbox-icon">✓</div>
+        </div>
+        <h3 class="sleep-card-title">Brain Dump Journaling</h3>
+        <p class="sleep-card-desc">Write down tomorrow's top tasks or nagging thoughts. Clearing mental working memory reduces nocturnal anxiety and overthinking.</p>
+      </div>
+
+      <div class="sleep-card" onclick="toggleCard(this)">
+        <div class="sleep-card-header">
+          <span class="sleep-card-time">10:15 PM — Somatic Release</span>
+          <div class="checkbox-icon">✓</div>
+        </div>
+        <h3 class="sleep-card-title">4-7-8 Parasympathetic Breathing</h3>
+        <p class="sleep-card-desc">Inhale 4s, hold 7s, exhale 8s for 4 cycles. Activates the vagus nerve to slow heart rate and prepare for deep slow-wave sleep.</p>
+      </div>
+
+      <div class="sleep-card" onclick="toggleCard(this)">
+        <div class="sleep-card-header">
+          <span class="sleep-card-time">10:30 PM — Dark Sanctuary</span>
+          <div class="checkbox-icon">✓</div>
+        </div>
+        <h3 class="sleep-card-title">Environment Alignment</h3>
+        <p class="sleep-card-desc">Set ambient temperature to ~18°C (65°F), eliminate ambient LED light leaks, and enable blackout shades.</p>
+      </div>
+
+      <div class="sleep-card" onclick="toggleCard(this)">
+        <div class="sleep-card-header">
+          <span class="sleep-card-time">10:40 PM — Gratitude Drift</span>
+          <div class="checkbox-icon">✓</div>
+        </div>
+        <h3 class="sleep-card-title">Peaceful Reflection</h3>
+        <p class="sleep-card-desc">Silently recall 3 peaceful moments from the day, allowing the nervous system to settle into restful equilibrium.</p>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentStep = 0;
+
+    const stages = [
+      {
+        title: "Step 1: Switch Off Alarm & Stand Up",
+        desc: "Turn off your alarm mindfully. Immediately step out of bed and stand tall to trigger orthostatic alertness.",
+        btnText: "I am Up — Next Step",
+        action: null
+      },
+      {
+        title: "Step 2: Palm Friction Awakening",
+        desc: "Vigorously rub your palms together for 15 seconds until friction warmth builds. Gently place warm palms over closed eyes and face to awaken sensory pathways.",
+        btnText: "Generate Warmth & Proceed",
+        customHTML: `<div class="palm-glow"></div>`
+      },
+      {
+        title: "Step 3: Three Grounding Deep Breaths",
+        desc: "Take 3 slow, deep abdominal breaths. Inhale energy from the morning, exhale lingering sleep inertia.",
+        btnText: "Begin Breath Exercise",
+        customHTML: `<div class="breath-circle" id="breathBall"></div>`,
+        action: () => {
+          const ball = document.getElementById('breathBall');
+          if (ball) {
+            ball.style.transform = "scale(1.5)";
+            setTimeout(() => ball.style.transform = "scale(1)", 2000);
+          }
+        }
+      },
+      {
+        title: "Step 4: Express Universal Gratitude",
+        desc: "Acknowledge the gift of a fresh day and the presence of family and loved ones surrounding you.",
+        btnText: "Save Gratitude & Continue",
+        customHTML: `
+          <div class="gratitude-inputs">
+            <input type="text" placeholder="I am grateful for this new day because...">
+            <input type="text" placeholder="I express love for my family & circle...">
+          </div>
+        `
+      },
+      {
+        title: "Step 5: Divine Mercy & Heart Opening",
+        desc: "Open your hands palms-up toward the chest. Accept the divine love and grace of the universe, allowing warmth to expand across your heart space for the day ahead.",
+        btnText: "Complete 10-Min Ritual ✨",
+        action: null
+      }
+    ];
+
+    function renderStage() {
+      const stage = stages[currentStep];
+      const stageContainer = document.getElementById('stageContent');
+
+      // Update progress nodes
+      for (let i = 0; i < 5; i++) {
+        const node = document.getElementById(`node-${i}`);
+        if (i <= currentStep) node.classList.add('active');
+        else node.classList.remove('active');
+      }
+
+      stageContainer.innerHTML = `
+        ${stage.customHTML || ''}
+        <h3 class="stage-title">${stage.title}</h3>
+        <p class="stage-desc">${stage.desc}</p>
+        <button class="action-btn" onclick="nextStage()">${stage.btnText}</button>
+      `;
+
+      if (stage.action) stage.action();
+    }
+
+    function nextStage() {
+      if (currentStep < stages.length - 1) {
+        currentStep++;
+        renderStage();
+      } else {
+        document.getElementById('stageContent').innerHTML = `
+          <div style="font-size: 40px; margin-bottom: 12px;">🌟</div>
+          <h3 class="stage-title">Awakening Complete!</h3>
+          <p class="stage-desc">Your mind is grounded, your heart is open, and your body is ready to lead the day with intention.</p>
+          <button class="action-btn" onclick="currentStep=0; renderStage();">Restart Flow</button>
+        `;
+      }
+    }
+
+    function toggleCard(card) {
+      card.classList.toggle('completed');
+    }
+
+    // Initialize initial stage on load
+    renderStage();
+  </script>
+</body>
+</html>
