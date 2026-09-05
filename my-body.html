@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BODY ARCHITECTURE // MIRROR & ILLUSION</title>
+  <style>
+    :root {
+      --bg: #070706;
+      --surface: #0e0f12;
+      --surface-glass: rgba(18, 20, 26, 0.65);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(255, 90, 0, 0.4);
+      --text-main: #f0f2f5;
+      --text-muted: #8b909a;
+      --accent-orange: #ff5a00;
+      --accent-glow: rgba(255, 90, 0, 0.25);
+      --radius-lg: 16px;
+      --radius-md: 10px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      top: -100px;
+      right: -100px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Navigation */
+    header {
+      backdrop-filter: blur(20px);
+      background: rgba(7, 7, 6, 0.8);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand span { color: var(--accent-orange); }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: var(--transition);
+    }
+
+    .nav-links a.active, .nav-links a:hover { color: var(--accent-orange); }
+
+    /* Hero */
+    .hero {
+      padding: 80px 0 40px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-title {
+      font-size: clamp(40px, 5vw, 68px);
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title em {
+      font-style: normal;
+      background: linear-gradient(135deg, #ff7a22, var(--accent-orange));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      color: var(--text-muted);
+      font-size: 16px;
+      max-width: 620px;
+    }
+
+    /* Section Headings */
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 60px 0 30px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-head h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .section-tag {
+      color: var(--accent-orange);
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    /* Calculator Widget */
+    .calc-box {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      margin-bottom: 40px;
+    }
+
+    .calc-inputs {
+      display: flex;
+      gap: 20px;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-group label {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      font-weight: 700;
+    }
+
+    .input-group input, .input-group select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 16px;
+      color: var(--text-main);
+      font-size: 16px;
+      outline: none;
+      width: 160px;
+    }
+
+    .calc-btn {
+      background: var(--accent-orange);
+      color: #000;
+      font-weight: 800;
+      border: none;
+      padding: 14px 28px;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 12px;
+      transition: var(--transition);
+    }
+
+    .calc-btn:hover {
+      box-shadow: 0 0 20px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+    }
+
+    .metric-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+    }
+
+    .metric-val {
+      font-size: 28px;
+      font-weight: 900;
+      margin: 6px 0;
+    }
+
+    .metric-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Training Split Cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 60px;
+    }
+
+    .body-card {
+      background: var(--surface-glass);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      transition: var(--transition);
+    }
+
+    .body-card:hover {
+      border-color: var(--border-accent);
+      transform: translateY(-4px);
+    }
+
+    .body-card-tag {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--accent-orange);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .body-card-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .body-card-desc {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .body-card-list {
+      list-style: none;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .body-card-list li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .body-card-list li::before {
+      content: "•";
+      color: var(--accent-orange);
+      font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+      .metrics-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glow-orb"></div>
+
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="brand">MIRROR<span>//</span>ILLUSION</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="lifestyle.html">My Lifestyle</a></li>
+        <li><a href="aerobic.html">Aerobic Engine</a></li>
+        <li><a href="my-body.html" class="active">Body Architecture</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <h1 class="hero-title">BODY <em>ARCHITECTURE</em>.</h1>
+      <p class="hero-desc">Hypertrophy mechanics, structural balance, macro tracking, and biomechanical optimization for peak physical strength.</p>
+    </section>
+
+    <!-- Interactive Metabolism & Macro Calculator -->
+    <div class="section-head">
+      <h2>Macro & TDEE Calculator</h2>
+      <span class="section-tag">Energy Balance</span>
+    </div>
+
+    <div class="calc-box">
+      <div class="calc-inputs">
+        <div class="input-group">
+          <label for="bodyWeight">Weight (kg)</label>
+          <input type="number" id="bodyWeight" value="75" min="40" max="200">
+        </div>
+        <div class="input-group">
+          <label for="bodyHeight">Height (cm)</label>
+          <input type="number" id="bodyHeight" value="178" min="120" max="220">
+        </div>
+        <div class="input-group">
+          <label for="bodyAge">Age</label>
+          <input type="number" id="bodyAge" value="28" min="15" max="90">
+        </div>
+        <div class="input-group">
+          <label for="goal">Goal</label>
+          <select id="goal">
+            <option value="maintain">Maintenance</option>
+            <option value="recomp">Recomposition</option>
+            <option value="gain">Hypertrophy (+10%)</option>
+          </select>
+        </div>
+        <button class="calc-btn" onclick="calculateMacros()">Compute Plan</button>
+      </div>
+
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-tag">Daily Energy Target</span>
+          <div class="metric-val" id="tdeeVal">2,450 kcal</div>
+          <p class="metric-desc">Total Daily Energy Expenditure based on current metrics.</p>
+        </div>
+        <div class="metric-card">
+          <span class="metric-tag">Protein Allocation</span>
+          <div class="metric-val" id="proteinVal">165g</div>
+          <p class="metric-desc">Optimized at ~2.2g per kg of body mass for muscular repair.</p>
+        </div>
+        <div class="metric-card">
+          <span class="metric-tag">Carbs / Fats Split</span>
+          <div class="metric-val" id="splitVal">275g / 70g</div>
+          <p class="metric-desc">Fuel balance to optimize performance and endocrine support.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resistance & Hypertrophy Protocols -->
+    <div class="section-head">
+      <h2>Strength & Hypertrophy Splits</h2>
+      <span class="section-tag">Structural Training</span>
+    </div>
+
+    <div class="grid-3">
+      <div class="body-card">
+        <div class="body-card-tag">Upper Body // Biomechanical Focus</div>
+        <h3 class="body-card-title">Push / Pull Mechanics</h3>
+        <p class="body-card-desc">Prioritizing horizontal/vertical compound patterns with controlled eccentrics for maximum mechanical tension.</p>
+        <ul class="body-card-list">
+          <li>Incline Dumbbell Press (3x 6-8)</li>
+          <li>Chest-Supported Rows (3x 8-10)</li>
+          <li>Overhead Pressing (3x 6-8)</li>
+          <li>Cable Lateral Raises (4x 12-15)</li>
+        </ul>
+      </div>
+
+      <div class="body-card">
+        <div class="body-card-tag">Lower Body // Posterior Chain</div>
+        <h3 class="body-card-title">Posterior & Quad Drive</h3>
+        <p class="body-card-desc">Building structural knee resilience and hip hinge capacity while keeping spinal load managed.</p>
+        <ul class="body-card-list">
+          <li>Barbell Romanian Deadlifts (3x 6-8)</li>
+          <li>Hack Squats / Heel-Elevated Squats (3x 8-10)</li>
+          <li>Walking Lunge Extensions (3x 12/leg)</li>
+          <li>Seated Hamstring Curls (4x 10-12)</li>
+        </ul>
+      </div>
+
+      <div class="body-card">
+        <div class="body-card-tag">Mobility // Joint Health</div>
+        <h3 class="body-card-title">Prehab & Joint Priming</h3>
+        <p class="body-card-desc">Rotator cuff stabilization, thoracic spine extension, and ankle mobility to preserve long-term joint health.</p>
+        <ul class="body-card-list">
+          <li>Face Pulls & External Rotations (3x 15)</li>
+          <li>Jefferson Curls (3x 8 slow reps)</li>
+          <li>90/90 Hip Mobility Flow (5 min)</li>
+          <li>Cossack Squat Extensions (3x 10/side)</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function calculateMacros() {
+      const weight = parseFloat(document.getElementById('bodyWeight').value) || 75;
+      const height = parseFloat(document.getElementById('bodyHeight').value) || 178;
+      const age = parseInt(document.getElementById('bodyAge').value) || 28;
+      const goal = document.getElementById('goal').value;
+
+      // Mifflin-St Jeor Formula (Base BMR * Moderate Activity ~1.45)
+      let bmr = (10 * weight) + (6.25 * height) - (5 * age) + 5;
+      let tdee = Math.round(bmr * 1.45);
+
+      if (goal === 'recomp') tdee = Math.round(tdee * 0.95);
+      if (goal === 'gain') tdee = Math.round(tdee * 1.10);
+
+      const protein = Math.round(weight * 2.2);
+      const fat = Math.round((tdee * 0.25) / 9);
+      const carbs = Math.round((tdee - (protein * 4) - (fat * 9)) / 4);
+
+      document.getElementById('tdeeVal').innerText = `${tdee.toLocaleString()} kcal`;
+      document.getElementById('proteinVal').innerText = `${protein}g`;
+      document.getElementById('splitVal').innerText = `${carbs}g / ${fat}g`;
+    }
+  </script>
+</body>
+</html>
