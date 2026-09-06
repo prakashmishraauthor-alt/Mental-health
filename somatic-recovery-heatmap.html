@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>04 Somatic Recovery Heatmap | Autonomous System</title>
+  <style>
+    /* =========================================================
+       RESET & BASE STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    :root {
+      --bg-dark: #030712;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(244, 63, 94, 0.2);
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+      --accent-emerald: #10b981;
+      --accent-cyan: #06b6d4;
+      --accent-violet: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 20px;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(244, 63, 94, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1120px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 80px rgba(244, 63, 94, 0.1);
+      backdrop-filter: blur(20px);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title svg {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 8px var(--accent-rose));
+    }
+
+    .brand-title h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, var(--accent-rose));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent-rose);
+      background: rgba(244, 63, 94, 0.08);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background: rgba(244, 63, 94, 0.2);
+      border-color: var(--accent-rose);
+      box-shadow: 0 0 15px rgba(244, 63, 94, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* =========================================================
+       INSTRUCTIONS BANNER
+       ========================================================= */
+    .instructions-card {
+      background: rgba(244, 63, 94, 0.06);
+      border: 1px solid rgba(244, 63, 94, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .instructions-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-rose);
+      box-shadow: 0 0 10px var(--accent-rose);
+    }
+
+    .instructions-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .instructions-header svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent-rose);
+    }
+
+    .instructions-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .instructions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .instruction-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .step-number {
+      background: rgba(244, 63, 94, 0.15);
+      color: var(--accent-rose);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+      border: 1px solid rgba(244, 63, 94, 0.3);
+    }
+
+    /* =========================================================
+       ANIMATED CHARACTER PROTOCOL CARDS (3 ANIMATED SVG STEPS)
+       ========================================================= */
+    .protocol-cards-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      stroke: var(--accent-rose);
+    }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 850px) {
+      .protocol-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .protocol-card {
+      background: rgba(8, 15, 23, 0.8);
+      border: 1px solid rgba(244, 63, 94, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .protocol-card:hover {
+      border-color: var(--accent-rose);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .protocol-svg-wrapper {
+      width: 100%;
+      height: 140px;
+      background: rgba(3, 7, 18, 0.9);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .protocol-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .protocol-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-rose);
+    }
+
+    .protocol-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .protocol-card-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* KEYFRAME ANIMATIONS FOR SOMATIC CHARACTER PROTOCOLS */
+    /* 1. Diaphragmatic Breath Character Animation */
+    .char-chest {
+      transform-origin: 50px 48px;
+      animation: chestExpand 4s infinite ease-in-out;
+    }
+    .breath-waves {
+      animation: wavePulse 4s infinite ease-in-out;
+      transform-origin: 50px 30px;
+    }
+    @keyframes chestExpand {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.18); }
+    }
+    @keyframes wavePulse {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 0.9; transform: scale(1.3); stroke: var(--accent-emerald); }
+    }
+
+    /* 2. Foam Rolling / Tissue Release Character Animation */
+    .char-rolling {
+      animation: rollMove 3s infinite ease-in-out;
+    }
+    .foam-roller {
+      animation: rollerSpin 3s infinite ease-in-out;
+      transform-origin: 50px 68px;
+    }
+    @keyframes rollMove {
+      0%, 100% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+    }
+    @keyframes rollerSpin {
+      0%, 100% { transform: translateX(-6px) rotate(0deg); }
+      50% { transform: translateX(6px) rotate(180deg); }
+    }
+
+    /* 3. Percussive Vibration Therapy Character Animation */
+    .char-percussion {
+      animation: bodyVibrate 0.15s infinite alternate ease-in-out;
+    }
+    .percussion-waves {
+      animation: gunPulse 0.3s infinite alternate ease-in-out;
+    }
+    @keyframes bodyVibrate {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(0.5px, 0.8px); }
+    }
+    @keyframes gunPulse {
+      0% { opacity: 0.3; stroke: var(--accent-rose); }
+      100% { opacity: 1; stroke: var(--accent-amber); filter: drop-shadow(0 0 4px var(--accent-amber)); }
+    }
+
+    /* =========================================================
+       HEATMAP INTERFACE & CONTROLS
+       ========================================================= */
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .heatmap-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* BODY DIAGRAM SECTION */
+    .body-panel {
+      background: rgba(8, 15, 23, 0.75);
+      border: 1px solid rgba(244, 63, 94, 0.12);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+
+    .body-panel-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .view-toggle {
+      display: flex;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 3px;
+      border-radius: 8px;
+    }
+
+    .btn-view {
+      padding: 4px 10px;
+      font-size: 0.68rem;
+      font-weight: 700;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-view.active {
+      background: var(--accent-rose);
+      color: #ffffff;
+    }
+
+    .body-svg-container {
+      width: 220px;
+      height: 380px;
+      position: relative;
+    }
+
+    .body-node {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      fill-opacity: 0.45;
+      stroke-width: 1.5;
+    }
+
+    .body-node:hover {
+      fill-opacity: 0.85;
+      filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    .body-node.selected {
+      fill-opacity: 0.95;
+      stroke: #ffffff;
+      stroke-width: 2.5;
+      filter: drop-shadow(0 0 12px currentColor);
+    }
+
+    /* COLOR STATUS SCALE */
+    .heatmap-scale {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .scale-bar {
+      height: 6px;
+      flex-grow: 1;
+      margin: 0 10px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-emerald), var(--accent-amber), var(--accent-rose));
+    }
+
+    /* SOMATIC DETAILS PANEL */
+    .details-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .node-card {
+      background: rgba(8, 15, 23, 0.85);
+      border: 1px solid rgba(244, 63, 94, 0.2);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-heading {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .fatigue-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .fatigue-high {
+      background: rgba(244, 63, 94, 0.2);
+      color: var(--accent-rose);
+      border: 1px solid rgba(244, 63, 94, 0.4);
+    }
+
+    .fatigue-med {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--accent-amber);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .fatigue-low {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--accent-emerald);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+    }
+
+    .muscle-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-label-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .input-value-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: var(--accent-rose);
+    }
+
+    .range-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-rose);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-rose);
+      transition: transform 0.1s;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .protocol-box {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .protocol-box-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      letter-spacing: 1px;
+    }
+
+    .protocol-box-text {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .btn-apply {
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-rose), var(--accent-violet));
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(244, 63, 94, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-apply:hover {
+      box-shadow: 0 0 30px rgba(244, 63, 94, 0.6);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <h1>04 SOMATIC RECOVERY HEATMAP</h1>
+      </div>
+      <a href="index.html" class="btn-home">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        SYSTEM HOME
+      </a>
+    </header>
+
+    <!-- INSTRUCTIONS BANNER -->
+    <section class="instructions-card">
+      <div class="instructions-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <h2>SOMATIC AUDIT & RECOVERY PROTOCOL</h2>
+      </div>
+      <div class="instructions-grid">
+        <div class="instruction-step">
+          <span class="step-number">1</span>
+          <div><strong>Select Muscle Node:</strong> Click any highlighted body segment on the interactive anatomical heatmap below.</div>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">2</span>
+          <div><strong>Audit Strain Level:</strong> Adjust the fatigue slider (1–10) based on localized soreness or tightness.</div>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">3</span>
+          <div><strong>Execute Targeted Protocol:</strong> Follow the dynamic tissue-release instruction tailored to your current load.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROTOCOL CARDS WITH ANIMATED CHARACTERS (3 DISTINCT ANIMATION PROTOCOLS) -->
+    <section class="protocol-cards-section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        ANIMATED RECOVERY PROTOCOLS
+      </div>
+
+      <div class="protocol-grid">
+        
+        <!-- STEP 1: DIAPHRAGMATIC BREATHING CHARACTER -->
+        <article class="protocol-card">
+          <div class="protocol-svg-wrapper">
+            <svg width="100" height="120" viewBox="0 0 100 120">
+              <!-- Breath Wave Circles -->
+              <circle class="breath-waves" cx="50" cy="45" r="28" fill="none" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <!-- Character Silhouette - Sitting Breath -->
+              <!-- Head -->
+              <circle cx="50" cy="22" r="8" fill="#f8fafc"/>
+              <!-- Torso / Chest Expansion -->
+              <path class="char-chest" d="M42 32 C40 45, 42 62, 50 62 C58 62, 60 45, 58 32 Z" fill="#f43f5e"/>
+              <!-- Crossed Legs Base -->
+              <path d="M30 75 C35 65, 42 64, 50 64 C58 64, 65 65, 70 75 C60 82, 40 82, 30 75 Z" fill="#334155"/>
+              <!-- Arms on knees -->
+              <path d="M42 36 L32 58 L36 62" stroke="#cbd5e1" stroke-width="3" fill="none" stroke-linecap="round"/>
+              <path d="M58 36 L68 58 L64 62" stroke="#cbd5e1" stroke-width="3" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="protocol-card-body">
+            <span class="protocol-tag">PROTOCOL 01 // AUTONOMIC</span>
+            <div class="protocol-card-title">Parasympathetic Reset</div>
+            <p class="protocol-card-desc">Execute 4s inhale, 7s hold, 8s exhale. Down-regulates central nervous system tone and relieves systemic fascial tension.</p>
+          </div>
+        </article>
+
+        <!-- STEP 2: FOAM ROLLING CHARACTER -->
+        <article class="protocol-card">
+          <div class="protocol-svg-wrapper">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <!-- Ground line -->
+              <line x1="10" y1="85" x2="110" y2="85" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
+              <!-- Character Body - Rolling Quad / IT Band -->
+              <g class="char-rolling">
+                <!-- Foam Roller Wheel -->
+                <circle class="foam-roller" cx="50" cy="68" r="10" fill="#f59e0b" stroke="#ffffff" stroke-width="2"/>
+                <!-- Legs over roller -->
+                <path d="M20 62 L48 62 L75 50" stroke="#f43f5e" stroke-width="6" stroke-linecap="round" fill="none"/>
+                <!-- Torso planking up -->
+                <path d="M75 50 L95 40" stroke="#f8fafc" stroke-width="7" stroke-linecap="round"/>
+                <!-- Head -->
+                <circle cx="102" cy="35" r="7" fill="#f8fafc"/>
+                <!-- Supporting Arms -->
+                <path d="M88 43 L88 78" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round"/>
+              </g>
+            </svg>
+          </div>
+          <div class="protocol-card-body">
+            <span class="protocol-tag">PROTOCOL 02 // SMR RELEASE</span>
+            <div class="protocol-card-title">Fascial Foam Rolling</div>
+            <p class="protocol-card-desc">Slow, oscillating pressure over hyper-irritable muscle knots. Spend 60–90 seconds per tissue zone until pain drops 30%.</p>
+          </div>
+        </article>
+
+        <!-- STEP 3: PERCUSSIVE MASSAGE GUN CHARACTER -->
+        <article class="protocol-card">
+          <div class="protocol-svg-wrapper">
+            <svg width="100" height="120" viewBox="0 0 100 120">
+              <!-- Character Silhouette - Seated Leg Treatment -->
+              <g class="char-percussion">
+                <!-- Head -->
+                <circle cx="38" cy="25" r="8" fill="#f8fafc"/>
+                <!-- Torso Bent Forward -->
+                <path d="M38 33 L48 60" stroke="#f8fafc" stroke-width="8" stroke-linecap="round"/>
+                <!-- Leg extended -->
+                <path d="M48 60 L82 72 L85 90" stroke="#f43f5e" stroke-width="7" stroke-linecap="round" fill="none"/>
+                <!-- Arm holding percussion unit -->
+                <path d="M42 42 L62 50 L66 58" stroke="#cbd5e1" stroke-width="4" stroke-linecap="round" fill="none"/>
+                <!-- Percussion Massage Device -->
+                <rect x="64" y="54" width="12" height="7" rx="2" fill="#8b5cf6"/>
+                <path d="M70 61 L70 67" stroke="#f59e0b" stroke-width="3"/>
+              </g>
+              <!-- Percussion Waves Animation -->
+              <path class="percussion-waves" d="M64 71 Q70 75 76 71 M62 75 Q70 80 78 75" fill="none" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="protocol-card-body">
+            <span class="protocol-tag">PROTOCOL 03 // VIBRATION</span>
+            <div class="protocol-card-title">Percussive Therapy</div>
+            <p class="protocol-card-desc">Apply high-frequency vibration therapy around tender belly muscles. Avoid bony prominences; target dense muscle bellies.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- HEATMAP INTERFACE & READOUT -->
+    <main class="heatmap-grid">
+      
+      <!-- INTERACTIVE SVG BODY MAP -->
+      <section class="body-panel">
+        <div class="body-panel-header">
+          <div class="section-title" style="font-size: 0.8rem;">
+            ANATOMICAL MAP
+          </div>
+          <div class="view-toggle">
+            <button class="btn-view active" id="btn-ant" onclick="switchAnatomy('ant')">ANTERIOR</button>
+            <button class="btn-view" id="btn-post" onclick="switchAnatomy('post')">POSTERIOR</button>
+          </div>
+        </div>
+
+        <div class="body-svg-container">
+          <svg viewBox="0 0 200 360" width="100%" height="100%">
+            <!-- Body Silhouette Outline Base -->
+            <path d="M100 20 C108 20 114 26 114 34 C114 42 108 48 100 48 C92 48 86 42 86 34 C86 26 92 20 100 20 Z M86 52 L114 52 L128 65 L142 120 L132 125 L120 85 L120 170 L110 170 L110 260 L118 330 L102 330 L100 220 L98 330 L82 330 L90 260 L90 170 L80 170 L80 85 L68 125 L58 120 L72 65 Z" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+
+            <!-- ANTERIOR MUSCLE NODES -->
+            <g id="group-anterior">
+              <!-- Shoulders / Deltoids -->
+              <path id="node-deltoids" class="body-node selected" d="M70 65 Q60 80 66 100 L76 80 Z M130 65 Q140 80 134 100 L124 80 Z" fill="#f43f5e" stroke="#f43f5e" onclick="selectNode('deltoids', 'Deltoids & Shoulders', 8, 'High overhead strain detected. Perform percussive therapy on anterior deltoid and cross-arm stretch.')"/>
+              <!-- Chest / Pectorals -->
+              <path id="node-chest" class="body-node" d="M78 62 L100 64 L100 95 L76 90 Z M122 62 L100 64 L100 95 L124 90 Z" fill="#f59e0b" stroke="#f59e0b" onclick="selectNode('chest', 'Pectoralis Major', 5, 'Moderate tightness. Doorway chest stretch 3x30s + foam roll thoracic spine.')"/>
+              <!-- Core / Abs -->
+              <path id="node-abs" class="body-node" d="M82 96 L118 96 L114 150 L86 150 Z" fill="#10b981" stroke="#10b981" onclick="selectNode('abs', 'Rectus Abdominis', 2, 'Low strain. Maintain normal hydration and gentle cobra stretches.')"/>
+              <!-- Quads -->
+              <path id="node-quads" class="body-node" d="M85 175 L108 175 L106 250 L86 245 Z M115 175 L138 175 L134 245 L114 250 Z" fill="#f43f5e" stroke="#f43f5e" onclick="selectNode('quads', 'Quadriceps Femoris', 9, 'Severe load accumulated. Roller foam massage for 2 mins per leg + low-lunge quad hold.')"/>
+            </g>
+
+            <!-- POSTERIOR MUSCLE NODES (HIDDEN BY DEFAULT) -->
+            <g id="group-posterior" style="display: none;">
+              <!-- Upper Back / Traps -->
+              <path id="node-traps" class="body-node" d="M82 55 L118 55 L125 90 L75 90 Z" fill="#f59e0b" stroke="#f59e0b" onclick="selectNode('traps', 'Trapezius & Upper Back', 6, 'Moderate postural stress. Perform lacrosse ball trigger release near scapula borders.')"/>
+              <!-- Lower Back / Erector Spinae -->
+              <path id="node-lats" class="body-node" d="M80 95 L120 95 L115 150 L85 150 Z" fill="#f43f5e" stroke="#f43f5e" onclick="selectNode('lats', 'Thoracolumbar Fascia', 8, 'High spinal compression. Decompress with dead-hangs 3x45s and cat-cow mobilization.')"/>
+              <!-- Glutes -->
+              <path id="node-glutes" class="body-node" d="M82 155 L118 155 L120 200 L80 200 Z" fill="#f59e0b" stroke="#f59e0b" onclick="selectNode('glutes', 'Gluteus Maximus', 6, 'Moderate stiffness. Figure-4 seated stretch and percussive therapy on glute medius.')"/>
+              <!-- Hamstrings / Calves -->
+              <path id="node-calves" class="body-node" d="M84 205 L116 205 L112 310 L88 310 Z" fill="#10b981" stroke="#10b981" onclick="selectNode('calves', 'Hamstrings & Calves', 3, 'Low strain detected. Light eccentric calf drops on step.')"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="heatmap-scale">
+          <span>OPTIMAL (1-3)</span>
+          <div class="scale-bar"></div>
+          <span>FATIGUED (8-10)</span>
+        </div>
+      </section>
+
+      <!-- ACTIVE NODE AUDIT & CONTROLS -->
+      <aside class="details-panel">
+        
+        <div class="node-card">
+          <div class="card-heading">
+            <span>SELECTED MUSCLE ZONE</span>
+            <span class="fatigue-badge fatigue-high" id="node-badge">HIGH FATIGUE</span>
+          </div>
+          
+          <div class="muscle-title" id="node-title">
+            Deltoids & Shoulders
+          </div>
+
+          <div class="input-group">
+            <div class="input-label-container">
+              <span class="input-label">Fatigue & Soreness Index</span>
+              <span class="input-value-badge" id="fatigue-score">8 / 10</span>
+            </div>
+            <input type="range" class="range-slider" id="input-fatigue" min="1" max="10" value="8" oninput="updateFatigue(this.value)">
+          </div>
+
+          <div class="protocol-box">
+            <span class="protocol-box-title">RECOMMENDED TISSUE RELEASE</span>
+            <p class="protocol-box-text" id="protocol-text">
+              High overhead strain detected. Perform percussive therapy on anterior deltoid and cross-arm stretch for 60 seconds per side.
+            </p>
+          </div>
+
+          <button class="btn-apply" onclick="saveProtocol()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            LOG SOMATIC RECOVERY SESSION
+          </button>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <script>
+    // Audio feedback synth
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function playBeep(freq = 440, duration = 0.1) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    let activeNodeId = 'deltoids';
+
+    function switchAnatomy(view) {
+      playBeep(580, 0.08);
+      const antGroup = document.getElementById('group-anterior');
+      const postGroup = document.getElementById('group-posterior');
+      const btnAnt = document.getElementById('btn-ant');
+      const btnPost = document.getElementById('btn-post');
+
+      if (view === 'ant') {
+        antGroup.style.display = 'block';
+        postGroup.style.display = 'none';
+        btnAnt.classList.add('active');
+        btnPost.classList.remove('active');
+      } else {
+        antGroup.style.display = 'none';
+        postGroup.style.display = 'block';
+        btnPost.classList.add('active');
+        btnAnt.classList.remove('active');
+      }
+    }
+
+    function selectNode(id, title, fatigue, protocol) {
+      playBeep(480, 0.1);
+      activeNodeId = id;
+
+      // Unselect all nodes
+      document.querySelectorAll('.body-node').forEach(node => {
+        node.classList.remove('selected');
+      });
+
+      // Select active node SVG element
+      const selectedElem = document.getElementById(`node-${id}`);
+      if (selectedElem) selectedElem.classList.add('selected');
+
+      // Update panel details
+      document.getElementById('node-title').textContent = title;
+      document.getElementById('input-fatigue').value = fatigue;
+      document.getElementById('protocol-text').textContent = protocol;
+
+      updateFatigue(fatigue);
+    }
+
+    function updateFatigue(val) {
+      document.getElementById('fatigue-score').textContent = `${val} / 10`;
+      const badge = document.getElementById('node-badge');
+
+      if (val >= 8) {
+        badge.textContent = 'HIGH FATIGUE';
+        badge.className = 'fatigue-badge fatigue-high';
+      } else if (val >= 4) {
+        badge.textContent = 'MODERATE LOAD';
+        badge.className = 'fatigue-badge fatigue-med';
+      } else {
+        badge.textContent = 'OPTIMAL STATUS';
+        badge.className = 'fatigue-badge fatigue-low';
+      }
+
+      // Update active node fill color dynamically
+      const nodeElem = document.getElementById(`node-${activeNodeId}`);
+      if (nodeElem) {
+        let color = '#10b981'; // Green
+        if (val >= 8) color = '#f43f5e'; // Red
+        else if (val >= 4) color = '#f59e0b'; // Amber
+
+        nodeElem.setAttribute('fill', color);
+        nodeElem.setAttribute('stroke', color);
+      }
+    }
+
+    function saveProtocol() {
+      playBeep(784, 0.2);
+      const title = document.getElementById('node-title').textContent;
+      const score = document.getElementById('fatigue-score').textContent;
+      alert(` Somatic Session Logged!\n\nZone: ${title}\nFatigue Level: ${score}\nStatus: Protocol saved to daily recovery audit.`);
+    }
+
+    // Particle Canvas Animation
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.2,
+      r: Math.random() * 2 + 1
+    }));
+
+    function renderBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(244, 63, 94, 0.15)';
+        bgCtx.fill();
+      });
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+  </script>
+</body>
+</html>
