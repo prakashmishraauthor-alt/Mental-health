@@ -46,7 +46,6 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Background Glow Particles Canvas */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -58,7 +57,6 @@
       opacity: 0.5;
     }
 
-    /* Main Container Frame */
     .app-container {
       position: relative;
       z-index: 10;
@@ -76,7 +74,7 @@
     }
 
     /* =========================================================
-       HEADER & NAVIGATION
+       HEADER
        ========================================================= */
     .header {
       display: flex;
@@ -210,7 +208,7 @@
     }
 
     /* =========================================================
-       MAIN LAYOUT GRID
+       MAIN GRID & TEST CARDS
        ========================================================= */
     .tester-grid {
       display: grid;
@@ -224,9 +222,6 @@
       }
     }
 
-    /* =========================================================
-       TESTS INPUT SECTION (LEFT STAGE)
-       ========================================================= */
     .tests-panel {
       display: flex;
       flex-direction: column;
@@ -264,21 +259,49 @@
     }
 
     .test-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
       background: rgba(6, 182, 212, 0.1);
       border: 1px solid rgba(6, 182, 212, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
-    .test-icon svg {
-      width: 20px;
-      height: 20px;
-      stroke: var(--accent-cyan);
+    /* ANIMATED CHARACTER ICON SVG */
+    .sit-stand-svg {
+      width: 34px;
+      height: 34px;
+    }
+
+    /* Hands-Free Crossed Arms State Animation */
+    .hands-free-body {
+      animation: sitStandMove 2.4s infinite ease-in-out;
+      transform-origin: 16px 28px;
+    }
+
+    @keyframes sitStandMove {
+      0%, 100% {
+        /* Seated Position */
+        transform: translateY(6px);
+      }
+      50% {
+        /* Standing Hands-Free Position */
+        transform: translateY(-2px);
+      }
+    }
+
+    /* Gentle pulsing glow on head */
+    .character-head {
+      animation: headGlow 2.4s infinite ease-in-out;
+    }
+
+    @keyframes headGlow {
+      0%, 100% { fill: var(--accent-cyan); filter: drop-shadow(0 0 2px var(--accent-cyan)); }
+      50% { fill: var(--accent-sky); filter: drop-shadow(0 0 6px var(--accent-sky)); }
     }
 
     .test-title {
@@ -326,7 +349,6 @@
       font-weight: 600;
     }
 
-    /* Numeric Counter Input */
     .rep-counter {
       display: flex;
       align-items: center;
@@ -367,7 +389,6 @@
       color: var(--accent-sky);
     }
 
-    /* Timer Widget Built-in */
     .timer-tool {
       display: flex;
       align-items: center;
@@ -404,7 +425,6 @@
       color: var(--accent-orange);
     }
 
-    /* Option Toggle Buttons */
     .toggle-group {
       display: flex;
       gap: 8px;
@@ -441,7 +461,7 @@
     }
 
     /* =========================================================
-       RESULTS & PREHAB ROUTINE (RIGHT SIDEBAR)
+       RESULTS SIDEBAR
        ========================================================= */
     .results-panel {
       display: flex;
@@ -449,7 +469,6 @@
       gap: 20px;
     }
 
-    /* Score Radial Card */
     .score-card {
       background: rgba(8, 15, 23, 0.85);
       border: 1px solid rgba(56, 189, 248, 0.2);
@@ -523,7 +542,6 @@
       color: var(--accent-emerald);
     }
 
-    /* Dynamic Tailored Prehab Routine */
     .prehab-card {
       background: rgba(15, 23, 42, 0.7);
       border: 1px solid rgba(56, 189, 248, 0.15);
@@ -639,7 +657,6 @@
 </head>
 <body>
 
-  <!-- Background Ambient Neural Canvas -->
   <canvas id="bg-canvas"></canvas>
 
   <div class="app-container">
@@ -673,15 +690,15 @@
       <div class="instructions-grid">
         <div class="instruction-step">
           <span class="step-number">1</span>
-          <div><strong>Test 1 (Sit-to-Stand):</strong> Use a standard chair (17"). Cross arms over chest. Count full standing reps completed in 30s.</div>
+          <div><strong>Test 1 (Hands-Free Sit-to-Stand):</strong> Cross arms over chest. Stand up fully and sit back down smoothly for 30 seconds.</div>
         </div>
         <div class="instruction-step">
           <span class="step-number">2</span>
-          <div><strong>Test 2 (Single-Leg Balance):</strong> Stand on one leg, lift opposite foot 6 inches, close eyes. Time until foot touches ground.</div>
+          <div><strong>Test 2 (Single-Leg Balance):</strong> Stand on one leg, lift opposite foot 6 inches, close eyes. Hold up to 20 seconds.</div>
         </div>
         <div class="instruction-step">
           <span class="step-number">3</span>
-          <div><strong>Test 3 (Deep Squat Depth):</strong> Squat as deep as possible with feet shoulder-width. Check if heels lift or lumbar rounds.</div>
+          <div><strong>Test 3 (Deep Squat Depth):</strong> Squat as deep as possible with feet shoulder-width flat on floor.</div>
         </div>
       </div>
     </section>
@@ -692,28 +709,46 @@
       <!-- LEFT STAGE: 3 FUNCTIONAL SCREEN CARDS -->
       <section class="tests-panel">
         
-        <!-- TEST 1: 30-SEC SIT-TO-STAND -->
+        <!-- TEST 1: 30-SEC SIT-TO-STAND WITH ANIMATED HANDS-FREE CHARACTER ICON -->
         <article class="test-card">
           <div class="test-card-header">
             <div class="test-title-group">
               <div class="test-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-                  <path d="M7 11v 6M17 11v 6M5 11h14M12 4v7"/>
+                <!-- ANIMATED SVG ICON: HANDS-FREE CROSSED-ARMS SIT-TO-STAND -->
+                <svg class="sit-stand-svg" viewBox="0 0 32 32">
+                  <!-- Chair visual background -->
+                  <path d="M7 21h12M19 21v8M7 21v8" stroke="rgba(255,255,255,0.25)" stroke-width="2" stroke-linecap="round"/>
+                  
+                  <!-- Animated Body Group performing Sit-to-Stand -->
+                  <g class="hands-free-body">
+                    <!-- Head -->
+                    <circle class="character-head" cx="16" cy="7" r="3.2" fill="#06b6d4" />
+                    <!-- Torso -->
+                    <line x1="16" y1="10.2" x2="16" y2="19" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round" />
+                    
+                    <!-- HANDS-FREE CROSSED ARMS (X-Pattern on Chest) -->
+                    <path d="M12.5 12.5 L19.5 16.5 M19.5 12.5 L12.5 16.5" stroke="#ff5a00" stroke-width="2" stroke-linecap="round"/>
+                    
+                    <!-- Upper Leg (Hips to Knee) -->
+                    <line x1="16" y1="19" x2="12" y2="23" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+                    <!-- Lower Leg (Knee to Foot) -->
+                    <line x1="12" y1="23" x2="12" y2="28" stroke="#38bdf8" stroke-width="2.2" stroke-linecap="round"/>
+                  </g>
                 </svg>
               </div>
               <div>
                 <div class="test-title">1. 30-Second Sit-to-Stand</div>
-                <div class="test-target-joint">Target: Glute/Quad Force & Sarcopenia Risk</div>
+                <div class="test-target-joint">Target: Glute/Quad Power & Sarcopenia Risk</div>
               </div>
             </div>
           </div>
-          <p class="test-description">Evaluates lower-body functional power, sit-to-stand motor control, and sarcopenic leg muscle atrophy.</p>
+          <p class="test-description">Evaluates lower-body functional power, sit-to-stand motor control, and sarcopenic leg muscle atrophy in the strict hands-free position.</p>
           
           <div class="test-inputs">
             <div class="input-row">
-              <span class="input-label">Hands free sit-to-stand completed?</span>
+              <span class="input-label">Hands-free (crossed arms) completed?</span>
               <div class="toggle-group">
-                <button class="btn-toggle active-yes" id="t1-hands-yes" onclick="setT1Hands(true)">YES</button>
+                <button class="btn-toggle active-yes" id="t1-hands-yes" onclick="setT1Hands(true)">YES (HANDS-FREE)</button>
                 <button class="btn-toggle" id="t1-hands-no" onclick="setT1Hands(false)">NO (USED HANDS)</button>
               </div>
             </div>
@@ -739,7 +774,7 @@
           </div>
         </article>
 
-        <!-- TEST 2: SINGLE-LEG EYES-CLOSED BALANCE -->
+        <!-- TEST 2: SINGLE-LEG BALANCE -->
         <article class="test-card">
           <div class="test-card-header">
             <div class="test-title-group">
@@ -778,7 +813,7 @@
           </div>
         </article>
 
-        <!-- TEST 3: DEEP BODYWEIGHT SQUAT MOBILITY -->
+        <!-- TEST 3: DEEP SQUAT -->
         <article class="test-card">
           <div class="test-card-header">
             <div class="test-title-group">
@@ -798,7 +833,7 @@
           
           <div class="test-inputs">
             <div class="input-row">
-              <span class="input-label">Achieved deep squat without heels lifting or heel support?</span>
+              <span class="input-label">Achieved deep squat without heels lifting?</span>
               <div class="toggle-group">
                 <button class="btn-toggle active-yes" id="t3-squat-clean" onclick="setT3Squat('clean')">CLEAN (FLAT HEELS)</button>
                 <button class="btn-toggle" id="t3-squat-lift" onclick="setT3Squat('heels_lifted')">HEELS LIFTED</button>
@@ -810,10 +845,9 @@
 
       </section>
 
-      <!-- RIGHT SIDEBAR: AUDIT SCORE & CUSTOM PREHAB ROUTINE -->
+      <!-- RIGHT SIDEBAR -->
       <aside class="results-panel">
         
-        <!-- SCORE GAUGE CARD -->
         <div class="score-card">
           <div class="score-title">Functional Mobility Score</div>
           
@@ -828,7 +862,6 @@
           <div class="status-badge" id="status-badge-display">OPTIMAL MOBILITY</div>
         </div>
 
-        <!-- TAILORED PREHAB ROUTINE DISPLAY -->
         <div class="prehab-card">
           <div class="prehab-header">
             <div class="prehab-title">
@@ -840,9 +873,7 @@
             <span class="routine-duration-badge">3 MINS DAILY</span>
           </div>
 
-          <div class="exercise-routine-list" id="routine-items-container">
-            <!-- Dynamic Items populated by JS -->
-          </div>
+          <div class="exercise-routine-list" id="routine-items-container"></div>
 
           <button class="btn-execute-routine" onclick="triggerPrehabExecution()">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
@@ -858,17 +889,14 @@
 
   </div>
 
-  <!-- JAVASCRIPT LOGIC -->
   <script>
-    // TEST STATE
     const state = {
       t1HandsFree: true,
       t1Reps: 14,
-      t2Balance: 'pass', // pass, partial, fail
-      t3Squat: 'clean' // clean, heels_lifted, unable
+      t2Balance: 'pass',
+      t3Squat: 'clean'
     };
 
-    // TIMERS
     let t1TimerInt = null;
     let t1Secs = 30;
     let t1Running = false;
@@ -877,7 +905,6 @@
     let t2Secs = 20;
     let t2Running = false;
 
-    // AUDIO CUES
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     function beep(freq = 523, duration = 0.15) {
       try {
@@ -894,7 +921,6 @@
       } catch (e) {}
     }
 
-    // HANDLERS FOR TEST 1
     function setT1Hands(val) {
       state.t1HandsFree = val;
       document.getElementById('t1-hands-yes').className = `btn-toggle ${val ? 'active-yes' : ''}`;
@@ -926,14 +952,13 @@
             clearInterval(t1TimerInt);
             t1Running = false;
             beep(880, 0.4);
-            alert(" 30-Second Sit-To-Stand Test Complete! Enter your completed rep count.");
+            alert(" 30-Second Hands-Free Sit-To-Stand Test Complete! Enter your completed rep count.");
             document.getElementById('timer-t1-btn-text').textContent = 'RESTART 30s TIMER';
           }
         }, 1000);
       }
     }
 
-    // HANDLERS FOR TEST 2
     function setT2Balance(val) {
       state.t2Balance = val;
       document.getElementById('t2-bal-yes').className = `btn-toggle ${val === 'pass' ? 'active-yes' : ''}`;
@@ -967,7 +992,6 @@
       }
     }
 
-    // HANDLERS FOR TEST 3
     function setT3Squat(val) {
       state.t3Squat = val;
       document.getElementById('t3-squat-clean').className = `btn-toggle ${val === 'clean' ? 'active-yes' : ''}`;
@@ -976,33 +1000,25 @@
       recalculateScore();
     }
 
-    // CALCULATE SCORE & DYNAMIC ROUTINE
     function recalculateScore() {
       let score = 0;
 
-      // Test 1 logic (Max 35 pts)
       if (state.t1HandsFree) score += 15;
       if (state.t1Reps >= 15) score += 20;
       else if (state.t1Reps >= 10) score += 12;
       else score += 5;
 
-      // Test 2 logic (Max 35 pts)
       if (state.t2Balance === 'pass') score += 35;
       else if (state.t2Balance === 'partial') score += 20;
       else score += 5;
 
-      // Test 3 logic (Max 30 pts)
       if (state.t3Squat === 'clean') score += 30;
       else if (state.t3Squat === 'heels_lifted') score += 15;
       else score += 5;
 
-      // Ensure cap
       score = Math.min(100, Math.max(0, score));
-
-      // Update score readout
       document.getElementById('score-num').textContent = score;
 
-      // Update badge status
       const badge = document.getElementById('status-badge-display');
       if (score >= 80) {
         badge.textContent = "OPTIMAL MOBILITY & POWER";
@@ -1029,7 +1045,6 @@
       const container = document.getElementById('routine-items-container');
       const items = [];
 
-      // Ankle/Squat mobility exercises
       if (state.t3Squat === 'heels_lifted' || state.t3Squat === 'unable') {
         items.push({
           name: "1. Soleus Wall Dorsiflexion Mobilization",
@@ -1044,7 +1059,6 @@
         });
       }
 
-      // Balance/Proprioception exercises
       if (state.t2Balance !== 'pass') {
         items.push({
           name: "2. Single-Leg Ankle Clock Reaches",
@@ -1059,7 +1073,6 @@
         });
       }
 
-      // Sarcopenia/Glute power exercises
       if (!state.t1HandsFree || state.t1Reps < 12) {
         items.push({
           name: "3. Explosive Chair Stand Drive",
@@ -1085,7 +1098,6 @@
       `).join('');
     }
 
-    // CANVAS GAUGE RENDERER
     function renderGauge(score) {
       const canvas = document.getElementById('score-gauge');
       const ctx = canvas.getContext('2d');
@@ -1098,7 +1110,6 @@
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Track background arc
       ctx.beginPath();
       ctx.arc(cx, cy, radius, Math.PI * 0.85, Math.PI * 2.15);
       ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
@@ -1106,12 +1117,10 @@
       ctx.lineCap = 'round';
       ctx.stroke();
 
-      // Color selection based on score
       let color = '#10b981';
       if (score < 55) color = '#f43f5e';
       else if (score < 80) color = '#f59e0b';
 
-      // Active fill arc
       const fillPercentage = score / 100;
       const startAngle = Math.PI * 0.85;
       const endAngle = startAngle + (Math.PI * 1.3 * fillPercentage);
@@ -1131,7 +1140,6 @@
       alert(" Prehab Routine Initiated!\n\nPerform these 3 targeted exercises daily to systematically erase joint mobility locks and prevent sarcopenic strength loss.");
     }
 
-    // AMBIENT BACKGROUND NEURAL CANVAS
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
 
@@ -1167,7 +1175,6 @@
     }
     renderBg();
 
-    // INITIAL RENDER
     recalculateScore();
   </script>
 </body>
