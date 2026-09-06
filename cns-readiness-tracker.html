@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CNS READINESS TRACKER // Bio-Performance Matrix</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=JetBrains+Mono:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        cns: {
+                            bg: '#030712',
+                            surface: '#0b0f19',
+                            card: 'rgba(15, 23, 42, 0.75)',
+                            purple: '#8b5cf6',
+                            purpleGlow: 'rgba(139, 92, 246, 0.4)',
+                            cyan: '#06b6d4',
+                            emerald: '#10b981',
+                            rose: '#f43f5e',
+                            amber: '#f59e0b'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Cinzel', 'serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #030712;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.85) 0%, rgba(7, 11, 21, 0.95) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(139, 92, 246, 0.25);
+            box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-card {
+            background: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(139, 92, 246, 0.6);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* SVG Character Animation Keyframes */
+        @keyframes pulseBeam {
+            0%, 100% { stroke-dashoffset: 0; opacity: 0.3; }
+            50% { stroke-dashoffset: 40; opacity: 1; }
+        }
+
+        @keyframes reflexGlow {
+            0%, 100% { fill: #06b6d4; filter: drop-shadow(0 0 4px #06b6d4); }
+            50% { fill: #8b5cf6; filter: drop-shadow(0 0 14px #8b5cf6); }
+        }
+
+        @keyframes muscleFlex {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes breathExpand {
+            0%, 100% { r: 18px; opacity: 0.3; }
+            50% { r: 32px; opacity: 0.8; }
+        }
+
+        .anim-beam { stroke-dasharray: 8 8; animation: pulseBeam 2s linear infinite; }
+        .anim-reflex { animation: reflexGlow 1.8s ease-in-out infinite; }
+        .anim-flex { animation: muscleFlex 2s ease-in-out infinite; transform-origin: center; }
+        .anim-breath { animation: breathExpand 4s ease-in-out infinite; }
+
+        /* Background grid scanlines */
+        .bg-cyber-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(139, 92, 246, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(139, 92, 246, 0.05) 1px, transparent 1px);
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #030712; }
+        ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.4); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #8b5cf6; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between bg-cyber-grid selection:bg-purple-500 selection:text-white relative">
+
+    <canvas id="bgParticles" class="fixed inset-0 pointer-events-none z-0"></canvas>
+
+    <!-- HEADER TOOLBAR -->
+    <header class="sticky top-0 z-50 border-b border-purple-500/20 bg-[#030712]/90 backdrop-blur-md px-6 py-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            
+            <!-- Title & Branding -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-cyan-500 to-emerald-400 p-[1px] flex items-center justify-center shadow-lg shadow-purple-500/30">
+                    <div class="w-full h-full bg-[#030712] rounded-[11px] flex items-center justify-center">
+                        <i data-lucide="zap" class="w-5 h-5 text-purple-400"></i>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-display text-lg font-extrabold tracking-widest text-white">
+                            CNS READINESS TRACKER
+                        </h1>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/20 border border-purple-500/40 text-purple-300 font-bold">NEURAL v4.0</span>
+                    </div>
+                    <p class="text-[11px] font-mono tracking-wider text-slate-400">
+                        CENTRAL NERVOUS SYSTEM AUDIT & NEURO-MOTOR READINESS MATRIX
+                    </p>
+                </div>
+            </div>
+
+            <!-- Top Return to Home Button -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleSound()" id="soundToggleBtn" class="px-3.5 py-2 rounded-xl glass-card text-xs font-mono text-slate-300 hover:text-white flex items-center gap-2 transition">
+                    <i data-lucide="volume-2" id="soundIcon" class="w-4 h-4 text-cyan-400"></i>
+                    <span id="soundLabel">Audio: ON</span>
+                </button>
+
+                <a href="index.html" class="px-4 py-2 rounded-xl bg-gradient-to-r from-purple-600 to-cyan-500 hover:from-purple-500 hover:to-cyan-400 text-white font-bold text-xs font-mono flex items-center gap-2 transition shadow-lg shadow-purple-500/25 group">
+                    <i data-lucide="home" class="w-4 h-4 group-hover:-translate-x-0.5 transition"></i>
+                    <span>RETURN TO HOME PAGE</span>
+                </a>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINERS -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 space-y-8 relative z-10">
+
+        <!-- 1. INSTRUCTIONS BANNER -->
+        <section class="glass-panel rounded-3xl p-6 relative overflow-hidden border border-purple-500/30">
+            <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <i data-lucide="binary" class="w-5 h-5 text-purple-400"></i>
+                    <h2 class="text-sm font-mono font-bold uppercase text-white tracking-wider">NEURAL AUDIT INSTRUCTIONS & CNS DIAGNOSTIC PROTOCOL</h2>
+                </div>
+                <span class="text-xs font-mono text-cyan-400 bg-cyan-500/10 border border-cyan-500/30 px-2.5 py-1 rounded-lg">
+                    SYSTEM STATUS: READY
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-2">
+                    <div class="flex items-center gap-2 text-purple-400 font-bold">
+                        <span class="w-6 h-6 rounded-lg bg-purple-500/20 flex items-center justify-center text-xs">1</span>
+                        <span>MOTOR SPEED / TAP TEST</span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed">
+                        Execute 10 rapid neural taps or use the interactive reflex benchmark. High fatigue manifests as motor latency and poor cadence consistency.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-2">
+                    <div class="flex items-center gap-2 text-cyan-400 font-bold">
+                        <span class="w-6 h-6 rounded-lg bg-cyan-500/20 flex items-center justify-center text-xs">2</span>
+                        <span>HRV / RECOVERY METRICS</span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed">
+                        Input your overnight HRV score and sleep duration. Parasympathetic tone dictates how much central volume your system can process today.
+                    </p>
+                </div>
+
+                <div class="p-4 rounded-2xl bg-slate-900/80 border border-white/5 space-y-2">
+                    <div class="flex items-center gap-2 text-emerald-400 font-bold">
+                        <span class="w-6 h-6 rounded-lg bg-emerald-500/20 flex items-center justify-center text-xs">3</span>
+                        <span>FORCE AUDIT & DRIVE</span>
+                    </div>
+                    <p class="text-slate-300 leading-relaxed">
+                        Assess maximum grip dynamometer force and subjective neural fatigue (eye strain, motivation). The diagnostic algorithm computes your daily ceiling.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. ANIMATED PROTOCOL CARDS WITH ATHLETE CHARACTER SVG SIMULATIONS -->
+        <section class="space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm font-mono font-bold uppercase text-white tracking-widest flex items-center gap-2">
+                    <i data-lucide="activity" class="w-4 h-4 text-cyan-400"></i>
+                    <span>VISUAL CNS PROTOCOL MODULES</span>
+                </h2>
+                <span class="text-xs font-mono text-slate-400">3 ACTIVE SOMATIC MODALITIES</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Protocol 1: Reaction Time & Visual Focus -->
+                <div class="glass-panel rounded-3xl p-5 flex flex-col justify-between space-y-4 border border-cyan-500/30 group hover:border-cyan-400 transition">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span class="text-xs font-mono text-cyan-400 font-bold uppercase">PROTOCOL 01</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">VISUAL REFLEX</span>
+                    </div>
+
+                    <!-- Animated SVG Character: Visual Reflex Light Test -->
+                    <div class="w-full h-44 rounded-2xl bg-slate-950/90 border border-cyan-500/20 flex items-center justify-center relative overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 240 160">
+                            <!-- Target Light Grid -->
+                            <circle cx="50" cy="50" r="10" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5" />
+                            <circle cx="120" cy="35" r="12" class="anim-reflex" />
+                            <circle cx="190" cy="50" r="10" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5" />
+
+                            <!-- Character Silhouette Head & Upper Body -->
+                            <path d="M120 100 C 105 100, 95 112, 95 125 L 145 125 C 145 112, 135 100, 120 100 Z" fill="#1e293b" stroke="#06b6d4" stroke-width="1.5"/>
+                            <circle cx="120" cy="85" r="14" fill="#0f172a" stroke="#8b5cf6" stroke-width="2"/>
+                            
+                            <!-- Head Visor Line -->
+                            <path d="M110 82 Q 120 78, 130 82" stroke="#06b6d4" stroke-width="3" stroke-linecap="round"/>
+
+                            <!-- Laser Visual Sight Lines -->
+                            <line x1="120" y1="80" x2="120" y2="35" stroke="#06b6d4" stroke-width="1.5" class="anim-beam"/>
+                            <line x1="120" y1="80" x2="50" y2="50" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+                            <line x1="120" y1="80" x2="190" y2="50" stroke="#8b5cf6" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-bold text-white font-mono">Reaction & Optical Focus</h3>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            Tests optic nerve-to-motor transmission speed. Detects early central ocular fatigue prior to heavy training.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Protocol 2: Max-Effort Grip Dynamometer -->
+                <div class="glass-panel rounded-3xl p-5 flex flex-col justify-between space-y-4 border border-purple-500/30 group hover:border-purple-400 transition">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span class="text-xs font-mono text-purple-400 font-bold uppercase">PROTOCOL 02</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-500/10 text-purple-300 border border-purple-500/30">MAX FORCE AUDIT</span>
+                    </div>
+
+                    <!-- Animated SVG Character: Grip Force Dynamometer -->
+                    <div class="w-full h-44 rounded-2xl bg-slate-950/90 border border-purple-500/20 flex items-center justify-center relative overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 240 160">
+                            <!-- Character Arm & Flexing Biceps -->
+                            <g class="anim-flex">
+                                <!-- Upper Arm & Biceps -->
+                                <path d="M60 110 C 80 80, 100 80, 120 100 C 130 115, 110 135, 75 130 Z" fill="#1e293b" stroke="#8b5cf6" stroke-width="2"/>
+                                <!-- Forearm -->
+                                <path d="M115 102 C 135 90, 160 90, 180 105 L 175 120 C 150 110, 130 115, 115 125 Z" fill="#0f172a" stroke="#06b6d4" stroke-width="2"/>
+                            </g>
+
+                            <!-- Dynamometer Device in Hand -->
+                            <rect x="175" y="92" width="22" height="32" rx="4" fill="#8b5cf6" stroke="#ffffff" stroke-width="1.5" />
+                            <circle cx="186" cy="104" r="6" fill="#030712" stroke="#10b981" stroke-width="1.5"/>
+
+                            <!-- Force Output Shockwaves -->
+                            <circle cx="186" cy="108" r="22" fill="none" stroke="#8b5cf6" stroke-width="1" class="anim-beam"/>
+                            <circle cx="186" cy="108" r="32" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="4 4"/>
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-bold text-white font-mono">Max Grip Output</h3>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            Measures peak high-threshold motor unit recruitment. A 10%+ drop from baseline signifies systemic CNS depression.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Protocol 3: Parasympathetic Vagal Down-Regulation -->
+                <div class="glass-panel rounded-3xl p-5 flex flex-col justify-between space-y-4 border border-emerald-500/30 group hover:border-emerald-400 transition">
+                    <div class="flex items-center justify-between border-b border-white/10 pb-3">
+                        <span class="text-xs font-mono text-emerald-400 font-bold uppercase">PROTOCOL 03</span>
+                        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-500/10 text-emerald-300 border border-emerald-500/30">PARASYMPATHETIC SYNC</span>
+                    </div>
+
+                    <!-- Animated SVG Character: Vagal Breathwork -->
+                    <div class="w-full h-44 rounded-2xl bg-slate-950/90 border border-emerald-500/20 flex items-center justify-center relative overflow-hidden">
+                        <svg class="w-full h-full" viewBox="0 0 240 160">
+                            <!-- Character Seated Meditation Silhouette -->
+                            <path d="M120 60 C 112 60, 106 66, 106 74 C 106 82, 112 88, 120 88 C 128 88, 134 82, 134 74 C 134 66, 128 60, 120 60 Z" fill="#0f172a" stroke="#10b981" stroke-width="2"/>
+                            <path d="M120 88 L 120 125 M 120 98 L 95 115 M 120 98 L 145 115 M 95 125 L 145 125" stroke="#10b981" stroke-width="2.5" stroke-linecap="round"/>
+
+                            <!-- Expanding Respiratory Halo -->
+                            <circle cx="120" cy="74" r="18" fill="rgba(16, 185, 129, 0.25)" stroke="#10b981" stroke-width="1.5" class="anim-breath"/>
+                            <circle cx="120" cy="74" r="38" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="6 6" />
+                        </svg>
+                    </div>
+
+                    <div>
+                        <h3 class="text-sm font-bold text-white font-mono">Vagal Breathing Reset</h3>
+                        <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                            Controlled 4-7-8 diaphragmatic respiration stimulates the vagus nerve to reduce sympathetic neural overdrive.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. INTERACTIVE CNS READINESS CALCULATOR & DIAGNOSTIC DASHBOARD -->
+        <section class="glass-panel rounded-3xl p-6 md:p-8 space-y-8 border border-purple-500/30">
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-4">
+                <div>
+                    <h2 class="text-base font-mono font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="cpu" class="w-5 h-5 text-purple-400"></i>
+                        <span>INTERACTIVE CNS DIAGNOSTIC CALCULATOR</span>
+                    </h2>
+                    <p class="text-xs text-slate-400 font-mono mt-0.5">Adjust telemetry parameters or use live tap speed benchmark</p>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <button onclick="resetCalculator()" class="px-3 py-1.5 rounded-xl glass-card text-xs font-mono text-slate-300 hover:text-white flex items-center gap-1.5 transition">
+                        <i data-lucide="rotate-ccw" class="w-3.5 h-3.5 text-amber-400"></i>
+                        <span>Reset Data</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                
+                <!-- Inputs Section (7 Cols) -->
+                <div class="lg:col-span-7 space-y-6">
+                    
+                    <!-- Interactive Tap-Test Box -->
+                    <div class="p-5 rounded-2xl bg-slate-900/90 border border-purple-500/30 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <label class="text-xs font-mono font-bold text-white uppercase flex items-center gap-2">
+                                <i data-lucide="mouse-pointer" class="w-4 h-4 text-cyan-400"></i>
+                                <span>Interactive Reflex / Tap Speed Test</span>
+                            </label>
+                            <span class="text-xs font-mono text-cyan-400 font-bold" id="tapCountDisplay">0 Taps</span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
+                            <button id="tapTestBtn" onclick="registerTap()" class="w-full py-4 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/60 text-purple-200 font-mono font-bold text-xs flex flex-col items-center justify-center gap-1 transition active:scale-95 shadow-lg shadow-purple-500/20">
+                                <span>TAP HERE RAPIDLY</span>
+                                <span class="text-[10px] text-slate-400 font-normal" id="tapTimerLabel">Click to start 5s test</span>
+                            </button>
+
+                            <div class="space-y-1 font-mono text-xs">
+                                <div class="flex justify-between text-slate-400">
+                                    <span>Calculated Tap Speed:</span>
+                                    <span class="text-white font-bold" id="tapSpeedResult">0 taps/sec</span>
+                                </div>
+                                <div class="flex justify-between text-slate-400">
+                                    <span>Latency Score:</span>
+                                    <span class="text-emerald-400 font-bold" id="tapLatencyScore">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Input 1: Sleep Quality / Duration -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-300 font-bold flex items-center gap-1.5">
+                                <i data-lucide="moon" class="w-3.5 h-3.5 text-purple-400"></i>
+                                <span>Overnight Rest & HRV Score</span>
+                            </span>
+                            <span class="text-purple-400 font-bold" id="sleepVal">7.5 Hours (HRV: Normal)</span>
+                        </div>
+                        <input type="range" id="sleepInput" min="3" max="10" step="0.5" value="7.5" oninput="updateCalculator()" class="w-full accent-purple-500 bg-slate-900 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                    <!-- Input 2: Max Grip / Force Output vs Baseline -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-300 font-bold flex items-center gap-1.5">
+                                <i data-lucide="dumbbell" class="w-3.5 h-3.5 text-cyan-400"></i>
+                                <span>Max Force Output (% of Baseline)</span>
+                            </span>
+                            <span class="text-cyan-400 font-bold" id="forceVal">95% Baseline</span>
+                        </div>
+                        <input type="range" id="forceInput" min="50" max="110" step="1" value="95" oninput="updateCalculator()" class="w-full accent-cyan-500 bg-slate-900 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                    <!-- Input 3: Subjective Neural Fatigue Rating -->
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-mono">
+                            <span class="text-slate-300 font-bold flex items-center gap-1.5">
+                                <i data-lucide="brain" class="w-3.5 h-3.5 text-rose-400"></i>
+                                <span>Subjective Neural Fatigue Level (1–10)</span>
+                            </span>
+                            <span class="text-rose-400 font-bold" id="fatigueVal">3 / 10 (Low Fatigue)</span>
+                        </div>
+                        <input type="range" id="fatigueInput" min="1" max="10" step="1" value="3" oninput="updateCalculator()" class="w-full accent-rose-500 bg-slate-900 rounded-lg h-2 cursor-pointer">
+                    </div>
+
+                </div>
+
+                <!-- Output Display Badge & Diagnostics (5 Cols) -->
+                <div class="lg:col-span-5 p-6 rounded-3xl bg-slate-950/90 border border-purple-500/40 flex flex-col items-center text-center space-y-6 relative overflow-hidden shadow-2xl">
+                    
+                    <div class="space-y-1">
+                        <span class="text-[10px] font-mono text-purple-400 font-bold uppercase tracking-widest">DIAGNOSTIC COMPUTATION</span>
+                        <h3 class="text-sm font-mono font-bold text-white">CNS READINESS INDEX</h3>
+                    </div>
+
+                    <!-- Radial Score Output -->
+                    <div class="relative w-40 h-40 flex items-center justify-center">
+                        <svg class="w-full h-full -rotate-90" viewBox="0 0 120 120">
+                            <circle cx="60" cy="60" r="48" fill="none" stroke="#1e293b" stroke-width="8"/>
+                            <circle id="scoreRing" cx="60" cy="60" r="48" fill="none" stroke="#8b5cf6" stroke-width="8" stroke-dasharray="301.59" stroke-dashoffset="60" stroke-linecap="round" class="transition-all duration-700"/>
+                        </svg>
+                        <div class="absolute flex flex-col items-center">
+                            <span id="scoreText" class="text-3xl font-extrabold font-mono text-white">88%</span>
+                            <span id="statusTag" class="text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold mt-1">
+                                HIGH NEURAL DRIVE
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Action Protocol Recommendation -->
+                    <div class="w-full p-4 rounded-2xl bg-slate-900/80 border border-white/10 text-left font-mono text-xs space-y-2">
+                        <div class="flex items-center gap-2 text-cyan-400 font-bold">
+                            <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                            <span>RECOMMENDED ACTION PLAN:</span>
+                        </div>
+                        <p id="recommendationText" class="text-slate-300 leading-relaxed text-[11px]">
+                            CNS operating at high efficiency. Optimal state for explosive multi-joint training, heavy resistance, or maximal motor skill acquisition.
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <!-- 4. BOTTOM RETURN TO HOME BUTTON -->
+        <div class="pt-4 flex items-center justify-center">
+            <a href="index.html" class="px-8 py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-cyan-500 to-emerald-500 hover:opacity-90 text-black font-extrabold font-mono text-sm tracking-wider flex items-center gap-3 transition shadow-xl shadow-purple-500/20 group">
+                <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition"></i>
+                <span>RETURN TO HOME PAGE</span>
+            </a>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-purple-500/20 bg-[#030712]/90 py-6 px-6 text-xs text-slate-400 mt-12 relative z-10">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="font-display font-bold text-white tracking-widest">MIRROR // ILLUSION</span>
+                <span class="text-slate-600">•</span>
+                <span class="text-slate-400">CNS Readiness Matrix</span>
+            </div>
+
+            <p class="text-slate-500 text-[11px] font-mono">© 2026 MIRROR // ILLUSION. Engineered for Bio-Performance.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Interactive State
+        let soundEnabled = true;
+        let tapCount = 0;
+        let tapTestActive = false;
+        let tapTimer = null;
+        let tapSpeedVal = 0;
+
+        // Audio Feedback Synthesizer using Web Audio API
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playBeep(freq = 440, duration = 0.08, type = 'sine') {
+            if (!soundEnabled) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = type;
+                osc.frequency.value = freq;
+                gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        function toggleSound() {
+            soundEnabled = !soundEnabled;
+            const label = document.getElementById('soundLabel');
+            const icon = document.getElementById('soundIcon');
+            if (soundEnabled) {
+                label.innerText = 'Audio: ON';
+                icon.setAttribute('data-lucide', 'volume-2');
+                playBeep(600, 0.1);
+            } else {
+                label.innerText = 'Audio: OFF';
+                icon.setAttribute('data-lucide', 'volume-x');
+            }
+            lucide.createIcons();
+        }
+
+        // Tap Test Logic
+        function registerTap() {
+            playBeep(520, 0.05, 'triangle');
+
+            if (!tapTestActive) {
+                tapTestActive = true;
+                tapCount = 1;
+                let timeLeft = 5;
+                document.getElementById('tapTimerLabel').innerText = `Time Remaining: ${timeLeft}s`;
+
+                tapTimer = setInterval(() => {
+                    timeLeft--;
+                    if (timeLeft > 0) {
+                        document.getElementById('tapTimerLabel').innerText = `Time Remaining: ${timeLeft}s`;
+                    } else {
+                        clearInterval(tapTimer);
+                        tapTestActive = false;
+                        document.getElementById('tapTimerLabel').innerText = 'Test complete! Click to re-test';
+                        tapSpeedVal = (tapCount / 5).toFixed(1);
+                        document.getElementById('tapSpeedResult').innerText = `${tapSpeedVal} taps/sec`;
+                        
+                        let latency = tapSpeedVal > 6 ? 'OPTIMAL (< 150ms)' : tapSpeedVal > 4 ? 'MODERATE (~ 200ms)' : 'HIGH LATENCY (> 250ms)';
+                        document.getElementById('tapLatencyScore').innerText = latency;
+                        
+                        playBeep(880, 0.15, 'sine');
+                        updateCalculator();
+                    }
+                }, 1000);
+            } else {
+                tapCount++;
+            }
+
+            document.getElementById('tapCountDisplay').innerText = `${tapCount} Taps`;
+        }
+
+        // Diagnostic Score Calculation
+        function updateCalculator() {
+            const sleepHrs = parseFloat(document.getElementById('sleepInput').value);
+            const forcePct = parseFloat(document.getElementById('forceInput').value);
+            const fatigueLvl = parseInt(document.getElementById('fatigueInput').value);
+
+            document.getElementById('sleepVal').innerText = `${sleepHrs} Hours (HRV: ${sleepHrs >= 7 ? 'Normal' : 'Depressed'})`;
+            document.getElementById('forceVal').innerText = `${forcePct}% Baseline`;
+            document.getElementById('fatigueVal').innerText = `${fatigueLvl} / 10 (${fatigueLvl <= 3 ? 'Low' : fatigueLvl <= 6 ? 'Moderate' : 'High'})`;
+
+            // Calculate Composite Readiness Score (0 - 100)
+            let sleepScore = (sleepHrs / 10) * 35;
+            let forceScore = (forcePct / 110) * 35;
+            let fatigueScore = ((11 - fatigueLvl) / 10) * 20;
+            let tapBonus = tapSpeedVal ? Math.min(tapSpeedVal * 2, 10) : 5;
+
+            let totalScore = Math.min(Math.round(sleepScore + forceScore + fatigueScore + tapBonus), 100);
+
+            // Update UI Ring & Score
+            const ring = document.getElementById('scoreRing');
+            const circumference = 301.59;
+            const offset = circumference - (totalScore / 100) * circumference;
+            ring.style.strokeDashoffset = offset;
+
+            document.getElementById('scoreText').innerText = `${totalScore}%`;
+
+            const statusTag = document.getElementById('statusTag');
+            const recText = document.getElementById('recommendationText');
+
+            if (totalScore >= 80) {
+                statusTag.innerText = 'HIGH NEURAL DRIVE';
+                statusTag.className = 'text-[9px] font-mono px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold mt-1';
+                ring.style.stroke = '#10b981';
+                recText.innerText = 'CNS operating at peak capacity. Prime state for heavy compound lifts, max velocity sprints, or high-complexity skill work.';
+            } else if (totalScore >= 60) {
+                statusTag.innerText = 'SUB-OPTIMAL / MODERATE';
+                statusTag.className = 'text-[9px] font-mono px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 font-bold mt-1';
+                ring.style.stroke = '#f59e0b';
+                recText.innerText = 'Moderate CNS readiness. Autonomic nervous system is slightly fatigued. Reduce peak intensity by 10-15% and focus on volume.';
+            } else {
+                statusTag.innerText = 'NEURAL FATIGUE DETECTED';
+                statusTag.className = 'text-[9px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30 font-bold mt-1';
+                ring.style.stroke = '#f43f5e';
+                recText.innerText = 'High central fatigue detected! Avoid max effort lifting. Execute Protocol 03 Vagal breathing reset and prioritize sleep recovery.';
+            }
+        }
+
+        function resetCalculator() {
+            document.getElementById('sleepInput').value = 7.5;
+            document.getElementById('forceInput').value = 95;
+            document.getElementById('fatigueInput').value = 3;
+            tapCount = 0;
+            tapSpeedVal = 0;
+            document.getElementById('tapCountDisplay').innerText = '0 Taps';
+            document.getElementById('tapSpeedResult').innerText = '0 taps/sec';
+            document.getElementById('tapLatencyScore').innerText = '--';
+            document.getElementById('tapTimerLabel').innerText = 'Click to start 5s test';
+            playBeep(400, 0.1);
+            updateCalculator();
+        }
+
+        // Particle Canvas Animation
+        function initParticles() {
+            const canvas = document.getElementById('bgParticles');
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = Array.from({ length: 40 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                r: Math.random() * 2 + 0.5,
+                vx: (Math.random() - 0.5) * 0.4,
+                vy: (Math.random() - 0.5) * 0.4,
+                alpha: Math.random() * 0.5 + 0.2
+            }));
+
+            function render() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0) p.x = width;
+                    if (p.x > width) p.x = 0;
+                    if (p.y < 0) p.y = height;
+                    if (p.y > height) p.y = 0;
+
+                    ctx.fillStyle = `rgba(139, 92, 246, ${p.alpha})`;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                requestAnimationFrame(render);
+            }
+            render();
+        }
+
+        // Initialization
+        window.addEventListener('load', () => {
+            lucide.createIcons();
+            initParticles();
+            updateCalculator();
+        });
+    </script>
+</body>
+</html>
