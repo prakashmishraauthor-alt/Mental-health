@@ -1363,6 +1363,336 @@
         min-height: 250px;
       }
     }
+    /* =========================================================
+   BODY PAGE — RESPONSIVE MEDIA QUERIES
+   Desktop → Tablet → Mobile
+   ========================================================= */
+
+/* ---------- LARGE TABLETS / SMALL LAPTOPS ---------- */
+@media (max-width: 1200px) {
+
+    .main-container {
+        width: 94%;
+        max-width: 1100px;
+    }
+
+    .main-content {
+        padding: 24px;
+    }
+
+    .journal-panel {
+        width: 270px;
+    }
+
+    /* Central BODY diagram */
+    .body-orbit {
+        transform: scale(0.90);
+    }
+
+    /* Interactive model cards */
+    .interactive-models-section {
+        max-width: 920px;
+    }
+
+    .interactive-models-grid {
+        gap: 12px;
+    }
+
+    .model-card {
+        min-height: 260px;
+    }
+}
+
+
+/* ---------- TABLETS ---------- */
+@media (max-width: 900px) {
+
+    .main-container {
+        width: 96%;
+    }
+
+    /* Header */
+    .main-header {
+        padding: 14px 18px;
+    }
+
+    .main-nav {
+        gap: 16px;
+    }
+
+    .main-nav a {
+        font-size: 0.68rem;
+    }
+
+    /* Hide / compress journal sidebar */
+    .journal-panel {
+        width: 240px;
+    }
+
+    /* Main BODY area */
+    .body-section {
+        min-height: auto;
+    }
+
+    .body-orbit {
+        transform: scale(0.78);
+        margin: -20px 0;
+    }
+
+    /* Five model cards */
+    .interactive-models-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .model-card,
+    .model-card:nth-child(4),
+    .model-card:nth-child(5) {
+        grid-column: span 1;
+    }
+
+    .interactive-models-heading h2 {
+        font-size: 1rem;
+    }
+}
+
+
+/* ---------- MOBILE ---------- */
+@media (max-width: 700px) {
+
+    body {
+        overflow-x: hidden;
+    }
+
+    .main-container {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+    }
+
+    /* ---------------- HEADER ---------------- */
+
+    .main-header {
+        min-height: 64px;
+        padding: 12px 16px;
+    }
+
+    .brand {
+        font-size: 0.9rem;
+    }
+
+    .main-nav {
+        gap: 10px;
+    }
+
+    .main-nav a {
+        font-size: 0.6rem;
+        letter-spacing: 0.5px;
+    }
+
+    /* Hide less-important navigation items */
+    .main-nav a:nth-child(n+4) {
+        display: none;
+    }
+
+
+    /* ---------------- CONTENT ---------------- */
+
+    .page-content {
+        display: block;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 18px 14px;
+    }
+
+    /* ---------------- JOURNAL ---------------- */
+
+    .journal-panel {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid rgba(56,189,248,0.15);
+        padding: 18px 14px;
+    }
+
+
+    /* ---------------- BODY ORBIT ---------------- */
+
+    .body-orbit {
+        transform: scale(0.63);
+        transform-origin: top center;
+
+        /* Prevent the scaled diagram from creating excessive
+           vertical whitespace */
+        margin-top: -90px;
+        margin-bottom: -100px;
+    }
+
+
+    /* ---------------- INTERACTIVE MODELS ---------------- */
+
+    .interactive-models-section {
+        width: 100%;
+        margin: 20px auto;
+        padding: 0 2px;
+    }
+
+    .interactive-models-heading {
+        margin-bottom: 16px;
+    }
+
+    .interactive-models-heading h2 {
+        font-size: 0.82rem;
+        letter-spacing: 2px;
+    }
+
+    .interactive-models-heading p {
+        font-size: 0.62rem;
+        line-height: 1.5;
+        padding: 0 20px;
+    }
+
+    .interactive-models-heading .heading-line {
+        width: 25px;
+        margin: 0 5px 3px;
+    }
+
+    .interactive-models-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .model-card,
+    .model-card:nth-child(4),
+    .model-card:nth-child(5) {
+        grid-column: span 1;
+        min-height: 235px;
+    }
+
+    .model-card {
+        padding: 17px 16px 15px;
+        border-radius: 15px;
+    }
+
+    .model-card h3 {
+        font-size: 0.78rem;
+    }
+
+    .model-subtitle {
+        font-size: 0.64rem;
+    }
+
+    .model-description {
+        font-size: 0.64rem;
+        line-height: 1.45;
+    }
+
+    .model-visual {
+        height: 65px;
+        margin: 7px 0;
+    }
+
+    .model-visual svg {
+        height: 65px;
+    }
+
+    .model-number {
+        font-size: 1.2rem;
+    }
+
+    .model-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .model-icon svg {
+        width: 19px;
+        height: 19px;
+    }
+}
+
+
+/* ---------- SMALL PHONES ---------- */
+@media (max-width: 480px) {
+
+    .main-header {
+        padding: 10px 12px;
+    }
+
+    .brand {
+        font-size: 0.78rem;
+    }
+
+    .main-nav {
+        gap: 7px;
+    }
+
+    .main-nav a {
+        font-size: 0.55rem;
+    }
+
+    .main-content {
+        padding: 14px 10px;
+    }
+
+    /* Scale central BODY visualization further */
+    .body-orbit {
+        transform: scale(0.52);
+        margin-top: -120px;
+        margin-bottom: -130px;
+    }
+
+    .interactive-models-heading h2 {
+        font-size: 0.74rem;
+        letter-spacing: 1.5px;
+    }
+
+    .interactive-models-heading p {
+        font-size: 0.58rem;
+    }
+
+    .model-card {
+        min-height: 225px;
+        padding: 15px;
+    }
+
+    .model-card h3 {
+        font-size: 0.74rem;
+    }
+
+    .model-description {
+        font-size: 0.61rem;
+    }
+
+    .model-link {
+        font-size: 0.6rem;
+    }
+}
+
+
+/* ---------- VERY SMALL PHONES ---------- */
+@media (max-width: 360px) {
+
+    .main-nav a:nth-child(n+3) {
+        display: none;
+    }
+
+    .body-orbit {
+        transform: scale(0.46);
+        margin-top: -140px;
+        margin-bottom: -150px;
+    }
+
+    .model-card {
+        min-height: 215px;
+    }
+
+    .interactive-models-heading .heading-line {
+        display: none;
+    }
+}
 
   </style>
 
