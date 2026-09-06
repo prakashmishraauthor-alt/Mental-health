@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desk Decompression | 60-Second Posture Reset Engine</title>
+  <style>
+    /* =========================================================
+       RESET & CORE STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    :root {
+      --bg-dark: #030712;
+      --card-bg: rgba(15, 23, 42, 0.75);
+      --card-border: rgba(56, 189, 248, 0.18);
+      --accent-cyan: #06b6d4;
+      --accent-sky: #38bdf8;
+      --accent-orange: #ff5a00;
+      --accent-emerald: #10b981;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      background-image: 
+        radial-gradient(circle at 15% 20%, rgba(14, 116, 144, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 85% 80%, rgba(255, 90, 0, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(6, 182, 212, 0.05) 0%, transparent 70%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Glow Particles */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* Main Container Frame */
+    .app-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1100px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 80px rgba(6, 182, 212, 0.08);
+      backdrop-filter: blur(20px);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* =========================================================
+       HEADER & NAVIGATION
+       ========================================================= */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title svg {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 8px var(--accent-cyan));
+    }
+
+    .brand-title h1 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, var(--accent-sky));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent-sky);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-sky);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* =========================================================
+       INSTRUCTIONS BANNER
+       ========================================================= */
+    .instructions-card {
+      background: rgba(6, 182, 212, 0.06);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .instructions-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+    }
+
+    .instructions-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .instructions-header svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent-cyan);
+    }
+
+    .instructions-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--accent-sky);
+    }
+
+    .instructions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .instruction-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .step-number {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-sky);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* =========================================================
+       MAIN DECOMPRESSION GRID
+       ========================================================= */
+    .reset-grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .reset-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left Stage: Visual Engine & Timer Controls */
+    .visual-stage {
+      background: rgba(8, 15, 23, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stage-top-bar {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .current-step-badge {
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: rgba(255, 90, 0, 0.12);
+      border: 1px solid rgba(255, 90, 0, 0.3);
+      color: var(--accent-orange);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-orange);
+      box-shadow: 0 0 8px var(--accent-orange);
+      animation: pulseDot 1.5s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .total-timer-display {
+      font-size: 1.1rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: var(--accent-sky);
+      letter-spacing: 1px;
+    }
+
+    /* Canvas / Visualizer Circle */
+    .canvas-wrapper {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #visualizer-canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+
+    .center-timer-text {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+
+    .step-time-remaining {
+      font-size: 3rem;
+      font-weight: 900;
+      font-family: monospace;
+      color: #ffffff;
+      text-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+      line-height: 1;
+    }
+
+    .step-time-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* Exercise Overlay Text */
+    .exercise-info {
+      text-align: center;
+      z-index: 5;
+      margin-bottom: 20px;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .exercise-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .exercise-instruction {
+      font-size: 0.85rem;
+      color: var(--accent-sky);
+      max-width: 420px;
+      line-height: 1.4;
+    }
+
+    /* Control Buttons */
+    .action-controls {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+      justify-content: center;
+      z-index: 5;
+    }
+
+    .btn-action {
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: none;
+      outline: none;
+    }
+
+    .btn-start {
+      background: linear-gradient(135deg, var(--accent-cyan), #0284c7);
+      color: #ffffff;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .btn-start:hover {
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.7);
+      transform: translateY(-2px);
+    }
+
+    .btn-reset {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-muted);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-reset:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-audio {
+      padding: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--accent-sky);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-audio:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: var(--accent-sky);
+    }
+
+    /* =========================================================
+       RIGHT SIDEBAR: STEP PROTOCOL LIST & HOURLY ALARM
+       ========================================================= */
+    .sidebar-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Hourly Alarm Card */
+    .hourly-reminder-card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 16px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .reminder-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .reminder-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .reminder-title svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent-cyan);
+    }
+
+    /* Toggle Switch */
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.15);
+      transition: .3s;
+      border-radius: 24px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent-cyan);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .reminder-status {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    .timer-countdown-badge {
+      font-size: 0.75rem;
+      font-family: monospace;
+      color: var(--accent-emerald);
+      background: rgba(16, 185, 129, 0.1);
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+      width: fit-content;
+    }
+
+    /* Step Sequence Cards */
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .step-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-card.active {
+      background: rgba(14, 116, 144, 0.15);
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
+    }
+
+    .step-card.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 3px;
+      background: var(--accent-cyan);
+    }
+
+    .step-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .step-card-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .step-duration {
+      font-size: 0.7rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: var(--accent-sky);
+      background: rgba(56, 189, 248, 0.1);
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .step-card-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* Physiological Impact Panel */
+    .impact-panel {
+      background: rgba(255, 90, 0, 0.05);
+      border: 1px solid rgba(255, 90, 0, 0.2);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .impact-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-orange);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .impact-list {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+      padding-left: 16px;
+    }
+
+    .impact-list li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Dynamic Canvas -->
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20M8 6l4-4 4 4M8 18l4 4 4-4"/>
+        </svg>
+        <h1>DESK DECOMPRESSION ENGINE</h1>
+      </div>
+      <div class="header-actions">
+        <a href="index.html" class="btn-home">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          </svg>
+          SYSTEM HOME
+        </a>
+      </div>
+    </header>
+
+    <!-- INSTRUCTIONS BANNER -->
+    <section class="instructions-card">
+      <div class="instructions-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <h2>HOW TO USE THIS DECOMPRESSION MODEL</h2>
+      </div>
+      <div class="instructions-grid">
+        <div class="instruction-step">
+          <span class="step-number">1</span>
+          <div><strong>Trigger Micro-Break:</strong> Hit "START RESET" to begin the guided 60-second routine right at your desk.</div>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">2</span>
+          <div><strong>Follow Visual Cues:</strong> Sync your breathing and movement with the central expanding ring and animated figure.</div>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">3</span>
+          <div><strong>Enable Hourly Prompt:</strong> Toggle "Stand & Unfold" to trigger automated desk-break reminders every 60 minutes.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN INTERACTIVE RESET STAGE -->
+    <main class="reset-grid">
+      
+      <!-- LEFT VISUAL STAGE -->
+      <section class="visual-stage">
+        <div class="stage-top-bar">
+          <div class="current-step-badge">
+            <span class="badge-dot"></span>
+            <span id="badge-step-text">STEP 1 OF 3</span>
+          </div>
+          <div class="total-timer-display" id="total-clock">01:00</div>
+        </div>
+
+        <!-- CANVAS VISUALIZER -->
+        <div class="canvas-wrapper">
+          <canvas id="visualizer-canvas"></canvas>
+          <div class="center-timer-text">
+            <span class="step-time-remaining" id="step-time">15</span>
+            <span class="step-time-label">SECONDS</span>
+          </div>
+        </div>
+
+        <!-- EXERCISE INSTRUCTIONS -->
+        <div class="exercise-info">
+          <h2 class="exercise-title" id="ex-title">Doorway Pec Stretch & Thoracic Opening</h2>
+          <p class="exercise-instruction" id="ex-desc">Stand up, place forearms against doorway or edge of desk. Step forward slightly until you feel a stretch across your chest. Expand your ribcage.</p>
+        </div>
+
+        <!-- ACTION CONTROLS -->
+        <div class="action-controls">
+          <button class="btn-action btn-start" id="btn-start-reset">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            START RESET
+          </button>
+          <button class="btn-action btn-reset" id="btn-reset-timer">RESET</button>
+          <button class="btn-audio" id="btn-toggle-audio" title="Toggle Sound Cues">
+            <svg id="audio-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            </svg>
+          </button>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDEBAR PANEL -->
+      <aside class="sidebar-panel">
+        
+        <!-- HOURLY ALARM ENGINE -->
+        <div class="hourly-reminder-card">
+          <div class="reminder-header">
+            <div class="reminder-title">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/>
+                <polyline points="12 6 12 12 16 14"/>
+              </svg>
+              "STAND & UNFOLD" ALARM
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="toggle-hourly">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <p class="reminder-status" id="alarm-status-text">Automated browser prompt every 60 mins to interrupt prolonged sitting.</p>
+          <div class="timer-countdown-badge" id="next-alarm-badge" style="display: none;">NEXT BREAK IN: 59:59</div>
+        </div>
+
+        <!-- STEP SEQUENCE PREVIEWS -->
+        <div class="step-list">
+          <div class="step-card active" id="card-step-0">
+            <div class="step-card-header">
+              <span class="step-card-title">1. Doorway Pec & Thoracic Opening</span>
+              <span class="step-duration">15s</span>
+            </div>
+            <p class="step-card-desc">Unloads anterior chest muscles compressed by forward desk posture.</p>
+          </div>
+
+          <div class="step-card" id="card-step-1">
+            <div class="step-card-header">
+              <span class="step-card-title">2. Glute & Abdominal Activation</span>
+              <span class="step-duration">15s</span>
+            </div>
+            <p class="step-card-desc">Squeeze glutes and brace core while standing to wake up inactive hip extensors.</p>
+          </div>
+
+          <div class="step-card" id="card-step-2">
+            <div class="step-card-header">
+              <span class="step-card-title">3. Chin Tucks & Scapular Squeezes</span>
+              <span class="step-duration">30s</span>
+            </div>
+            <p class="step-card-desc">Pull chin back and squeeze shoulder blades together to align cervical spine.</p>
+          </div>
+        </div>
+
+        <!-- PHYSIOLOGICAL IMPACT -->
+        <div class="impact-panel">
+          <div class="impact-title">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+            </svg>
+            Target Pain & Fatigue
+          </div>
+          <ul class="impact-list">
+            <li>Reduces forward-head neck strain (-35 lbs force)</li>
+            <li>Re-engages glutes to alleviate lumbar tightness</li>
+            <li>Restores full diaphragm expansion & blood flow</li>
+          </ul>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // PROTOCOL STEPS DATA
+    const sequenceSteps = [
+      {
+        title: "Doorway Pec Stretch & Thoracic Opening",
+        desc: "Stand up, place forearms against doorway or desk edge. Step forward slightly until you feel a chest stretch. Inhale deeply.",
+        duration: 15,
+        color: "#06b6d4"
+      },
+      {
+        title: "Glute & Abdominal Activation",
+        desc: "Stand tall, contract your glutes maximally, and brace your core as if preparing for a push. Hold and release rhythmically.",
+        duration: 15,
+        color: "#ff5a00"
+      },
+      {
+        title: "Chin Tucks & Scapular Squeezes",
+        desc: "Pull head backward into a double-chin posture while pulling shoulder blades down and together. Hold 3s, repeat.",
+        duration: 30,
+        color: "#38bdf8"
+      }
+    ];
+
+    // STATE VARIABLES
+    let currentStepIndex = 0;
+    let stepTimeRemaining = sequenceSteps[0].duration;
+    let totalTimeRemaining = 60;
+    let timerInterval = null;
+    let isRunning = false;
+    let audioEnabled = true;
+
+    // HOURLY ALARM STATE
+    let hourlyInterval = null;
+    let hourlySecondsRemaining = 3600;
+
+    // DOM ELEMENTS
+    const btnStart = document.getElementById('btn-start-reset');
+    const btnReset = document.getElementById('btn-reset-timer');
+    const btnAudio = document.getElementById('btn-toggle-audio');
+    const stepTimeDisplay = document.getElementById('step-time');
+    const totalClockDisplay = document.getElementById('total-clock');
+    const exTitle = document.getElementById('ex-title');
+    const exDesc = document.getElementById('ex-desc');
+    const badgeText = document.getElementById('badge-step-text');
+    const toggleHourly = document.getElementById('toggle-hourly');
+    const alarmStatusText = document.getElementById('alarm-status-text');
+    const nextAlarmBadge = document.getElementById('next-alarm-badge');
+
+    // AUDIO SYNTHESIS CUES
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+    function playBeep(freq = 440, type = 'sine', duration = 0.15) {
+      if (!audioEnabled) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.log("Audio not allowed yet");
+      }
+    }
+
+    // UPDATE UI DISPLAY
+    function updateDisplay() {
+      const step = sequenceSteps[currentStepIndex];
+      stepTimeDisplay.textContent = stepTimeRemaining;
+      
+      const secs = totalTimeRemaining % 60;
+      const mins = Math.floor(totalTimeRemaining / 60);
+      totalClockDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+      exTitle.textContent = step.title;
+      exDesc.textContent = step.desc;
+      badgeText.textContent = `STEP ${currentStepIndex + 1} OF 3`;
+
+      // Update active card highlighting
+      for (let i = 0; i < 3; i++) {
+        const card = document.getElementById(`card-step-${i}`);
+        if (i === currentStepIndex) {
+          card.classList.add('active');
+        } else {
+          card.classList.remove('active');
+        }
+      }
+    }
+
+    // START / PAUSE TIMER
+    function toggleTimer() {
+      if (isRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    }
+
+    function startTimer() {
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      isRunning = true;
+      btnStart.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
+        </svg>
+        PAUSE
+      `;
+      btnStart.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+      playBeep(660, 'triangle', 0.2);
+
+      timerInterval = setInterval(() => {
+        stepTimeRemaining--;
+        totalTimeRemaining--;
+
+        if (stepTimeRemaining <= 3 && stepTimeRemaining > 0) {
+          playBeep(440, 'sine', 0.08);
+        }
+
+        if (stepTimeRemaining <= 0) {
+          if (currentStepIndex < sequenceSteps.length - 1) {
+            currentStepIndex++;
+            stepTimeRemaining = sequenceSteps[currentStepIndex].duration;
+            playBeep(880, 'sine', 0.25);
+          } else {
+            // COMPLETED ENTIRE 60s
+            finishReset();
+            return;
+          }
+        }
+
+        updateDisplay();
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      isRunning = false;
+      clearInterval(timerInterval);
+      btnStart.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        RESUME
+      `;
+      btnStart.style.background = 'linear-gradient(135deg, var(--accent-cyan), #0284c7)';
+    }
+
+    function resetEngine() {
+      pauseTimer();
+      currentStepIndex = 0;
+      stepTimeRemaining = sequenceSteps[0].duration;
+      totalTimeRemaining = 60;
+      btnStart.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <polygon points="5 3 19 12 5 21 5 3"/>
+        </svg>
+        START RESET
+      `;
+      updateDisplay();
+    }
+
+    function finishReset() {
+      pauseTimer();
+      playBeep(1046.5, 'sine', 0.4); // High C sound
+      alert(" posture Reset Complete! Chest opened, glutes activated, and cervical spine aligned.");
+      resetEngine();
+    }
+
+    // AUDIO TOGGLE
+    btnAudio.addEventListener('click', () => {
+      audioEnabled = !audioEnabled;
+      btnAudio.style.opacity = audioEnabled ? '1' : '0.4';
+    });
+
+    btnStart.addEventListener('click', toggleTimer);
+    btnReset.addEventListener('click', resetEngine);
+
+    // HOURLY ALARM LOGIC
+    toggleHourly.addEventListener('change', (e) => {
+      if (e.target.checked) {
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+          Notification.requestPermission();
+        }
+        hourlySecondsRemaining = 3600;
+        alarmStatusText.textContent = "Stand & Unfold timer active. Prompt will trigger in:";
+        nextAlarmBadge.style.display = "inline-block";
+        
+        hourlyInterval = setInterval(() => {
+          hourlySecondsRemaining--;
+          const m = Math.floor(hourlySecondsRemaining / 60);
+          const s = hourlySecondsRemaining % 60;
+          nextAlarmBadge.textContent = `NEXT BREAK IN: ${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+
+          if (hourlySecondsRemaining <= 0) {
+            triggerHourlyPrompt();
+            hourlySecondsRemaining = 3600;
+          }
+        }, 1000);
+      } else {
+        clearInterval(hourlyInterval);
+        alarmStatusText.textContent = "Automated browser prompt every 60 mins to interrupt prolonged sitting.";
+        nextAlarmBadge.style.display = "none";
+      }
+    });
+
+    function triggerHourlyPrompt() {
+      playBeep(523.25, 'triangle', 0.5);
+      if (Notification.permission === "granted") {
+        new Notification(" Time to Unfold!", {
+          body: "You've been sitting for 60 minutes. Click to start your 60-second Posture Reset.",
+          icon: "https://cdn-icons-png.flaticon.com/512/3048/3048122.png"
+        });
+      }
+      alert(" STAND & UNFOLD REMINDER\n\nYou've been at your desk for 60 minutes. Click START RESET to execute your 60-second posture decompression!");
+    }
+
+    // CANVAS VISUALIZER ENGINE
+    const canvas = document.getElementById('visualizer-canvas');
+    const ctx = canvas.getContext('2d');
+    let animAngle = 0;
+
+    function renderCanvas() {
+      canvas.width = 280;
+      canvas.height = 280;
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Outer Glowing Ring
+      const activeColor = sequenceSteps[currentStepIndex].color;
+      
+      // Calculate progress percentage
+      const totalDuration = sequenceSteps[currentStepIndex].duration;
+      const progress = (totalDuration - stepTimeRemaining) / totalDuration;
+
+      // Draw background track ring
+      ctx.beginPath();
+      ctx.arc(cx, cy, 110, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+      ctx.lineWidth = 8;
+      ctx.stroke();
+
+      // Draw active animated arc
+      ctx.beginPath();
+      ctx.arc(cx, cy, 110, -Math.PI / 2, (-Math.PI / 2) + (Math.PI * 2 * (1 - progress)));
+      ctx.strokeStyle = activeColor;
+      ctx.lineWidth = 8;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = activeColor;
+      ctx.shadowBlur = 15;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Pulsing Breathing Ring
+      if (isRunning) {
+        animAngle += 0.04;
+        const pulseRadius = 80 + Math.sin(animAngle) * 8;
+        ctx.beginPath();
+        ctx.arc(cx, cy, pulseRadius, 0, Math.PI * 2);
+        ctx.strokeStyle = activeColor + '44';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      requestAnimationFrame(renderCanvas);
+    }
+    renderCanvas();
+
+    // BACKGROUND NEURAL PARTICLES
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    const particles = Array.from({ length: 30 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 2 + 1
+    }));
+
+    function renderBgParticles() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particles.forEach((p) => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+        if (p.y < 0 || p.y > bgCanvas.height) p.vy *= -1;
+
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(56, 189, 248, 0.3)';
+        bgCtx.fill();
+      });
+      requestAnimationFrame(renderBgParticles);
+    }
+    renderBgParticles();
+
+    // INITIAL DISPLAY SETUP
+    updateDisplay();
+  </script>
+</body>
+</html>
