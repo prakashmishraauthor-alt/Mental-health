@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hydration & Electrolyte Matrix | Performance & Health Audit</title>
+  <style>
+    /* =========================================================
+       RESET & BASE STYLES
+       ========================================================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      user-select: none;
+    }
+
+    :root {
+      --bg-dark: #030712;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --card-border: rgba(56, 189, 248, 0.2);
+      --accent-blue: #0284c7;
+      --accent-sky: #38bdf8;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 20px;
+      background-image: 
+        radial-gradient(circle at 20% 20%, rgba(2, 132, 199, 0.18) 0%, transparent 40%),
+        radial-gradient(circle at 80% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 70%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .app-container {
+      position: relative;
+      z-index: 10;
+      width: 100%;
+      max-width: 1120px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 80px rgba(56, 189, 248, 0.1);
+      backdrop-filter: blur(20px);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* =========================================================
+       HEADER
+       ========================================================= */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title svg {
+      width: 32px;
+      height: 32px;
+      filter: drop-shadow(0 0 8px var(--accent-sky));
+    }
+
+    .brand-title h1 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      background: linear-gradient(90deg, #ffffff, var(--accent-sky));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--accent-sky);
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent-sky);
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* =========================================================
+       INSTRUCTIONS BANNER
+       ========================================================= */
+    .instructions-card {
+      background: rgba(2, 132, 199, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 16px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .instructions-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--accent-sky);
+      box-shadow: 0 0 10px var(--accent-sky);
+    }
+
+    .instructions-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .instructions-header svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--accent-sky);
+    }
+
+    .instructions-header h2 {
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+
+    .instructions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+    }
+
+    .instruction-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .step-number {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-sky);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.72rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    /* =========================================================
+       PROTOCOL VISUAL STEP CARDS (3 ILLUSTRATED PROTOCOL IMAGES)
+       ========================================================= */
+    .protocol-cards-section {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .section-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title svg {
+      stroke: var(--accent-cyan);
+    }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 850px) {
+      .protocol-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .protocol-card {
+      background: rgba(8, 15, 23, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.15);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+
+    .protocol-card:hover {
+      border-color: var(--accent-sky);
+      transform: translateY(-4px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .protocol-svg-wrapper {
+      width: 100%;
+      height: 130px;
+      background: rgba(3, 7, 18, 0.9);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .protocol-card-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .protocol-tag {
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+    }
+
+    .protocol-card-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .protocol-card-desc {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* SVG ANIMATIONS FOR PROTOCOL IMAGES */
+    .animated-drop {
+      animation: dropPulse 2s infinite ease-in-out;
+    }
+
+    @keyframes dropPulse {
+      0%, 100% { transform: translateY(0); opacity: 0.8; }
+      50% { transform: translateY(5px); opacity: 1; filter: drop-shadow(0 0 8px #38bdf8); }
+    }
+
+    .animated-steam {
+      animation: steamUp 2.5s infinite linear;
+    }
+
+    @keyframes steamUp {
+      0% { transform: translateY(0); opacity: 0.2; }
+      50% { opacity: 0.8; }
+      100% { transform: translateY(-8px); opacity: 0; }
+    }
+
+    .animated-pulse-ring {
+      animation: ringGlow 1.8s infinite ease-out;
+      transform-origin: center;
+    }
+
+    @keyframes ringGlow {
+      0% { transform: scale(0.9); opacity: 0.3; }
+      50% { transform: scale(1.05); opacity: 0.9; stroke: var(--accent-emerald); }
+      100% { transform: scale(0.9); opacity: 0.3; }
+    }
+
+    /* =========================================================
+       CALCULATOR & RESULTS INTERACTION
+       ========================================================= */
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 24px;
+    }
+
+    @media (max-width: 960px) {
+      .matrix-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .calculator-panel {
+      background: rgba(8, 15, 23, 0.75);
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      border-radius: 18px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-label-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.5px;
+    }
+
+    .input-value-badge {
+      font-size: 0.85rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: var(--accent-sky);
+    }
+
+    .range-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      outline: none;
+    }
+
+    .range-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-sky);
+      cursor: pointer;
+      box-shadow: 0 0 10px var(--accent-sky);
+      transition: transform 0.1s;
+    }
+
+    .range-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+    }
+
+    .btn-option {
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.25s ease;
+    }
+
+    .btn-option.active {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: var(--accent-sky);
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+    }
+
+    /* RESULTS SIDEBAR */
+    .results-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hydration-card {
+      background: rgba(8, 15, 23, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-heading {
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding-bottom: 10px;
+    }
+
+    .result-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .result-name {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .result-val {
+      font-size: 1.1rem;
+      font-weight: 800;
+      font-family: monospace;
+      color: var(--accent-sky);
+    }
+
+    .electrolyte-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .e-item {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      padding: 6px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+    }
+
+    .e-name {
+      color: var(--text-muted);
+    }
+
+    .e-amount {
+      font-weight: 700;
+      font-family: monospace;
+      color: var(--accent-emerald);
+    }
+
+    .btn-mix {
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border: none;
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #ffffff;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-mix:hover {
+      box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="bg-canvas"></canvas>
+
+  <div class="app-container">
+    
+    <!-- HEADER -->
+    <header class="header">
+      <div class="brand-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+        </svg>
+        <h1>HYDRATION & ELECTROLYTE MATRIX</h1>
+      </div>
+      <a href="index.html" class="btn-home">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        SYSTEM HOME
+      </a>
+    </header>
+
+    <!-- INSTRUCTIONS BANNER -->
+    <section class="instructions-card">
+      <div class="instructions-header">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="16" x2="12" y2="12"/>
+          <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        <h2>HYDRATION & ELECTROLYTE OPTIMIZATION PROTOCOL</h2>
+      </div>
+      <div class="instructions-grid">
+        <div class="instruction-step">
+          <span class="step-number">1</span>
+          <div><strong>Morning Baseline:</strong> Drink 500ml water with 500mg Sodium within 30 mins of waking to offset nocturnal dehydration.</div>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">2</span>
+          <div><strong>Workout Dosing:</strong> Consume your calculated intra-workout mix per hour of intense exercise or sweat loss.</div>
+        </div>
+        <div class="instruction-step">
+          <span class="step-number">3</span>
+          <div><strong>Electrolyte Balance:</strong> Maintain a 3:1 Sodium-to-Potassium ratio for optimal cellular fluid balance and cramp prevention.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROTOCOL IMAGES SECTION (3 STEP VISUALIZATIONS) -->
+    <section class="protocol-cards-section">
+      <div class="section-title">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+        VISUAL PROTOCOL STEPS
+      </div>
+
+      <div class="protocol-grid">
+        
+        <!-- STEP 1 PROTOCOL IMAGE -->
+        <article class="protocol-card">
+          <div class="protocol-svg-wrapper">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <!-- Water Glass SVG Visual -->
+              <path d="M30 25 L35 80 Q35 85 50 85 Q65 85 65 80 L70 25 Z" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="2"/>
+              <!-- Water Level -->
+              <path d="M32 40 L35 80 Q35 85 50 85 Q65 85 65 80 L68 40 Z" fill="rgba(6, 182, 212, 0.4)"/>
+              <!-- Falling Drop -->
+              <path class="animated-drop" d="M50 15 C50 15 43 25 43 30 C43 34 46 37 50 37 C54 37 57 34 57 30 C57 25 50 15 50 15 Z" fill="#38bdf8"/>
+            </svg>
+          </div>
+          <div class="protocol-card-body">
+            <span class="protocol-tag">STEP 01 // MORNING</span>
+            <div class="protocol-card-title">Hydration Priming</div>
+            <p class="protocol-card-desc">Drink 500ml water immediately upon waking. Add a pinch of sea salt to activate adrenal function and intestinal absorption.</p>
+          </div>
+        </article>
+
+        <!-- STEP 2 PROTOCOL IMAGE -->
+        <article class="protocol-card">
+          <div class="protocol-svg-wrapper">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <!-- Electrolyte Shaker Flask SVG -->
+              <rect x="42" y="15" width="16" height="10" rx="2" fill="#0284c7"/>
+              <path d="M40 25 L25 75 Q23 85 50 85 Q77 85 75 75 L60 25 Z" fill="rgba(2, 132, 199, 0.2)" stroke="#06b6d4" stroke-width="2"/>
+              <!-- Steam/Energy particles -->
+              <path class="animated-steam" d="M45 45 Q50 40 45 35 M55 55 Q60 50 55 45" stroke="#f59e0b" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <circle cx="50" cy="65" r="4" fill="#10b981"/>
+              <circle cx="38" cy="70" r="2.5" fill="#38bdf8"/>
+              <circle cx="60" cy="68" r="3" fill="#f59e0b"/>
+            </svg>
+          </div>
+          <div class="protocol-card-body">
+            <span class="protocol-tag">STEP 02 // INTRA-WORKOUT</span>
+            <div class="protocol-card-title">Electrolyte Dosing</div>
+            <p class="protocol-card-desc">Mix target Sodium (Na+), Potassium (K+), and Magnesium (Mg2+) based on your weight and sweat rate profile.</p>
+          </div>
+        </article>
+
+        <!-- STEP 3 PROTOCOL IMAGE -->
+        <article class="protocol-card">
+          <div class="protocol-svg-wrapper">
+            <svg width="100" height="100" viewBox="0 0 100 100">
+              <!-- Cellular Hydration / Osmosis SVG Visual -->
+              <circle class="animated-pulse-ring" cx="50" cy="50" r="32" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="4 3"/>
+              <circle cx="50" cy="50" r="20" fill="rgba(16, 185, 129, 0.2)" stroke="#10b981" stroke-width="2"/>
+              <!-- Ion arrows -->
+              <path d="M25 50 L35 50 M32 46 L36 50 L32 54" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+              <path d="M75 50 L65 50 M68 46 L64 50 L68 54" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="protocol-card-body">
+            <span class="protocol-tag">STEP 03 // CELLULAR RECOVERY</span>
+            <div class="protocol-card-title">Osmotic Balance</div>
+            <p class="protocol-card-desc">Sip steadily throughout training. Avoid chugging plain water in high volume to prevent hyponatremia and flushing.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- CALCULATOR & MATRIX SECTION -->
+    <main class="matrix-grid">
+      
+      <!-- INPUTS -->
+      <section class="calculator-panel">
+        
+        <div class="input-group">
+          <div class="input-label-container">
+            <span class="input-label">Body Weight</span>
+            <span class="input-value-badge" id="weight-val">75 kg</span>
+          </div>
+          <input type="range" class="range-slider" id="input-weight" min="45" max="130" value="75" oninput="updateCalculations()">
+        </div>
+
+        <div class="input-group">
+          <div class="input-label-container">
+            <span class="input-label">Exercise Duration</span>
+            <span class="input-value-badge" id="duration-val">60 mins</span>
+          </div>
+          <input type="range" class="range-slider" id="input-duration" min="0" max="180" step="15" value="60" oninput="updateCalculations()">
+        </div>
+
+        <div class="input-group">
+          <span class="input-label">Sweat Rate Profile</span>
+          <div class="option-grid">
+            <button class="btn-option" id="sweat-low" onclick="setSweatRate('low')">LIGHT</button>
+            <button class="btn-option active" id="sweat-med" onclick="setSweatRate('med')">MODERATE</button>
+            <button class="btn-option" id="sweat-high" onclick="setSweatRate('high')">HEAVY</button>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <span class="input-label">Environmental Climate</span>
+          <div class="option-grid">
+            <button class="btn-option active" id="env-cool" onclick="setEnvironment('cool')">COOL / AC</button>
+            <button class="btn-option" id="env-warm" onclick="setEnvironment('warm')">WARM</button>
+            <button class="btn-option" id="env-hot" onclick="setEnvironment('hot')">HOT / HUMID</button>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- OUTPUT MATRIX -->
+      <aside class="results-panel">
+        
+        <div class="hydration-card">
+          <div class="card-heading">Target Fluid Requirements</div>
+          
+          <div class="result-row">
+            <span class="result-name">Daily Baseline Fluid</span>
+            <span class="result-val" id="daily-water">2.6 L</span>
+          </div>
+
+          <div class="result-row">
+            <span class="result-name">Workout Fluid Target</span>
+            <span class="result-val" id="workout-water">750 ml</span>
+          </div>
+
+          <div class="card-heading" style="margin-top: 8px;">Electrolyte Dosing Profile</div>
+
+          <div class="electrolyte-breakdown">
+            <div class="e-item">
+              <span class="e-name">Sodium (Na+)</span>
+              <span class="e-amount" id="e-sodium">600 mg</span>
+            </div>
+            <div class="e-item">
+              <span class="e-name">Potassium (K+)</span>
+              <span class="e-amount" id="e-potassium">200 mg</span>
+            </div>
+            <div class="e-item">
+              <span class="e-name">Magnesium Glycinate</span>
+              <span class="e-amount" id="e-magnesium">80 mg</span>
+            </div>
+            <div class="e-item">
+              <span class="e-name">Calcium</span>
+              <span class="e-amount" id="e-calcium">50 mg</span>
+            </div>
+          </div>
+
+          <button class="btn-mix" onclick="confirmMix()">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+            </svg>
+            SAVE HYDRATION MIX
+          </button>
+        </div>
+
+      </aside>
+
+    </main>
+
+  </div>
+
+  <script>
+    const state = {
+      weight: 75,
+      duration: 60,
+      sweatRate: 'med',
+      environment: 'cool'
+    };
+
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    function beep(freq = 523, duration = 0.15) {
+      try {
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function setSweatRate(rate) {
+      state.sweatRate = rate;
+      ['low', 'med', 'high'].forEach(r => {
+        const btn = document.getElementById(`sweat-${r}`);
+        if (r === rate) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      updateCalculations();
+    }
+
+    function setEnvironment(env) {
+      state.environment = env;
+      ['cool', 'warm', 'hot'].forEach(e => {
+        const btn = document.getElementById(`env-${e}`);
+        if (e === env) btn.classList.add('active');
+        else btn.classList.remove('active');
+      });
+      updateCalculations();
+    }
+
+    function updateCalculations() {
+      state.weight = parseInt(document.getElementById('input-weight').value);
+      state.duration = parseInt(document.getElementById('input-duration').value);
+
+      document.getElementById('weight-val').textContent = `${state.weight} kg`;
+      document.getElementById('duration-val').textContent = `${state.duration} mins`;
+
+      // Baseline fluid: ~35ml per kg bodyweight
+      const dailyBaseline = (state.weight * 0.035).toFixed(1);
+
+      // Workout fluid factors
+      let sweatMultiplier = 0.6; // med default
+      if (state.sweatRate === 'low') sweatMultiplier = 0.4;
+      if (state.sweatRate === 'high') sweatMultiplier = 0.9;
+
+      let envMultiplier = 1.0;
+      if (state.environment === 'warm') envMultiplier = 1.25;
+      if (state.environment === 'hot') envMultiplier = 1.5;
+
+      const workoutFluidMl = Math.round((state.duration / 60) * 800 * sweatMultiplier * envMultiplier);
+
+      // Electrolyte ratios
+      let sodiumMg = Math.round((workoutFluidMl / 1000) * 700);
+      if (state.sweatRate === 'high') sodiumMg = Math.round(sodiumMg * 1.3);
+
+      const potassiumMg = Math.round(sodiumMg / 3);
+      const magnesiumMg = Math.round(80 + (state.duration / 60) * 20);
+      const calciumMg = Math.round(50 + (state.duration / 60) * 15);
+
+      document.getElementById('daily-water').textContent = `${dailyBaseline} L`;
+      document.getElementById('workout-water').textContent = `${workoutFluidMl} ml`;
+      document.getElementById('e-sodium').textContent = `${sodiumMg} mg`;
+      document.getElementById('e-potassium').textContent = `${potassiumMg} mg`;
+      document.getElementById('e-magnesium').textContent = `${magnesiumMg} mg`;
+      document.getElementById('e-calcium').textContent = `${calciumMg} mg`;
+    }
+
+    function confirmMix() {
+      beep(659, 0.2);
+      alert(` Hydration Strategy Saved!\n\nTarget Intra-Workout Drink:\n- Water: ${document.getElementById('workout-water').textContent}\n- Sodium: ${document.getElementById('e-sodium').textContent}\n- Potassium: ${document.getElementById('e-potassium').textContent}\n- Magnesium: ${document.getElementById('e-magnesium').textContent}`);
+    }
+
+    // Background Canvas Effect
+    const bgCanvas = document.getElementById('bg-canvas');
+    const bgCtx = bgCanvas.getContext('2d');
+
+    function resizeBg() {
+      bgCanvas.width = window.innerWidth;
+      bgCanvas.height = window.innerHeight;
+    }
+    resizeBg();
+    window.addEventListener('resize', resizeBg);
+
+    const particles = Array.from({ length: 35 }, () => ({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: (Math.random() - 0.5) * 0.3 - 0.1,
+      r: Math.random() * 2 + 1
+    }));
+
+    function renderBg() {
+      bgCtx.clearRect(0, 0, bgCanvas.width, bgCanvas.height);
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        if (p.x < 0 || p.x > bgCanvas.width) p.vx *= -1;
+        if (p.y < 0) p.y = bgCanvas.height;
+
+        bgCtx.beginPath();
+        bgCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        bgCtx.fillStyle = 'rgba(56, 189, 248, 0.2)';
+        bgCtx.fill();
+      });
+      requestAnimationFrame(renderBg);
+    }
+    renderBg();
+
+    // Initial calculation setup
+    updateCalculations();
+  </script>
+</body>
+</html>
