@@ -72,6 +72,8 @@
       justify-content: space-between;
       padding: 24px 30px 30px;
       border-right: 1px solid rgba(56, 189, 248, 0.12);
+      overflow-y: auto;
+      max-height: 90vh;
     }
 
     /* Header Navigation Bar */
@@ -250,7 +252,6 @@
     }
 
     /* Positional offsets around center */
-    /* 8 Nodes positioned symmetrically in circular radius ~230px */
     .node-top           { top: 5px; left: 50%; transform: translateX(-50%); }
     .node-top-right     { top: 70px; right: 40px; }
     .node-right         { top: 50%; right: -15px; transform: translateY(-50%); }
@@ -319,13 +320,148 @@
       font-weight: 400;
     }
 
+    /* =========================================================
+       NEW: 5 SPECIAL INTERACTIVE MODULE CARDS SECTION
+       ========================================================= */
+    .interactive-solutions-section {
+      width: 100%;
+      margin: 40px 0 20px 0;
+      padding-top: 25px;
+      border-top: 1px dashed rgba(56, 189, 248, 0.2);
+    }
+
+    .solutions-header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .solutions-header h2 {
+      font-size: 1.2rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #f8fafc;
+      text-transform: uppercase;
+    }
+
+    .solutions-header p {
+      font-size: 0.78rem;
+      color: #38bdf8;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    .solutions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      width: 100%;
+    }
+
+    .solution-card {
+      background: rgba(13, 25, 41, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+      border-radius: 14px;
+      padding: 18px 16px;
+      text-decoration: none;
+      color: #e0f2fe;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .solution-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, #06b6d4, #ff5a00);
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .solution-card:hover {
+      transform: translateY(-5px);
+      border-color: #ff5a00;
+      box-shadow: 0 12px 25px rgba(255, 90, 0, 0.25), 0 0 15px rgba(6, 182, 212, 0.2);
+      background: rgba(18, 38, 63, 0.9);
+    }
+
+    .solution-card:hover::before {
+      opacity: 1;
+    }
+
+    .solution-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background: rgba(255, 90, 0, 0.1);
+      border: 1px solid rgba(255, 90, 0, 0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .solution-card:hover .solution-icon {
+      background: rgba(255, 90, 0, 0.25);
+      box-shadow: 0 0 12px rgba(255, 90, 0, 0.5);
+    }
+
+    .solution-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: none;
+      stroke: #ff5a00;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .solution-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 6px;
+      letter-spacing: 0.5px;
+    }
+
+    .solution-desc {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      line-height: 1.35;
+      margin-bottom: 14px;
+    }
+
+    .solution-action {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #06b6d4;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .solution-card:hover .solution-action {
+      color: #ff5a00;
+    }
+
     /* Bottom Action Controls */
     .bottom-actions {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      gap: 16px;
       z-index: 20;
+      margin-top: 30px;
     }
 
     .btn-action {
@@ -355,10 +491,22 @@
     }
 
     .btn-home {
-      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2));
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
       color: #38bdf8;
+      background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2));
       border: 1px solid rgba(56, 189, 248, 0.5);
       box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
 
     .btn-home:hover {
@@ -367,6 +515,14 @@
       border-color: #38bdf8;
       box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
       transform: translateY(-2px);
+    }
+
+    .icon-home {
+      transition: transform 0.3s ease;
+    }
+
+    .btn-home:hover .icon-home {
+      transform: scale(1.1);
     }
 
     /* =========================================================
@@ -501,40 +657,6 @@
         border-top: 1px solid rgba(56, 189, 248, 0.15);
       }
     }
-    .btn-home {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 24px;
-  border-radius: 30px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: #38bdf8;
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.2), rgba(99, 102, 241, 0.2));
-  border: 1px solid rgba(56, 189, 248, 0.5);
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.btn-home:hover {
-  background: linear-gradient(135deg, rgba(6, 182, 212, 0.4), rgba(99, 102, 241, 0.4));
-  color: #ffffff;
-  border-color: #38bdf8;
-  box-shadow: 0 0 30px rgba(56, 189, 248, 0.6);
-  transform: translateY(-2px);
-}
-
-.icon-home {
-  transition: transform 0.3s ease;
-}
-
-.btn-home:hover .icon-home {
-  transform: scale(1.1);
-}
   </style>
 </head>
 <body>
@@ -679,10 +801,97 @@
 
       </section>
 
+      <!-- 5 SPECIAL INTERACTIVE HUMAN SOLUTION CARDS -->
+      <section class="interactive-solutions-section">
+        <div class="solutions-header">
+          <h2>Human Solutions & Recovery Matrix</h2>
+          <p>Interactive Tools Solving Modern Physiological Crises</p>
+        </div>
+
+        <div class="solutions-grid">
+          <!-- CARD 1: DESK DECOMPRESSION -->
+          <a href="desk-decompression.html" class="solution-card">
+            <div>
+              <div class="solution-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2v20M8 6l4-4 4 4M8 18l4 4 4-4"/>
+                </svg>
+              </div>
+              <div class="solution-title">Desk Decompression</div>
+              <div class="solution-desc">Interactive 60-second posture reset engine for spinal unloading and posture alignment.</div>
+            </div>
+            <div class="solution-action">Launch Reset →</div>
+          </a>
+
+          <!-- CARD 2: SARCOPENIA TESTER -->
+          <a href="sarcopenia-tester.html" class="solution-card">
+            <div>
+              <div class="solution-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M18 20V10M12 20V4M6 20v-6"/>
+                </svg>
+              </div>
+              <div class="solution-title">Functional Self-Tester</div>
+              <div class="solution-desc">Audit sarcopenia risk, mobility depth, and single-leg balance capacity in 3 steps.</div>
+            </div>
+            <div class="solution-action">Start Audit →</div>
+          </a>
+
+          <!-- CARD 3: HYDRATION & ELECTROLYTE CALCULATOR -->
+          <a href="hydration-calculator.html" class="solution-card">
+            <div>
+              <div class="solution-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+                </svg>
+              </div>
+              <div class="solution-title">Hydration Electrolyte Matrix</div>
+              <div class="solution-desc">Calculate exact sweat rate, intra-workout water, sodium, and potassium replenishment ratios.</div>
+            </div>
+            <div class="solution-action">Calculate Dose →</div>
+          </a>
+
+          <!-- CARD 4: BODY TENSION HEATMAP -->
+          <a href="somatic-heatmap.html" class="solution-card">
+            <div>
+              <div class="solution-icon">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="10"/>
+                  <path d="M12 8v8M8 12h8"/>
+                </svg>
+              </div>
+              <div class="solution-title">Somatic Heatmap</div>
+              <div class="solution-desc">Clickable anatomical front/back guide for instant trigger point self-myofascial release.</div>
+            </div>
+            <div class="solution-action">Map Tension →</div>
+          </a>
+
+          <!-- CARD 5: CNS TAP TEST -->
+          <a href="cns-tap-test.html" class="solution-card">
+            <div>
+              <div class="solution-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                </svg>
+              </div>
+              <div class="solution-title">CNS Tap Readiness Test</div>
+              <div class="solution-desc">10-second motor tap frequency diagnostic to evaluate nervous system fatigue.</div>
+            </div>
+            <div class="solution-action">Test CNS →</div>
+          </a>
+        </div>
+      </section>
+
       <!-- BOTTOM NAVIGATION BUTTONS -->
       <footer class="bottom-actions">
         <a href="#journey" class="btn-action btn-primary">START YOUR JOURNEY</a>
-        <a href="/" class="btn-action btn-home">RETURN TO HOME PAGE</a>
+        <a href="index.html" class="btn-home">
+          <svg class="icon-home" viewBox="0 0 24 24" width="18" height="18">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>HOME</span>
+        </a>
       </footer>
 
     </main>
@@ -705,20 +914,7 @@
       </div>
     </aside>
   </div>
-<a href="index.html" class="btn-home">
-  <svg class="home-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-    <polyline points="9 22 9 12 15 1Here is the HTML and CSS code for a styled **Home** button linked to `index.html`:
 
-### HTML
-```html
-<a href="index.html" class="btn-home">
-  <svg class="icon-home" viewBox="0 0 24 24" width="18" height="18">
-    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-    <polyline points="9 22 9 12 15 12 15 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  <span>Home</span>
-</a>
   <!-- JavaScript Logic -->
   <script>
     // ARTICLE DATA FOR JOURNAL SIDEBAR
@@ -841,9 +1037,7 @@
       });
     });
 
-    // =========================================================
-    // DYNAMIC CANVAS ARTWORK IN CENTER HERO CIRCLE
-    // =========================================================
+    // Dynamic Canvas Artwork in Center Hero Circle
     const canvas = document.getElementById('hero-canvas');
     const ctx = canvas.getContext('2d');
 
@@ -934,9 +1128,7 @@
     }
     drawCenterArtwork();
 
-    // =========================================================
-    // BACKGROUND NEURAL PARTICLES
-    // =========================================================
+    // Background Neural Particles
     const bgCanvas = document.getElementById('bg-canvas');
     const bgCtx = bgCanvas.getContext('2d');
 
@@ -970,7 +1162,6 @@
         bgCtx.fillStyle = 'rgba(56, 189, 248, 0.4)';
         bgCtx.fill();
 
-        // Connect nearby particles
         for (let j = index + 1; j < particles.length; j++) {
           const p2 = particles[j];
           const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
