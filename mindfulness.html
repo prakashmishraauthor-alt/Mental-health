@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirror & Illusion | Modern Mindfulness Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#0f172a',
+                            900: '#0b1329',
+                            950: '#070c1b',
+                        },
+                        highlight: '#ff7a00', // Vibrant Orange
+                        highlightHover: '#ea6c00',
+                        highlightMuted: 'rgba(255, 122, 0, 0.15)',
+                        cardBg: '#131e3a',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Outfit', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #0b1329;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b1329;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff7a00;
+        }
+
+        /* Glow effects */
+        .orange-glow {
+            box-shadow: 0 0 25px rgba(255, 122, 0, 0.18);
+        }
+        .orange-glow-sm {
+            box-shadow: 0 0 10px rgba(255, 122, 0, 0.25);
+        }
+        .node-glow {
+            filter: drop-shadow(0px 0px 8px #ff7a00);
+        }
+
+        /* Smooth mobile drawer transition */
+        .mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between antialiased">
+
+    <!-- Navigation Bar (No top/bottom colored borders) -->
+    <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md border-b border-slate-800/60 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                
+                <!-- Text-only Logo (No image or icon) -->
+                <div class="flex-shrink-0 cursor-pointer" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+                    <span class="font-display font-bold text-2xl sm:text-3xl tracking-tight text-white block">
+                        Mirror & <span class="text-highlight">Illusion</span>
+                    </span>
+                    <span class="text-xs uppercase tracking-widest text-slate-400 font-medium block -mt-1">
+                        Your Mindfulness Hub
+                    </span>
+                </div>
+
+                <!-- Desktop Search Bar -->
+                <div class="hidden md:block flex-1 max-w-xs mx-8">
+                    <div class="relative">
+                        <input type="text" id="desktopSearch" placeholder="Search your path to calm..." 
+                               class="w-full bg-navy-800 text-sm text-slate-200 placeholder-slate-400 rounded-full pl-10 pr-4 py-2 border border-slate-700/80 focus:outline-none focus:border-highlight focus:ring-1 focus:ring-highlight transition">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                    <a href="#matrix" class="text-slate-300 hover:text-highlight transition">Matrix</a>
+                    <a href="#topics" class="text-slate-300 hover:text-highlight transition">Topics</a>
+                    <a href="#self-reflection" class="text-slate-300 hover:text-highlight transition">Self-Reflection</a>
+                    <a href="#newsletter" class="text-slate-300 hover:text-highlight transition">Resources</a>
+                    <a href="#footer" class="text-slate-300 hover:text-highlight transition">About</a>
+                </nav>
+
+                <!-- Mobile Hamburger Button & Search Toggle -->
+                <div class="flex items-center space-x-3 lg:hidden">
+                    <button id="searchToggleBtn" class="text-slate-300 hover:text-highlight p-2 focus:outline-none" aria-label="Toggle Search">
+                        <i class="fa-solid fa-magnifying-glass text-lg"></i>
+                    </button>
+                    <button id="menuToggleBtn" class="text-slate-300 hover:text-highlight p-2 focus:outline-none" aria-label="Open Menu">
+                        <i class="fa-solid fa-bars-staggered text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile Collapsible Search Input -->
+            <div id="mobileSearchContainer" class="hidden md:hidden pb-4 pt-1">
+                <div class="relative">
+                    <input type="text" id="mobileSearch" placeholder="Search mindfulness topics..." 
+                           class="w-full bg-navy-800 text-sm text-slate-200 placeholder-slate-400 rounded-full pl-10 pr-4 py-2 border border-slate-700 focus:outline-none focus:border-highlight">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-2.5 text-slate-400 text-sm"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobileDrawer" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="fixed right-0 top-0 h-full w-4/5 max-w-sm bg-navy-900 border-l border-slate-800 p-6 flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between pb-6 border-b border-slate-800">
+                    <div>
+                        <span class="font-display font-bold text-xl text-white">Mirror & <span class="text-highlight">Illusion</span></span>
+                        <p class="text-xs text-slate-400">Your Mindfulness Hub</p>
+                    </div>
+                    <button id="closeDrawerBtn" class="text-slate-400 hover:text-highlight text-xl p-1">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+                <nav class="mt-8 flex flex-col space-y-5 text-base font-medium">
+                    <a href="#matrix" class="mobile-link text-slate-200 hover:text-highlight transition">Mindfulness Matrix</a>
+                    <a href="#topics" class="mobile-link text-slate-200 hover:text-highlight transition">Featured Topics</a>
+                    <a href="#self-reflection" class="mobile-link text-slate-200 hover:text-highlight transition">Self-Reflection 10 Ways</a>
+                    <a href="#newsletter" class="mobile-link text-slate-200 hover:text-highlight transition">Resources & Newsletter</a>
+                    <a href="#footer" class="mobile-link text-slate-200 hover:text-highlight transition">About Us</a>
+                </nav>
+            </div>
+            <div class="pt-6 border-t border-slate-800">
+                <p class="text-xs text-slate-500 text-center">© 2026 Mirror & Illusion. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow">
+        
+        <!-- MINDFULNESS MATRIX AT TOP -->
+        <section id="matrix" class="relative py-12 lg:py-16 bg-gradient-to-b from-navy-900 via-navy-800 to-navy-900 overflow-hidden border-b border-slate-800/50">
+            <!-- Ambient orange soft glow in background -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-highlight/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-8">
+                    <span class="inline-block uppercase tracking-widest text-xs font-semibold text-highlight bg-highlight/10 px-3.5 py-1.5 rounded-full mb-3 border border-highlight/20">
+                        Interactive Knowledge Map
+                    </span>
+                    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
+                        The Interactive <span class="text-highlight">Mindfulness Matrix</span>
+                    </h1>
+                    <p class="mt-3 text-slate-300 text-sm sm:text-base">
+                        Click on any node in the web below to unlock instantaneous wisdom, neurological insights, and daily mental exercises.
+                    </p>
+                </div>
+
+                <!-- Matrix Visual Board (Interactive HTML Canvas & Node Grid Overlay) -->
+                <div class="relative w-full rounded-2xl bg-navy-950/80 border border-slate-800 p-4 sm:p-8 orange-glow">
+                    
+                    <!-- HTML Canvas for drawing interconnected energy lines -->
+                    <canvas id="matrixCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+                    <!-- Interactive Nodes Container Grid -->
+                    <div class="relative z-10 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 py-6">
+                        
+                        <!-- Node 1 -->
+                        <button onclick="openNodeModal('Breathe', 'Controlled deep breathing activates the vagus nerve, reducing heart rate and signaling safety to the amygdala within seconds.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-wind text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Breathe</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Somatic Reset</span>
+                        </button>
+
+                        <!-- Node 2 -->
+                        <button onclick="openNodeModal('Acceptance', 'Acknowledge present feelings without resistance. Resistance creates suffering; acceptance unlocks mental freedom.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-hand-holding-heart text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Acceptance</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Emotional Release</span>
+                        </button>
+
+                        <!-- Node 3 -->
+                        <button onclick="openNodeModal('Focus', 'Train your attention span like a muscle by gently returning your mind to a single anchor whenever it wanders.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-bullseye text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Focus</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Attentional Clarity</span>
+                        </button>
+
+                        <!-- Node 4 -->
+                        <button onclick="openNodeModal('Non-judgment', 'Observe your thoughts as passing clouds. You are the sky—not the storm inside it.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-scale-balanced text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Non-judgment</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Inner Peace</span>
+                        </button>
+
+                        <!-- Node 5 -->
+                        <button onclick="openNodeModal('Body Scan', 'Systematically direct awareness from head to toe to release physical tension stored in body tissues.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-child-reaching text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Body Scan</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Somatic Awareness</span>
+                        </button>
+
+                        <!-- Node 6 -->
+                        <button onclick="openNodeModal('Meditation', 'Daily silence alters brain structure, increasing gray matter thickness in regions responsible for learning and memory.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-spa text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Meditation</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Neural Plasticity</span>
+                        </button>
+
+                        <!-- Node 7 -->
+                        <button onclick="openNodeModal('Calm', 'Creating a space between stimulus and response gives you the power to choose your reaction.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-water text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Calm</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Equanimity</span>
+                        </button>
+
+                        <!-- Node 8 -->
+                        <button onclick="openNodeModal('Present Moment', 'The present moment is all we ever truly possess. Living here stops regrets of the past and anxiety for the future.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-clock text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Present Moment</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Here & Now</span>
+                        </button>
+
+                        <!-- Node 9 -->
+                        <button onclick="openNodeModal('Stress Relief', 'Mindfulness lowers baseline cortisol levels, soothing chronic inflammation and fatigue.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-feather-pointed text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Stress Relief</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Cortisol Reduction</span>
+                        </button>
+
+                        <!-- Node 10 -->
+                        <button onclick="openNodeModal('Brain Health', 'Breathing exercises strengthen the prefrontal cortex, enhancing decision-making and self-regulation.')" 
+                                class="matrix-node group flex flex-col items-center p-4 rounded-xl bg-cardBg/90 border border-slate-700/60 hover:border-highlight hover:bg-navy-800 transition duration-300 transform hover:-translate-y-1">
+                            <div class="w-12 h-12 rounded-full bg-highlight/10 border border-highlight/40 flex items-center justify-center text-highlight mb-3 group-hover:scale-110 group-hover:bg-highlight group-hover:text-navy-900 transition">
+                                <i class="fa-solid fa-brain text-xl"></i>
+                            </div>
+                            <span class="font-display font-semibold text-sm text-white group-hover:text-highlight">Brain Health</span>
+                            <span class="text-[11px] text-slate-400 mt-1">Neuro-plasticity</span>
+                        </button>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURED BANNER & BLOG TOPICS SECTION -->
+        <section id="topics" class="py-16 bg-navy-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- Main Orange Featured Hero Title -->
+                <div class="text-center mb-12">
+                    <h2 class="font-display text-3xl sm:text-5xl font-black text-highlight tracking-tight uppercase">
+                        Mastering Mindfulness: Transform Your Life Today
+                    </h2>
+                    <p class="text-slate-300 mt-3 max-w-2xl mx-auto text-base sm:text-lg">
+                        Explore practical insights, neuroscientific evidence, and daily rituals designed to cultivate focus and emotional mastery.
+                    </p>
+                </div>
+
+                <!-- Blog Grid - 4 Primary Articles -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="blogGrid">
+                    
+                    <!-- Article 1: Mindfulness at Work -->
+                    <article class="blog-card bg-cardBg rounded-2xl overflow-hidden border border-slate-800 hover:border-highlight/60 transition duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="relative h-48 overflow-hidden bg-navy-800">
+                                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=600&q=80" 
+                                     alt="Mindfulness at work" 
+                                     class="w-full h-full object-cover transition duration-500 hover:scale-105"
+                                     onerror="this.src='https://placehold.co/600x400/0f172a/ff7a00?text=Mindfulness+at+Work'">
+                                <span class="absolute top-3 left-3 bg-navy-900/80 text-highlight text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border border-highlight/20">
+                                    Workplace Calm
+                                </span>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-display font-bold text-lg text-white mb-2 line-clamp-2 hover:text-highlight transition">
+                                    1. Mindfulness at Work: Boost Focus & Productivity
+                                </h3>
+                                <p class="text-slate-400 text-xs sm:text-sm line-clamp-3 leading-relaxed">
+                                    Discover micro-break techniques, single-tasking strategies, and intentional desk breathing exercises that reduce burnout and elevate cognitive clarity during intense workdays.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="readArticle('1')" class="w-full py-2.5 rounded-xl bg-navy-800 border border-slate-700 hover:border-highlight text-highlight hover:bg-highlight hover:text-navy-900 font-semibold text-xs transition duration-200 flex items-center justify-center space-x-2">
+                                <span>Read Full Article</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Article 2: Mindfulness to Get Rid of Stress & Anxiety -->
+                    <article class="blog-card bg-cardBg rounded-2xl overflow-hidden border border-slate-800 hover:border-highlight/60 transition duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="relative h-48 overflow-hidden bg-navy-800">
+                                <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" 
+                                     alt="Mindfulness for stress relief" 
+                                     class="w-full h-full object-cover transition duration-500 hover:scale-105"
+                                     onerror="this.src='https://placehold.co/600x400/0f172a/ff7a00?text=Stress+and+Anxiety'">
+                                <span class="absolute top-3 left-3 bg-navy-900/80 text-highlight text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border border-highlight/20">
+                                    Stress Relief
+                                </span>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-display font-bold text-lg text-white mb-2 line-clamp-2 hover:text-highlight transition">
+                                    2. Mindfulness to Get Rid of Stress & Anxiety: Simple Practices
+                                </h3>
+                                <p class="text-slate-400 text-xs sm:text-sm line-clamp-3 leading-relaxed">
+                                    Simple, actionable techniques to ground yourself when anxiety strikes. Learn the 5-4-3-2-1 sensory method and body scanning to quiet racing thoughts instantly.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="readArticle('2')" class="w-full py-2.5 rounded-xl bg-navy-800 border border-slate-700 hover:border-highlight text-highlight hover:bg-highlight hover:text-navy-900 font-semibold text-xs transition duration-200 flex items-center justify-center space-x-2">
+                                <span>Read Full Article</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Article 3: Mastering Mindfulness - Power for Well-being -->
+                    <article class="blog-card bg-cardBg rounded-2xl overflow-hidden border border-slate-800 hover:border-highlight/60 transition duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="relative h-48 overflow-hidden bg-navy-800">
+                                <img src="https://images.unsplash.com/photo-1518241353330-0f7941c2d9b5?auto=format&fit=crop&w=600&q=80" 
+                                     alt="Power of mindfulness" 
+                                     class="w-full h-full object-cover transition duration-500 hover:scale-105"
+                                     onerror="this.src='https://placehold.co/600x400/0f172a/ff7a00?text=Mastering+Mindfulness'">
+                                <span class="absolute top-3 left-3 bg-navy-900/80 text-highlight text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border border-highlight/20">
+                                    Well-Being
+                                </span>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-display font-bold text-lg text-white mb-2 line-clamp-2 hover:text-highlight transition">
+                                    3. Mastering Mindfulness: The Power of Mindfulness for Well-being
+                                </h3>
+                                <p class="text-slate-400 text-xs sm:text-sm line-clamp-3 leading-relaxed">
+                                    Unlock true mental freedom by cultivating consistent awareness. Understand how daily meditation reshapes emotional resilience and deepens joy.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="readArticle('3')" class="w-full py-2.5 rounded-xl bg-navy-800 border border-slate-700 hover:border-highlight text-highlight hover:bg-highlight hover:text-navy-900 font-semibold text-xs transition duration-200 flex items-center justify-center space-x-2">
+                                <span>Read Full Article</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                    <!-- Article 4: How Breathing Exercise Change the Brain -->
+                    <article class="blog-card bg-cardBg rounded-2xl overflow-hidden border border-slate-800 hover:border-highlight/60 transition duration-300 flex flex-col justify-between shadow-xl">
+                        <div>
+                            <div class="relative h-48 overflow-hidden bg-navy-800">
+                                <img src="https://images.unsplash.com/photo-1507413245164-6160d8298b31?auto=format&fit=crop&w=600&q=80" 
+                                     alt="Mindfulness and brain science" 
+                                     class="w-full h-full object-cover transition duration-500 hover:scale-105"
+                                     onerror="this.src='https://placehold.co/600x400/0f172a/ff7a00?text=Brain+and+Breathing'">
+                                <span class="absolute top-3 left-3 bg-navy-900/80 text-highlight text-xs font-semibold px-2.5 py-1 rounded-md backdrop-blur-sm border border-highlight/20">
+                                    Neuroscience
+                                </span>
+                            </div>
+                            <div class="p-5">
+                                <h3 class="font-display font-bold text-lg text-white mb-2 line-clamp-2 hover:text-highlight transition">
+                                    4. How Mindfulness & Breathing Exercise Change the Brain
+                                </h3>
+                                <p class="text-slate-400 text-xs sm:text-sm line-clamp-3 leading-relaxed">
+                                    Neuroscientific findings reveal how rhythmic breathing thickens the prefrontal cortex, shrinks the fear center (amygdala), and enhances neuroplasticity.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="p-5 pt-0">
+                            <button onclick="readArticle('4')" class="w-full py-2.5 rounded-xl bg-navy-800 border border-slate-700 hover:border-highlight text-highlight hover:bg-highlight hover:text-navy-900 font-semibold text-xs transition duration-200 flex items-center justify-center space-x-2">
+                                <span>Read Full Article</span>
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SELF-REFLECTION CORNER FEATURE SECTION -->
+        <section id="self-reflection" class="py-16 bg-navy-950 border-t border-slate-800/80 relative">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="lg:grid lg:grid-cols-12 lg:gap-12 items-center">
+                    
+                    <!-- Left Column: Featured Header & Image -->
+                    <div class="lg:col-span-5 mb-10 lg:mb-0">
+                        <span class="inline-block uppercase tracking-widest text-xs font-semibold text-highlight bg-highlight/10 px-3 py-1 rounded-full mb-3 border border-highlight/20">
+                            Self-Reflection Corner
+                        </span>
+                        
+                        <!-- Orange Highlighted Heading -->
+                        <h2 class="font-display text-2xl sm:text-4xl font-extrabold text-highlight leading-tight mb-4">
+                            Best Methods for Practicing Self-Reflection: 10 Powerful Ways to Know Yourself Better
+                        </h2>
+                        
+                        <p class="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
+                            Self-reflection is the mirror of the soul. By taking a step back and examining your thoughts, actions, and beliefs without judgment, you cultivate unparalleled self-awareness and emotional wisdom.
+                        </p>
+
+                        <div class="relative rounded-2xl overflow-hidden border border-slate-700/80 shadow-2xl orange-glow-sm">
+                            <img src="https://images.unsplash.com/photo-1499209974431-9dac3ada00d7?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Person practicing self reflection" 
+                                 class="w-full h-64 sm:h-80 object-cover"
+                                 onerror="this.src='https://placehold.co/800x600/0f172a/ff7a00?text=Self+Reflection'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-transparent to-transparent"></div>
+                            <div class="absolute bottom-4 left-4 right-4 text-xs text-slate-300 bg-navy-900/90 p-3 rounded-xl border border-slate-800">
+                                <i class="fa-solid fa-quote-left text-highlight mr-1"></i>
+                                "The unexamined life is not worth living." — Socrates
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: 10 Powerful Ways Numbered Grid -->
+                    <div class="lg:col-span-7">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            
+                            <!-- Way 1 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">1</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Daily Stream-of-Consciousness Journaling</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Write 3 pages every morning uninterrupted to clear subconscious clutter.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 2 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">2</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">The "Evening Review" Ritual</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Review your actions before bed: What went well? What could improve?</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 3 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">3</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Identify Core Personal Values</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Audit whether your daily schedule aligns with your top 5 life values.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 4 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">4</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Solitude Walks in Nature</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Walk without podcasts or phones. Let your mind wander and process.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 5 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">5</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">The "5 Whys" Root Cause Inquiry</h4>
+                                        <p class="text-xs text-slate-400 mt-1">When feeling upset, ask "Why?" five consecutive times to uncover deep truths.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 6 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">6</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Mindful Mirror Exercises</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Look into your own eyes for 2 minutes daily with non-judgmental acceptance.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 7 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">7</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Track Trigger Points & Emotions</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Note what causes anger or fear. Patterns reveal unresolved inner needs.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 8 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">8</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Seek Constructive Trusted Feedback</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Ask a mentor or friend: "What blind spots do you notice in me?"</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 9 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">9</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Write a Letter to Your Past/Future Self</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Build self-compassion by addressing your younger self with kindness.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Way 10 -->
+                            <div class="p-4 rounded-xl bg-cardBg border border-slate-800 hover:border-highlight/50 transition">
+                                <div class="flex items-start space-x-3">
+                                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-highlight/20 text-highlight font-display font-bold text-xs flex items-center justify-center">10</span>
+                                    <div>
+                                        <h4 class="font-semibold text-sm text-white">Monthly Digital Detox Day</h4>
+                                        <p class="text-xs text-slate-400 mt-1">Disconnect 24 hours from screens to hear your inner voice clearly.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- NEWSLETTER SECTION -->
+        <section id="newsletter" class="py-14 bg-navy-900 border-t border-slate-800/60">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <div class="bg-gradient-to-r from-cardBg via-navy-800 to-cardBg p-8 sm:p-10 rounded-3xl border border-slate-700/60 orange-glow-sm">
+                    <i class="fa-solid fa-envelope-open-text text-3xl text-highlight mb-4"></i>
+                    <h3 class="font-display text-2xl sm:text-3xl font-bold text-white mb-2">
+                        Stay Mindful: Subscribe to Our Newsletter
+                    </h3>
+                    <p class="text-slate-300 text-sm sm:text-base max-w-xl mx-auto mb-6">
+                        Receive weekly curated mindfulness rituals, brain exercises, and self-reflection prompts delivered directly to your inbox.
+                    </p>
+                    
+                    <form id="newsletterForm" onsubmit="handleSubscribe(event)" class="flex flex-col sm:flex-row items-center justify-center gap-3 max-w-md mx-auto">
+                        <input type="email" required placeholder="Enter your email address..." 
+                               class="w-full sm:w-auto flex-1 bg-navy-950 text-slate-200 text-sm placeholder-slate-500 rounded-xl px-4 py-3 border border-slate-700 focus:outline-none focus:border-highlight">
+                        <button type="submit" 
+                                class="w-full sm:w-auto px-6 py-3 bg-highlight hover:bg-highlightHover text-navy-950 font-bold text-sm rounded-xl transition shadow-lg">
+                            Subscribe
+                        </button>
+                    </form>
+                    <div id="subscribeSuccess" class="hidden mt-4 text-xs font-semibold text-highlight">
+                        ✓ Thank you for subscribing! Welcome to our mindfulness community.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER SECTION -->
+    <footer id="footer" class="bg-navy-950 text-slate-400 text-xs sm:text-sm border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="md:col-span-1">
+                    <span class="font-display font-bold text-2xl text-white block">
+                        Mirror & <span class="text-highlight">Illusion</span>
+                    </span>
+                    <span class="text-xs uppercase tracking-widest text-slate-400 font-medium block mt-0.5">
+                        Your Mindfulness Hub
+                    </span>
+                    <p class="mt-4 text-xs text-slate-400 leading-relaxed">
+                        A modern digital sanctuary helping you navigate anxiety, master focus, and understand your mind through neuroscience and self-reflection.
+                    </p>
+                </div>
+
+                <!-- Col 2: Navigation -->
+                <div>
+                    <h4 class="font-display font-semibold text-white text-sm mb-3 uppercase tracking-wider">Quick Links</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#matrix" class="hover:text-highlight transition">Mindfulness Matrix</a></li>
+                        <li><a href="#topics" class="hover:text-highlight transition">Featured Articles</a></li>
+                        <li><a href="#self-reflection" class="hover:text-highlight transition">Self-Reflection 10 Ways</a></li>
+                        <li><a href="#newsletter" class="hover:text-highlight transition">Newsletter</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Legal & Resources -->
+                <div>
+                    <h4 class="font-display font-semibold text-white text-sm mb-3 uppercase tracking-wider">Resources</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#" class="hover:text-highlight transition">Guided Meditations</a></li>
+                        <li><a href="#" class="hover:text-highlight transition">Breathing Worksheets</a></li>
+                        <li><a href="#" class="hover:text-highlight transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-highlight transition">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Connect & Social -->
+                <div>
+                    <h4 class="font-display font-semibold text-white text-sm mb-3 uppercase tracking-wider">Connect With Us</h4>
+                    <p class="text-xs text-slate-400 mb-4">Join our quiet community across social platforms.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-highlight hover:border-highlight transition"><i class="fa-brands fa-x-twitter text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-highlight hover:border-highlight transition"><i class="fa-brands fa-instagram text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-highlight hover:border-highlight transition"><i class="fa-brands fa-youtube text-sm"></i></a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-navy-800 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-highlight hover:border-highlight transition"><i class="fa-brands fa-spotify text-sm"></i></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="mt-12 pt-6 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500">
+                <p>© 2026 Mirror & Illusion. All rights reserved.</p>
+                <p class="mt-2 sm:mt-0">Designed with modern simplicity and calm.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE NODE MODAL (POPUP FOR MATRIX NODES) -->
+    <div id="nodeModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-navy-900 border border-highlight/40 rounded-2xl max-w-md w-full p-6 relative shadow-2xl yellow-glow">
+            <button onclick="closeNodeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-highlight p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <div class="flex items-center space-x-3 mb-4">
+                <div class="w-10 h-10 rounded-full bg-highlight/20 text-highlight flex items-center justify-center font-bold">
+                    <i class="fa-solid fa-lightbulb text-lg"></i>
+                </div>
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-highlight font-semibold block">Matrix Insight</span>
+                    <h3 id="modalTitle" class="font-display text-xl font-bold text-white">Title</h3>
+                </div>
+            </div>
+            <p id="modalContent" class="text-slate-300 text-sm leading-relaxed mb-6">
+                Node details go here...
+            </p>
+            <button onclick="closeNodeModal()" class="w-full py-2.5 bg-highlight text-navy-950 font-bold rounded-xl text-sm hover:bg-highlightHover transition">
+                Got It
+            </button>
+        </div>
+    </div>
+
+    <!-- INTERACTIVE ARTICLE READ MORE MODAL -->
+    <div id="articleModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-navy-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 sm:p-8 relative max-h-[90vh] overflow-y-auto shadow-2xl">
+            <button onclick="closeArticleModal()" class="absolute top-4 right-4 text-slate-400 hover:text-highlight p-1">
+                <i class="fa-solid fa-xmark text-xl"></i>
+            </button>
+            <span id="articleCategory" class="inline-block text-xs uppercase font-bold text-highlight bg-highlight/10 px-3 py-1 rounded-full mb-3">
+                Category
+            </span>
+            <h2 id="articleTitle" class="font-display text-2xl sm:text-3xl font-bold text-white mb-4">
+                Article Title
+            </h2>
+            <div id="articleBody" class="text-slate-300 text-sm leading-relaxed space-y-4">
+                <!-- Full article content injected dynamically -->
+            </div>
+            <div class="mt-8 pt-4 border-t border-slate-800 flex justify-end">
+                <button onclick="closeArticleModal()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-semibold rounded-xl transition">
+                    Close Article
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CLIENT JAVASCRIPT LOGIC -->
+    <script>
+        // Article Data Repository
+        const articles = {
+            '1': {
+                title: 'Mindfulness at Work: Boost Focus & Productivity',
+                category: 'Workplace Calm',
+                content: `
+                    <p class="font-semibold text-white">In today's fast-paced corporate environment, constant notifications and multitasking can leave your brain fatigued by midday.</p>
+                    <p>Practicing mindfulness at your desk isn't about sitting cross-legged for hours; it's about micro-moments of intense presence.</p>
+                    <h4 class="text-highlight font-bold text-base mt-4 mb-2">3 Practical Desk Techniques:</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>The 60-Second Email Pause:</strong> Before hitting send or opening a challenging email, take three slow diaphragmatic breaths.</li>
+                        <li><strong>Single-Tasking Sprints:</strong> Dedicate 25 uninterrupted minutes to a single task while silencing non-essential alerts.</li>
+                        <li><strong>Mindful Transitions:</strong> Feel your feet on the floor and take two deep breaths whenever you walk from one meeting room to another.</li>
+                    </ul>
+                `
+            },
+            '2': {
+                title: 'Mindfulness to Get Rid of Stress & Anxiety: Simple Practices',
+                category: 'Stress Relief',
+                content: `
+                    <p class="font-semibold text-white">Anxiety often stems from our minds projecting into an uncertain future. Mindfulness anchors you safely in the immediate present.</p>
+                    <h4 class="text-highlight font-bold text-base mt-4 mb-2">The 5-4-3-2-1 Grounding Method:</h4>
+                    <p>When you feel overwhelmed by anxiety, pause and identify:</p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>5 things</strong> you can see around you.</li>
+                        <li><strong>4 things</strong> you can physically feel (e.g., chair against your back).</li>
+                        <li><strong>3 things</strong> you can hear.</li>
+                        <li><strong>2 things</strong> you can smell.</li>
+                        <li><strong>1 thing</strong> you can taste.</li>
+                    </ul>
+                    <p class="mt-3">This exercise forces the brain out of the fight-or-flight response back into rational sensory processing.</p>
+                `
+            },
+            '3': {
+                title: 'Mastering Mindfulness: The Power of Mindfulness for Well-being',
+                category: 'Well-Being',
+                content: `
+                    <p class="font-semibold text-white">Mindfulness is not a temporary fix; it is a fundamental shift in how you relate to your thoughts and feelings.</p>
+                    <p>When you master mindfulness, you cultivate an inner sanctuary that remains peaceful regardless of external turbulence.</p>
+                    <h4 class="text-highlight font-bold text-base mt-4 mb-2">Key Pillars of Mastery:</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Observer Consciousness:</strong> Recognizing that you are the watcher of your thoughts, not the thoughts themselves.</li>
+                        <li><strong>Emotional Regulation:</strong> Experiencing emotions fully without allowing them to dictate impulsive behaviors.</li>
+                        <li><strong>Radical Self-Compassion:</strong> Replacing harsh self-criticism with the understanding you would extend to a dear friend.</li>
+                    </ul>
+                `
+            },
+            '4': {
+                title: 'How Does Mindfulness & Breathing Exercise Change the Brain',
+                category: 'Neuroscience',
+                content: `
+                    <p class="font-semibold text-white">Modern neuroimaging (fMRI) has proven that mindfulness physically alters brain structure through a phenomenon called neuroplasticity.</p>
+                    <h4 class="text-highlight font-bold text-base mt-4 mb-2">Key Neurological Changes:</h4>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>Amygdala Shrinkage:</strong> The fear and stress center of the brain shrinks in volume after just 8 weeks of regular practice.</li>
+                        <li><strong>Prefrontal Cortex Thickening:</strong> The region responsible for executive decision-making, focus, and self-control increases in density.</li>
+                        <li><strong>Default Mode Network (DMN) Deactivation:</strong> The brain network responsible for mind-wandering and self-referential rumination slows down, reducing anxiety.</li>
+                    </ul>
+                `
+            }
+        };
+
+        // Mobile Drawer Menu Functionality
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const closeDrawerBtn = document.getElementById('closeDrawerBtn');
+        const mobileDrawer = document.getElementById('mobileDrawer');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+
+        function openDrawer() {
+            mobileDrawer.classList.remove('hidden');
+            setTimeout(() => {
+                mobileDrawer.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeDrawer() {
+            mobileDrawer.classList.add('opacity-0');
+            setTimeout(() => {
+                mobileDrawer.classList.add('hidden');
+            }, 300);
+        }
+
+        menuToggleBtn.addEventListener('click', openDrawer);
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        mobileDrawer.addEventListener('click', (e) => {
+            if (e.target === mobileDrawer) closeDrawer();
+        });
+        mobileLinks.forEach(link => link.addEventListener('click', closeDrawer));
+
+        // Mobile Search Input Toggle
+        const searchToggleBtn = document.getElementById('searchToggleBtn');
+        const mobileSearchContainer = document.getElementById('mobileSearchContainer');
+        
+        searchToggleBtn.addEventListener('click', () => {
+            mobileSearchContainer.classList.toggle('hidden');
+        });
+
+        // Search Filter Functionality for Articles
+        const desktopSearch = document.getElementById('desktopSearch');
+        const mobileSearch = document.getElementById('mobileSearch');
+
+        function filterArticles(searchTerm) {
+            const term = searchTerm.toLowerCase();
+            const cards = document.querySelectorAll('.blog-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h3').innerText.toLowerCase();
+                const text = card.querySelector('p').innerText.toLowerCase();
+                if (title.includes(term) || text.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        desktopSearch.addEventListener('input', (e) => filterArticles(e.target.value));
+        mobileSearch.addEventListener('input', (e) => filterArticles(e.target.value));
+
+        // Node Interactive Modal Logic
+        const nodeModal = document.getElementById('nodeModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalContent = document.getElementById('modalContent');
+
+        function openNodeModal(title, content) {
+            modalTitle.innerText = title;
+            modalContent.innerText = content;
+            nodeModal.classList.remove('hidden');
+            setTimeout(() => {
+                nodeModal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeNodeModal() {
+            nodeModal.classList.add('opacity-0');
+            setTimeout(() => {
+                nodeModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Article Read More Modal Logic
+        const articleModal = document.getElementById('articleModal');
+        const articleTitle = document.getElementById('articleTitle');
+        const articleCategory = document.getElementById('articleCategory');
+        const articleBody = document.getElementById('articleBody');
+
+        function readArticle(id) {
+            const item = articles[id];
+            if (!item) return;
+
+            articleTitle.innerText = item.title;
+            articleCategory.innerText = item.category;
+            articleBody.innerHTML = item.content;
+
+            articleModal.classList.remove('hidden');
+            setTimeout(() => {
+                articleModal.classList.remove('opacity-0');
+            }, 10);
+        }
+
+        function closeArticleModal() {
+            articleModal.classList.add('opacity-0');
+            setTimeout(() => {
+                articleModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // Newsletter Form Handle
+        function handleSubscribe(e) {
+            e.preventDefault();
+            document.getElementById('subscribeSuccess').classList.remove('hidden');
+            e.target.reset();
+            setTimeout(() => {
+                document.getElementById('subscribeSuccess').classList.add('hidden');
+            }, 5000);
+        }
+
+        // Background Web Lines Effect for Canvas in Matrix
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            drawMatrixLines();
+        }
+
+        function drawMatrixLines() {
+            if (!ctx) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = 'rgba(255, 122, 0, 0.12)'; // Vibrant Orange lines
+            ctx.lineWidth = 1;
+
+            const nodes = document.querySelectorAll('.matrix-node');
+            const coords = [];
+
+            nodes.forEach(node => {
+                const rect = node.getBoundingClientRect();
+                const parentRect = canvas.parentElement.getBoundingClientRect();
+                coords.push({
+                    x: rect.left + rect.width / 2 - parentRect.left,
+                    y: rect.top + rect.height / 2 - parentRect.top
+                });
+            });
+
+            for (let i = 0; i < coords.length; i++) {
+                for (let j = i + 1; j < coords.length; j++) {
+                    ctx.beginPath();
+                    ctx.moveTo(coords[i].x, coords[i].y);
+                    ctx.lineTo(coords[j].x, coords[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+
+        window.addEventListener('load', () => {
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+        });
+    </script>
+</body>
+</html>
